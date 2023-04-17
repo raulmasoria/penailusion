@@ -134,22 +134,36 @@
                 
             </div>
 
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Mi perfil') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Cerrar sesión') }}
+            
+            @auth
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('profile.edit')">
+                        {{ __('Mi perfil') }}
                     </x-responsive-nav-link>
-                </form>
-            </div>
+
+                    <!-- Authentication -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-responsive-nav-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                                            this.closest('form').submit();">
+                            {{ __('Cerrar sesión') }}
+                        </x-responsive-nav-link>
+                    </form>
+                </div>
+            @endauth
+            @guest
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('login')">
+                        {{ __('Login') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('register')">
+                        {{ __('Crear cuenta') }}
+                    </x-responsive-nav-link>
+                    
+                </div>
+            @endguest   
         </div>
     </div>
 </nav>
