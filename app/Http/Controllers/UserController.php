@@ -26,7 +26,7 @@ class UserController extends Controller
         $godfathers = '';
         $godfather1 = '';
         $godfather2 = '';
-        $all_godfather = '';
+        $all_godfather = array();
         
         $adress = Adress::where('user_id', $user->id)->firstOrFail();
         $antiquity = Antiquity::where('user_id', $user->id)->get();
@@ -42,6 +42,7 @@ class UserController extends Controller
         //¿A quien ha apadrinado?
         if (Godfather::where('user_godfather_1', $user->id)->orWhere('user_godfather_2', $user->id)->exists()) {
             $the_godfathers = Godfather::where('user_godfather_1', $user->id)->orWhere('user_godfather_2', $user->id)->get();
+            
             foreach($the_godfathers as $the_godfather){
                 $all_godfather[$the_godfather->year_godfather] = User::where('id',$the_godfather->user_new)->firstOrFail();
             }            
