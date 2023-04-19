@@ -35,14 +35,36 @@ class Buscador extends Component
         })->orderBy('name', 'asc')
         ->paginate(50);
 
+        //Obtener si ya ha pagado cuota o permanencia este año
         $year = Carbon::now()->format('Y');
         $antiquitys = Antiquity::select('user_id')->where('year',$year)->get();
         $permanences = Permanence::select('user_id')->where('year_permanence',$year)->get();
 
+        //Obtener las permanencias de años anteriores para ver si puede segir apadrinando, puesto que solo se pueden dos años seguidos
+        $year1 = "2019";
+        $year2 = "2022";
+
+        $noPermanence = DB::select('SELECT user_id
+            FROM (
+                SELECT * 
+                FROM permanences
+                WHERE year_permanence = :year1
+                
+                UNION 
+            
+                SELECT * 
+                FROM permanences
+                WHERE year_permanence = :year2
+            ) permanences
+            group by user_id
+            HAVING  count(user_id) = 2', ['year1' => $year1,'year2' => $year2]);
+    
+
         return view('livewire.buscador',[
             "socios" => $socios,
             "antiquitys" => $antiquitys,
-            "permanences" => $permanences
+            "permanences" => $permanences,
+            'noPermanences' => $noPermanence
         ]);
     }
 
