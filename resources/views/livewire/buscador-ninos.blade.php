@@ -58,7 +58,7 @@
                             </td>
                             <td class="px-6 py-4">
                                
-                                @if ($nino->birthdate != '01-01-1970')
+                                @if ($nino->birthdate != '')
                                     <div class="font-medium text-gray-700">{{ $nino->birthdate . ' (' . $nino->anios .' años)'}}</div>
                                 @endif
                             </td>

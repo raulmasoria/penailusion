@@ -37,12 +37,13 @@ class BuscadorNinos extends Component
 
         foreach($ninos as $nino)
         {
-            $fecha = date('d-m-Y', strtotime($nino->birthdate));
-            $anios = $this->obtener_edad_segun_fecha($nino->birthdate);
+            if(!empty($nino->birthdate)){
+                $fecha = Carbon::parse($nino->birthdate)->format('d-m-Y');
+                $anios = $this->obtener_edad_segun_fecha($nino->birthdate);
 
-            $nino->birthdate = $fecha;
-            $nino['anios'] = $anios;
-
+                $nino->birthdate = $fecha;
+                $nino['anios'] = $anios;
+            }    
         }
 
         $year = Carbon::now()->format('Y');
@@ -67,9 +68,9 @@ class BuscadorNinos extends Component
 
     function obtener_edad_segun_fecha($fecha_nacimiento)
     {
-        $nacimiento = new DateTime($fecha_nacimiento);
-        $ahora = new DateTime(date("Y-m-d"));
-        $diferencia = $ahora->diff($nacimiento);
-        return $diferencia->format("%y");
+        $nacimiento = Carbon::parse($fecha_nacimiento)->format('d-m-Y');
+        $ahora = Carbon::now()->format('Y-m-d');
+        $diferencia = Carbon::now()->diffInYears($nacimiento);
+        return $diferencia;
     }
 }
