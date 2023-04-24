@@ -57,16 +57,9 @@
                             
                             </td>
                             <td class="px-6 py-4">
-                                @php
-                                    $fecha = date('d-m-Y', strtotime($nino->birthdate));
-
-                                    $nacimiento = new DateTime($nino->birthdate);
-                                    $ahora = new DateTime(date("Y-m-d"));
-                                    $diferencia = $ahora->diff($nacimiento);
-                                    $anios = $diferencia->format("%y");
-                                @endphp
-                                @if ($fecha != '01-01-1970')
-                                    <div class="font-medium text-gray-700">{{ $fecha . ' (' . $anios .' años)'}}</div>
+                               
+                                @if ($nino->birthdate != '01-01-1970')
+                                    <div class="font-medium text-gray-700">{{ $nino->birthdate . ' (' . $nino->anios .' años)'}}</div>
                                 @endif
                             </td>
                             <td class="px-6 py-4">

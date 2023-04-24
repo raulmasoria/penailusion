@@ -35,6 +35,16 @@ class BuscadorNinos extends Component
         })->orderBy('name', 'asc')
         ->paginate(50);
 
+        foreach($ninos as $nino)
+        {
+            $fecha = date('d-m-Y', strtotime($nino->birthdate));
+            $anios = $this->obtener_edad_segun_fecha($nino->birthdate);
+
+            $nino->birthdate = $fecha;
+            $nino['anios'] = $anios;
+
+        }
+
         $year = Carbon::now()->format('Y');
         $antiquitys = Childrens_antiquities::select('children_id')->where('year',$year)->get();
         
