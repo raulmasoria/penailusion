@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/socios/{user}/adress', [UserController::class, 'adress'])->name('user.adress');
     Route::get('/nuevo_socio', [UserController::class, 'create'])->name('socios.create');
     Route::patch('/nuevo_socio/guardar', [UserController::class, 'store'])->name('socios.store');
+    Route::get('/updatePass', [UserController::class, 'updatePass']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -40,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/niños/{nino}/edit', [ChildrenController::class, 'update'])->name('niños.update');
     Route::get('/nuevo_niño', [ChildrenController::class, 'create'])->name('niños.create');
     Route::patch('/nuevo_niño/guardar', [ChildrenController::class, 'store'])->name('niños.store');
+    Route::patch('/niños/{nino}/adult', [ChildrenController::class, 'pasarAdulto'])->name('niños.adult');
 });
 
 require __DIR__.'/auth.php';

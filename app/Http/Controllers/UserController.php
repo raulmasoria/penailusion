@@ -10,6 +10,7 @@ use App\Models\Godfather;
 use App\Models\Permanence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
@@ -206,7 +207,22 @@ class UserController extends Controller
         return Redirect::route('user.edit',$user)->with('status', 'user-create');
     }
 
+    public function updatePass(){
 
+        $users = User::all();
+        foreach($users as $user)
+        {
+            if(!empty($user->nif)){
+                $user->password = Hash::make($user->nif, ['rounds' => 10]);
+            } else {
+                $user->password = Hash::make('naranja', ['rounds' => 10]);
+            }
+
+            echo $user->name;
+            //$user->save();
+        }
+        
+    }
 
     
 }

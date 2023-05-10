@@ -21,6 +21,10 @@
                 @include('children.partials.view-year-antiquity')
             </div>
 
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                @include('children.partials.pass-to-adult')
+            </div>
+
         </div>
     </div>
 @endsection

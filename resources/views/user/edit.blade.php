@@ -13,6 +13,15 @@
                     class="text-xl text-green-600"
                 >{{ __('Nuevo socio creado.') }}</p>
             @endif
+            @if (session('status') === 'nino-adult')
+                <p
+                    x-data="{ show: true }"
+                    x-show="show"
+                    x-transition
+                    x-init="setTimeout(() => show = false, 5000)"
+                    class="text-sm text-gray-600"
+                >{{ __('Nuevo socio importado de niño a adulto.') }}</p>
+            @endif
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 @include('user.partials.update-profile-information-form')
             </div>
