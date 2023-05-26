@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChildrenController;
+use App\Http\Controllers\CompanieController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
 /*
@@ -43,5 +44,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/nuevo_niño/guardar', [ChildrenController::class, 'store'])->name('niños.store');
     Route::patch('/niños/{nino}/adult', [ChildrenController::class, 'pasarAdulto'])->name('niños.adult');
 });
+
+    Route::apiResource('getCompanies', CompanieController::class)->only(['index']);
+    Route::apiResource('getCompanie', CompanieController::class)->only(['show']);
+    Route::get('/updateCoord/{id}/{coordx}/{coordy}', [CompanieController::class, 'update']);
+    //Route::apiResource('updateCoordenadas', CompanieController::class)->only(['update']);
+
+
 
 require __DIR__.'/auth.php';
