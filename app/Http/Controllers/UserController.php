@@ -125,19 +125,108 @@ class UserController extends Controller
     //página de crear un usuario siendo junta directiva
     public function create()
     {        
-        //recojo los socios que pueden apadrinar para mostrarlos en los select de nuevo socio
+        //Calculo los socios que pueden apadrinar para mostrarlos en los select de nuevo socio
+
+        //Socios que han pagado cuota completa los ultimos 4 años
         $godfathers = DB::table('antiquities')
             ->join('users', 'users.id', '=', 'antiquities.user_id')
             ->selectRaw('count(users.id), users.id, users.name, users.lastname')
-            ->where('year', '=', 2019)
+            ->where('year', '=', 2022)
+            ->orWhere('year', '=', 2019)
             ->orWhere('year', '=', 2018)
+            ->orWhere('year', '=', 2017)
             ->groupBy('users.id')
-            ->havingRaw('count(users.id) = ?', [2])
-            ->orderby('users.name')
-            ->get();        
+            ->havingRaw('count(users.id) = ?', [4])
+            ->orderby('users.lastname')
+            ->get(); 
+            
+        /*select count(users.id), users.id, users.name, users.lastname 
+        from `antiquities` 
+        inner join `users` on `users`.`id` = `antiquities`.`user_id` 
+        where `year` = 2022 or `year` = 2019 or `year` = 2018 or `year` = 2017 
+        group by `users`.`id` 
+        having count(users.id) = 4
+        order by `users`.`name` asc*/
+            
+        $arrayGodfathers = array();
+        foreach($godfathers as $row_god){
+            $arrayGodfathers[$row_god->id] = $row_god->name .' ' . $row_god->lastname;
+        }    
 
+        //Socios que han pagado permanencia alguno de los ultimos 4 años
+        $permanence = DB::table('users')    
+            ->join('permanences', 'permanences.user_id', '=', 'users.id')
+            ->selectRaw('users.id, users.name, users.lastname')
+            ->where('permanences.year_permanence', '=', 2022)
+            ->orWhere('permanences.year_permanence', '=', 2019)
+            ->orWhere('permanences.year_permanence', '=', 2018)
+            ->orWhere('permanences.year_permanence', '=', 2017)
+            ->groupBy('users.id')
+            ->orderby('users.lastname')
+            ->get();  
+
+        /*SELECT users.id, users.name, users.lastname
+        FROM users
+        JOIN permanences ON permanences.user_id = users.id
+        WHERE permanences.year_permanence = 2022
+        OR permanences.year_permanence = 2019
+        OR permanences.year_permanence = 2018
+        OR permanences.year_permanence = 2017
+        group by users.id*/
+
+        $arrayPermanence = array();
+        foreach($permanence as $row_perman){
+            $arrayPermanence[$row_perman->id] = $row_perman->name .' ' . $row_perman->lastname;
+        }             
+
+        //Agrupo los socios que podrian apadrinar, comparando los que han pagado todas las cuotas con los que han pagado alguna vez mantenimiento y quito estos últimos del array que si pueden.
+        $cuotasOk = array_diff_key($arrayGodfathers, $arrayPermanence);
+        
+
+        //Obtengo los socios que han apadrinado en los últimos 2 años
+        $godfather_1 = DB::table('users')    
+            ->join('godfathers', 'godfathers.user_godfather_1', '=', 'users.id')
+            ->selectRaw('users.id, users.name, users.lastname')
+            ->where('godfathers.year_godfather', '=', 2022)
+            ->orWhere('godfathers.year_godfather', '=', 2019)
+            ->groupBy('users.id')
+            ->orderby('users.lastname')
+            ->get();  
+        
+        $arrayGodfather_1 = array();
+        foreach($godfather_1 as $row_father_1){
+            $arrayGodfather_1[$row_father_1->id] = $row_father_1->name .' ' . $row_father_1->lastname;
+        }        
+
+        $godfather_2 = DB::table('users')    
+            ->join('godfathers', 'godfathers.user_godfather_2', '=', 'users.id')
+            ->selectRaw('users.id, users.name, users.lastname')
+            ->where('godfathers.year_godfather', '=', 2022)
+            ->orWhere('godfathers.year_godfather', '=', 2019)
+            ->groupBy('users.id')
+            ->orderby('users.lastname')
+            ->get();    
+        /*
+        SELECT users.id, users.name, users.lastname
+        FROM users
+        JOIN godfathers ON godfathers.user_godfather_1 = users.id
+        WHERE godfathers.year_godfather = 2022
+        OR godfathers.year_godfather = 2019
+        group by users.id*/
+            
+        $arrayGodfather_2 = array();
+        foreach($godfather_2 as $row_father_2){
+            $arrayGodfather_2[$row_father_2->id] = $row_father_2->name .' ' . $row_father_2->lastname;
+        } 
+
+        $godfather = $arrayGodfather_1+$arrayGodfather_2;
+        ksort($godfather);
+
+        //Descarto los que han apadrinado los dos ultimos años, del listado que cumplen con las cuotas
+        $cumplenTodo = array_diff_key($cuotasOk, $godfather);
+        
         return view('new-user.new_socio',[
-            "godfathers" => $godfathers
+            "godfathers" => $cumplenTodo
         ]);        
     }
 
@@ -207,7 +296,7 @@ class UserController extends Controller
         return Redirect::route('user.edit',$user)->with('status', 'user-create');
     }
 
-    public function updatePass(){
+    /*public function updatePass(){
 
         $users = User::all();
         foreach($users as $user)
@@ -222,7 +311,7 @@ class UserController extends Controller
             //$user->save();
         }
         
-    }
+    }*/
 
     
 }

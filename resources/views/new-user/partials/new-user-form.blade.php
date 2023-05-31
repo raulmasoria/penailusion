@@ -106,8 +106,8 @@
             <x-input-label for="padrino1" :value="__('Primer padrino')" />
                 <select id="padrino1" name="padrino1" required class="border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
                     <option value="" >-- Elige un socio --</option>
-                    @foreach ($godfathers as $godfather)
-                        <option value="{{ $godfather->id }}"> {{$godfather->name . ' ' . $godfather->lastname }} </option>
+                    @foreach ($godfathers as $godfather_id => $godfather)
+                        <option value="{{ $godfather_id }}"> {{$godfather }} </option>
                     @endforeach                    
                 </select>
             <x-input-error :messages="$errors->get('padrino1')" class="mt-2" />
@@ -117,9 +117,9 @@
             <x-input-label for="padrino2" :value="__('Segundo padrino')" />
                 <select id="padrino2" name="padrino2" required class="border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
                     <option value="" >-- Elige un socio --</option>
-                    @foreach ($godfathers as $godfather)
-                        <option value="{{ $godfather->id }}"> {{$godfather->name . ' ' . $godfather->lastname }} </option>
-                    @endforeach                    
+                    @foreach ($godfathers as $godfather_id => $godfather)
+                        <option value="{{ $godfather_id }}"> {{$godfather }} </option>
+                    @endforeach                     
                 </select>
             <x-input-error :messages="$errors->get('padrino2')" class="mt-2" />
         </div>
