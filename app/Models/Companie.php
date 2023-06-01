@@ -13,7 +13,13 @@ class Companie extends Model
         'id',
         'establecimiento',
         'tipo',
+        'imagen',
         'created_at',
         'updated_at',
     ];
+
+    public function round()
+    {
+        return $this->hasMany(Round::class);
+    }
 }

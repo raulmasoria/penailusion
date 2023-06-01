@@ -27,6 +27,8 @@ class User extends Authenticatable
         'nif',
         'password',
         'rol',
+        'notifications',
+        'active',
     ];
 
     /**
@@ -61,6 +63,11 @@ class User extends Authenticatable
     public function permanence()
     {
         return $this->hasMany(Permanence::class);
+    }
+
+    public function device_user_tokens()
+    {
+        return $this->hasMany(DeviceUserToken::class);
     }
 
 }

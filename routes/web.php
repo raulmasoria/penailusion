@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
 
     Route::apiResource('getCompanies', CompanieController::class)->only(['index']);
     Route::apiResource('getCompanie', CompanieController::class)->only(['show']);
-    Route::get('/updateCoord/{id}/{coordx}/{coordy}', [CompanieController::class, 'update']);
+    // Route::get('/updateCoord/{id}/{coordx}/{coordy}', [CompanieController::class, 'update']);
     //Route::apiResource('updateCoordenadas', CompanieController::class)->only(['update']);
 
 

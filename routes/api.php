@@ -25,5 +25,6 @@ Route::post('/auth/refresh', [AuthController::class, 'refresh']);
 Route::post('/auth/updateUser', [AuthController::class, 'updateUser']);
 Route::post('/auth/updatePasswd', [AuthController::class, 'updatePasswd']);
 Route::post('/auth/resetPasswd', [AuthController::class, 'resetPasswd']);
+Route::post('/auth/resetPasswd', [AuthController::class, 'resetPasswd']);
 
-
+Route::post('/auth/updateNotifications', [AuthController::class, 'updateNotifications']);

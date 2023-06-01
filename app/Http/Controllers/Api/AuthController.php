@@ -132,7 +132,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'User info',
-            'data_user' => ['name' => $user->name, 'lastname' => $user->lastname, 'phone' => $user->phone, 'email' => $user->email, 'nif' => $user->nif],
+            'data_user' => ['name' => $user->name, 'lastname' => $user->lastname, 'phone' => $user->phone, 'email' => $user->email, 'nif' => $user->nif, 'rol' => $user->rol, 'notifications' => $user->notifications, 'active' => $user->active],
             'data_user_adress' => ['via' => $adress['via'], 'direccion' => $adress['direccion'], 'piso' => $adress['piso'], 'cp' => $adress['cp'], 'ciudad' => $adress['ciudad'], 'provincia' => $adress['provincia']],
             'data_user_antiquity' => $anos,
             'token' => $request->token
@@ -188,6 +188,48 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'User updated',                      
+                'token' => $request->token
+            ], 200);
+
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function updateNotifications(Request $request)
+    {   
+        try {
+            if(!User::where('remember_token', $request->token)->first()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'token error',
+                ], 401);
+            }
+
+            $validateUser = Validator::make($request->all(), 
+            [
+                'notifications' => 'required',               
+            ]);
+
+            if($validateUser->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
+
+            $user = User::where('remember_token', $request->token)->first();
+            $user->notifications = $request->notifications;
+            $user->save();           
+
+            return response()->json([
+                'status' => true,
+                'message' => 'notifications updated',                      
                 'token' => $request->token
             ], 200);
 
