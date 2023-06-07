@@ -15,6 +15,7 @@ class Notification extends Model
         'read',
         'created_at',
         'token',
+        'id_user'
     ];
 
     /**
@@ -24,5 +25,11 @@ class Notification extends Model
      */
     protected $hidden = [
         'token',
+        'id_user'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

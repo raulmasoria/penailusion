@@ -27,6 +27,7 @@ class companiesResource extends JsonResource
             'provincia' => $this->provincia,
             'coordx' => $this->coordx,
             'coordy' => $this->coordy,
+            'imagen' => $this->imagen
         ];
     }
 }

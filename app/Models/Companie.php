@@ -14,6 +14,7 @@ class Companie extends Model
         'establecimiento',
         'tipo',
         'imagen',
+        'cuota', // 0 - media pagina, 1 - pagina completa
         'created_at',
         'updated_at',
     ];
