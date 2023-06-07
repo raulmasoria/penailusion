@@ -22,7 +22,8 @@ class RoundDay extends Model
     ];
 
     protected $casts = [
-        'hour' => 'date:hh:mm'
+        'day' => 'date:d-m-Y',
+        'hour' => 'date:H:i:s'
     ];
 
     public function companie()

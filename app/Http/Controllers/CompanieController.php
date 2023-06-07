@@ -29,8 +29,20 @@ class CompanieController extends Controller
         //$companie_row = Companie::where('id',$id)->firstOrFail();
         $companie_row = DB::table('companies')
         ->join('companies_address', 'companies.id', '=', 'companies_address.id')
-        ->select('companies.id as id', 'establecimiento', 'tipo', 'via', 'direccion', 'piso', 'cp', 'ciudad', 'provincia', 'coordx', 'coordy')        
+        ->select('companies.id as id', 'establecimiento', 'tipo', 'via', 'direccion', 'piso', 'cp', 'ciudad', 'provincia', 'coordx', 'coordy', 'companies.imagen')        
         ->where('companies.id', '=', $id)
+        ->get();   
+
+        return companiesResource::collection($companie_row);
+    }
+
+    public function showAllBar()
+    {
+        //$companie_row = Companie::where('id',$id)->firstOrFail();
+        $companie_row = DB::table('companies')
+        ->join('companies_address', 'companies.id', '=', 'companies_address.id')
+        ->select('companies.id as id',  'companies.imagen as imagen', 'establecimiento', 'tipo', 'via', 'direccion', 'piso', 'cp', 'ciudad', 'provincia', 'coordx', 'coordy')        
+        ->where('companies.tipo', '=', 0)
         ->get();   
 
         return companiesResource::collection($companie_row);

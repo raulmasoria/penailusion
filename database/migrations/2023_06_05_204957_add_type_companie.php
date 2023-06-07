@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('round_days', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_companie')->nullable();
-            $table->foreign('id_companie')->references('id')->on('companies')->onDelete('cascade');
+        Schema::table('companies', function (Blueprint $table) {
+            $table->boolean('cuota')->default(0);
         });
     }
 
@@ -26,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('round_days', function (Blueprint $table) {
-            $table->dropColumn('id_companie');
+        Schema::table('companies', function (Blueprint $table) {
+            $table->dropColumn('cuota');
         });
     }
 };

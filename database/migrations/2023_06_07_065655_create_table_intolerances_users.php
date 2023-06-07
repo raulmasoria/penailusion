@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('round_days', function (Blueprint $table) {
+        Schema::create('intolerances_users', function (Blueprint $table) {
             $table->id();
-            $table->string('tipo');
-            $table->timestamp('day');
-            $table->time('hour');
-            $table->string('description')->nullable();
-            $table->boolean('march')->default(0);
-            $table->boolean('active')->default(1);
+            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_intolerance');
             $table->timestamps();
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_intolerance')->references('id')->on('intolerances')->onDelete('cascade');
         });
     }
 
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('round_days');
+        Schema::dropIfExists('intolerances_users');
     }
 };

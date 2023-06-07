@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('round_days', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_companie')->nullable();
-            $table->foreign('id_companie')->references('id')->on('companies')->onDelete('cascade');
+        Schema::table('notifications', function (Blueprint $table) {
+            $table->unsignedBigInteger('id_user')->nullable();
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -26,8 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('round_days', function (Blueprint $table) {
-            $table->dropColumn('id_companie');
+        Schema::table('notifications', function (Blueprint $table) {
+            $table->dropColumn('id_user');
         });
     }
 };
