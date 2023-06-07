@@ -153,4 +153,43 @@ class ChildrenController extends Controller
 
     }
 
+    //página de crear un niño siendo un padre (publica)
+    public function createbyfathers()
+    {        
+        return view('children.new_niño_fathers');        
+    }
+
+    //crear un usuario niño siendo un padre (publica)
+    public function storebyfathers(Request $request)
+    {
+        $request->validate([
+            'name' => ['string', 'max:255'],
+            'lastname' => ['string', 'max:255'],            
+            'fecha' => ['date'],
+            'responsible' => ['string', 'max:255'],
+            'phone_responsible' => ['Numeric'],         
+        ]);
+
+        //guardo usuario
+        $nino = new Children();              
+ 
+        $nino->name = $request->name;
+        $nino->lastname = $request->lastname;
+        $nino->birthdate = $request->fecha;
+        $nino->responsible = $request->responsible;
+        $nino->phone_responsible = $request->phone_responsible;  
+
+        $nino->save();              
+
+        //guardo antiguedad
+        $antiquity = new Childrens_antiquities();
+
+        $antiquity->children_id = $nino->id;
+        $antiquity->year = Carbon::now()->format('Y');
+
+        $antiquity->save();        
+
+        return Redirect::route('niñosfathers.create')->with('status', 'children-create');
+    }
+
 }
