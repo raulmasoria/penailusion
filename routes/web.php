@@ -45,15 +45,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/nuevo_niño', [ChildrenController::class, 'create'])->name('niños.create');
     Route::patch('/nuevo_niño/guardar', [ChildrenController::class, 'store'])->name('niños.store');
     Route::patch('/niños/{nino}/adult', [ChildrenController::class, 'pasarAdulto'])->name('niños.adult');
+
 });
 
     Route::apiResource('getCompanies', CompanieController::class)->only(['index']);
     Route::apiResource('getCompanie', CompanieController::class)->only(['show']);
     Route::get('getCompaniesRounds', [CompanieController::class, 'showAllBar']);
 
-    // Route::get('/updateCoord/{id}/{coordx}/{coordy}', [CompanieController::class, 'update']);
-    //Route::apiResource('updateCoordenadas', CompanieController::class)->only(['update']);
+    //crear niño siendo padre
+    Route::get('/nuevo_niño_qr', [ChildrenController::class, 'createbyfathers'])->name('niñosfathers.create');
+    Route::patch('/nuevo_niño_qr/guardar', [ChildrenController::class, 'storebyfathers'])->name('niñosfathers.store');
 
+    
 
 
 require __DIR__.'/auth.php';
