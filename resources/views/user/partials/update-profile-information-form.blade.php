@@ -28,13 +28,13 @@
 
         <div>
             <x-input-label for="phone" :value="__('Telefono')" />
-            <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" required autofocus autocomplete="phone"/>
+            <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" autofocus autocomplete="phone"/>
             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
         </div>
 
         <div>
             <x-input-label for="nif" :value="__('DNI')" />
-            <x-text-input id="nif" name="nif" type="text" class="mt-1 block w-full" :value="old('nif', $user->nif)" required autofocus autocomplete="nif"/>
+            <x-text-input id="nif" name="nif" type="text" class="mt-1 block w-full" :value="old('nif', $user->nif)" autofocus autocomplete="nif"/>
             <x-input-error class="mt-2" :messages="$errors->get('nif')" />
         </div>
 
@@ -50,7 +50,7 @@
 
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="email" />
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" autocomplete="email" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())

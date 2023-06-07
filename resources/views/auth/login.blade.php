@@ -33,10 +33,7 @@
         </div>
 
         <div class="flex justify-between my-5">
-            <x-link :href="route('register')">
-                Crear cuenta
-            </x-link> 
-            
+                        
             <x-link :href="route('password.request')">
                 Olvidaste tu contraseña
             </x-link> 

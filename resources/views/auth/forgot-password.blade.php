@@ -19,11 +19,8 @@
         <div class="flex justify-between my-5">
             <x-link :href="route('login')">
                 Login
-            </x-link> 
+            </x-link>            
             
-            <x-link :href="route('register')">
-                Crear cuenta
-            </x-link> 
         </div>
 
         <x-primary-button class="w-full justify-center">

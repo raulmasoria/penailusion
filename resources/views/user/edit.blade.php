@@ -29,6 +29,9 @@
                 @include('user.partials.update-adress-form')
             </div>
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                @include('user.partials.update-intolerances-form')
+            </div>
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 @include('user.partials.view-year-antiquity')
             </div>
 

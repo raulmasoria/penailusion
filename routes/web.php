@@ -28,13 +28,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/socios/{user}', [UserController::class, 'edit'])->name('user.edit');    
     Route::patch('/socios/{user}/edit', [UserController::class, 'update'])->name('user.update');
     Route::patch('/socios/{user}/adress', [UserController::class, 'adress'])->name('user.adress');
+    Route::patch('/socios/{user}/intolerances', [UserController::class, 'intolerances'])->name('user.intolerances');
     Route::get('/nuevo_socio', [UserController::class, 'create'])->name('socios.create');
     Route::patch('/nuevo_socio/guardar', [UserController::class, 'store'])->name('socios.store');
     Route::get('/updatePass', [UserController::class, 'updatePass']);
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::post('/profile', [ProfileController::class, 'updateAdress'])->name('adress.update');
+    Route::post('/profile', [ProfileController::class, 'updateAdress'])->name('profile.adress');
+    Route::patch('/profile/{user}/intolerances', [ProfileController::class, 'updateIntolerances'])->name('intolerances.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/niños', [ChildrenController::class, 'index'])->name('niños');

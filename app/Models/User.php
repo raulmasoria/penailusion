@@ -70,4 +70,10 @@ class User extends Authenticatable
         return $this->hasMany(DeviceUserToken::class);
     }
 
+    public function intolerancesUser()
+    {
+        return $this->hasMany(IntolerancesUser::class,'id_user');
+    }
+
+
 }

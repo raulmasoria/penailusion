@@ -8,12 +8,8 @@
             {{ __("Aquí puedes actualizar tu dirección postal") }}
         </p>
     </header>
-
-    <form id="send-verification" method="post" action="{{ route('verification.send') }}">
-        @csrf
-    </form>
     
-    <form method="post" action="{{ route('adress.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.adress') }}" class="mt-6 space-y-6">
         @csrf
 
         <div>

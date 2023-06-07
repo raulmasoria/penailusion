@@ -9,8 +9,11 @@ use App\Models\Antiquity;
 use App\Models\Godfather;
 use App\Models\Permanence;
 use Illuminate\Http\Request;
+use App\Mail\CuotaSocioEmail;
+use App\Models\IntolerancesUser;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
@@ -32,6 +35,17 @@ class UserController extends Controller
         $adress = Adress::where('user_id', $user->id)->firstOrFail();
         $antiquity = Antiquity::where('user_id', $user->id)->get();
         $permanence = Permanence::where('user_id', $user->id)->get();
+        $intolerances = DB::table('intolerances')
+        ->join('intolerances_users', 'intolerances.id', '=', 'intolerances_users.id_intolerance')
+        ->join('users', 'users.id', '=', 'intolerances_users.id_user')
+        ->select('intolerances.id','intolerances.name') 
+        ->where('intolerances_users.id_user', $user->id)       
+        ->get();   
+
+        $allIntolerances = array();
+        foreach($intolerances as $intolerancesrow){
+            $allIntolerances[$intolerancesrow->name] = $intolerancesrow->name;            
+        }
 
         //¿Quien le ha apadrinado?
         if (Godfather::where('user_new', $user->id)->exists()) {
@@ -66,7 +80,8 @@ class UserController extends Controller
             "godfathers" => $godfathers,
             "godfather1" => $godfather1,
             "godfather2" => $godfather2,
-            "all_godfather" => $all_godfather
+            "all_godfather" => $all_godfather,
+            "intolerances" => $allIntolerances
         ]);
     }
 
@@ -122,6 +137,100 @@ class UserController extends Controller
         
     }
 
+    //editar intolerancias de un usuario siendo junta directiva
+    public function intolerances(Request $request, User $user)
+    {   
+                
+        if($request->lactosa == 'lactosa') {            
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 1;
+            $intolerances->save();
+        } else {
+            $tengoLactosa = DB::table('intolerances_users')
+            ->select('id')
+            ->where('id_user', '=', $user->id)
+            ->where('id_intolerance', '=', 1)
+            ->get();
+
+            if(count($tengoLactosa) >= 1){
+                DB::table('intolerances_users')->where('id_user', '=', $user->id)->where('id_intolerance', '=', 1)->delete();
+            }
+        }
+         
+        if($request->gluten == 'gluten') {
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 2;
+            $intolerances->save();
+        } else {
+            $tengoGluten = DB::table('intolerances_users')
+            ->select('id')
+            ->where('id_user', '=', $user->id)
+            ->where('id_intolerance', '=', 2)
+            ->get();
+
+            if(count($tengoGluten) >= 1){
+                DB::table('intolerances_users')->where('id_user', '=', $user->id)->where('id_intolerance', '=', 2)->delete();
+            }
+        }          
+        
+        if($request->celiaco == 'celiaco') {
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 3;
+            $intolerances->save();
+        } else {
+            $tengoCeliaco = DB::table('intolerances_users')
+            ->select('id')
+            ->where('id_user', '=', $user->id)
+            ->where('id_intolerance', '=', 3)
+            ->get();
+
+            if(count($tengoCeliaco) >= 1){
+                DB::table('intolerances_users')->where('id_user', '=', $user->id)->where('id_intolerance', '=', 3)->delete();
+            }
+        }
+        
+        if($request->fructosa == 'fructosa') {
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 4;
+            $intolerances->save();
+        } else {
+            $tengoFructosa = DB::table('intolerances_users')
+            ->select('id')
+            ->where('id_user', '=', $user->id)
+            ->where('id_intolerance', '=', 4)
+            ->get();
+
+            if(count($tengoFructosa) >= 1){
+                DB::table('intolerances_users')->where('id_user', '=', $user->id)->where('id_intolerance', '=', 4)->delete();
+            }
+        }
+          
+        if($request->huevo == 'huevo') {
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 5;
+            $intolerances->save();
+        } else {
+            $tengoHuevo = DB::table('intolerances_users')
+            ->select('id')
+            ->where('id_user', '=', $user->id)
+            ->where('id_intolerance', '=', 5)
+            ->get();
+
+            if(count($tengoHuevo) >= 1){
+                DB::table('intolerances_users')->where('id_user', '=', $user->id)->where('id_intolerance', '=', 5)->delete();
+            }
+        }     
+        
+
+        return Redirect::route('user.edit',$user)->with('status', 'intolerances-updated');
+        
+    }
+
     //página de crear un usuario siendo junta directiva
     public function create()
     {        
@@ -135,8 +244,9 @@ class UserController extends Controller
             ->orWhere('year', '=', 2019)
             ->orWhere('year', '=', 2018)
             ->orWhere('year', '=', 2017)
+            ->orWhere('year', '=', 2023)
             ->groupBy('users.id')
-            ->havingRaw('count(users.id) = ?', [4])
+            ->havingRaw('count(users.id) = ?', [5])
             ->orderby('users.lastname')
             ->get(); 
             
@@ -161,6 +271,7 @@ class UserController extends Controller
             ->orWhere('permanences.year_permanence', '=', 2019)
             ->orWhere('permanences.year_permanence', '=', 2018)
             ->orWhere('permanences.year_permanence', '=', 2017)
+            ->orWhere('permanences.year_permanence', '=', 2023)
             ->groupBy('users.id')
             ->orderby('users.lastname')
             ->get();  
@@ -187,7 +298,8 @@ class UserController extends Controller
         $godfather_1 = DB::table('users')    
             ->join('godfathers', 'godfathers.user_godfather_1', '=', 'users.id')
             ->selectRaw('users.id, users.name, users.lastname')
-            ->where('godfathers.year_godfather', '=', 2022)
+            ->where('godfathers.year_godfather', '=', 2023)
+            ->orWhere('godfathers.year_godfather', '=', 2022)
             ->orWhere('godfathers.year_godfather', '=', 2019)
             ->groupBy('users.id')
             ->orderby('users.lastname')
@@ -201,7 +313,8 @@ class UserController extends Controller
         $godfather_2 = DB::table('users')    
             ->join('godfathers', 'godfathers.user_godfather_2', '=', 'users.id')
             ->selectRaw('users.id, users.name, users.lastname')
-            ->where('godfathers.year_godfather', '=', 2022)
+            ->where('godfathers.year_godfather', '=', 2023)
+            ->orWhere('godfathers.year_godfather', '=', 2022)
             ->orWhere('godfathers.year_godfather', '=', 2019)
             ->groupBy('users.id')
             ->orderby('users.lastname')
@@ -210,7 +323,8 @@ class UserController extends Controller
         SELECT users.id, users.name, users.lastname
         FROM users
         JOIN godfathers ON godfathers.user_godfather_1 = users.id
-        WHERE godfathers.year_godfather = 2022
+        WHERE godfathers.year_godfather = 2023
+        OR godfathers.year_godfather = 2022
         OR godfathers.year_godfather = 2019
         group by users.id*/
             
@@ -283,6 +397,42 @@ class UserController extends Controller
 
         $antiquity->save();
 
+        //guardo intolerancias
+        if($request->lactosa == 'lactosa') {            
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 1;
+            $intolerances->save();
+        } 
+         
+        if($request->gluten == 'gluten') {
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 2;
+            $intolerances->save();
+        }        
+        
+        if($request->celiaco == 'celiaco') {
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 3;
+            $intolerances->save();
+        } 
+        
+        if($request->fructosa == 'fructosa') {
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 4;
+            $intolerances->save();
+        } 
+          
+        if($request->huevo == 'huevo') {
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 5;
+            $intolerances->save();
+        }
+          
         //guardo los padrinos del usuario
         $godfather = new Godfather;
 
@@ -292,6 +442,10 @@ class UserController extends Controller
         $godfather->year_godfather = Carbon::now()->format('Y');
 
         $godfather->save();
+
+        if(!empty($user->email)){
+            Mail::to($user)->send(new CuotaSocioEmail($user,$adress) );
+        } 
 
         return Redirect::route('user.edit',$user)->with('status', 'user-create');
     }
