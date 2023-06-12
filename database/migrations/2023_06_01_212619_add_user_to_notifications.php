@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('notifications', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_user')->nullable();
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
-        });
+        if (!Schema::hasColumn('notifications', 'id_user')){
+            Schema::table('notifications', function (Blueprint $table) {
+                $table->unsignedBigInteger('id_user')->nullable();
+                $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            });
+        }
     }
 
     /**

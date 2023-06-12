@@ -13,14 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('device_user_tokens', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('id_user');
-            $table->string('token');
-            $table->timestamps();
+        if(!Schema::hasTable('device_user_tokens')){
+            Schema::create('device_user_tokens', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('id_user');
+                $table->string('token');
+                $table->timestamps();
 
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
-        });
+                $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            });
+        }
     }
 
     /**

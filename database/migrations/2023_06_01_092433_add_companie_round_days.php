@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('round_days', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_companie')->nullable();
-            $table->foreign('id_companie')->references('id')->on('companies')->onDelete('cascade');
-        });
+        if (!Schema::hasColumn('round_days', 'id_companie')){
+            Schema::table('round_days', function (Blueprint $table) {
+                $table->unsignedBigInteger('id_companie')->nullable();
+                $table->foreign('id_companie')->references('id')->on('companies')->onDelete('cascade');
+            });
+        }
     }
 
     /**

@@ -13,16 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('round_days', function (Blueprint $table) {
-            $table->id();
-            $table->string('tipo');
-            $table->timestamp('day');
-            $table->time('hour');
-            $table->string('description')->nullable();
-            $table->boolean('march')->default(0);
-            $table->boolean('active')->default(1);
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('round_days')){
+            Schema::create('round_days', function (Blueprint $table) {
+                $table->id();
+                $table->string('tipo');
+                $table->timestamp('day');
+                $table->time('hour');
+                $table->string('description')->nullable();
+                $table->boolean('march')->default(0);
+                $table->boolean('active')->default(1);
+                $table->timestamps();
+            });
+        }
     }
 
     /**

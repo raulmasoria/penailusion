@@ -13,6 +13,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <script src="{{ asset('/vendors/ckeditor/ckeditor.js') }}"></script>
 
         @livewireStyles
     </head>

@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('rol'); //0 = Peñista, 1 = Junta directiva
-        });
+        if (!Schema::hasColumn('users', 'rol')){
+            Schema::table('users', function (Blueprint $table) {
+                $table->integer('rol'); //0 = Peñista, 1 = Junta directiva
+            });
+        }
     }
 
     /**

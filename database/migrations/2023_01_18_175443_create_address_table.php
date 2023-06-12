@@ -13,19 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('adresses', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('via')->nullable();
-            $table->string('direccion')->nullable();
-            $table->string('piso')->nullable();
-            $table->integer('cp')->nullable();
-            $table->string('ciudad')->nullable();
-            $table->string('provincia')->nullable();
+        if(!Schema::hasTable('adresses')){
+            Schema::create('adresses', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->constrained()->onDelete('cascade');
+                $table->string('via')->nullable();
+                $table->string('direccion')->nullable();
+                $table->string('piso')->nullable();
+                $table->integer('cp')->nullable();
+                $table->string('ciudad')->nullable();
+                $table->string('provincia')->nullable();
 
-            
-            $table->timestamps();
-        });
+                
+                $table->timestamps();
+            });
+        }
     }
 
     /**

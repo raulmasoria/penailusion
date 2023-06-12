@@ -13,14 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('intolerances_users', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('id_user');
-            $table->unsignedBigInteger('id_intolerance');
-            $table->timestamps();
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('id_intolerance')->references('id')->on('intolerances')->onDelete('cascade');
-        });
+        if(!Schema::hasTable('intolerances_users')){
+            Schema::create('intolerances_users', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('id_user');
+                $table->unsignedBigInteger('id_intolerance');
+                $table->timestamps();
+                $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('id_intolerance')->references('id')->on('intolerances')->onDelete('cascade');
+            });
+        }
     }
 
     /**

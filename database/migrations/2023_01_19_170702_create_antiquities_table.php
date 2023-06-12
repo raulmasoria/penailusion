@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('antiquities', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->integer('year');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('antiquities')){
+            Schema::create('antiquities', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->constrained()->onDelete('cascade');
+                $table->integer('year');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

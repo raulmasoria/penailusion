@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('companies', function (Blueprint $table) {
-            $table->id();
-            $table->string('establecimiento')->nullable();
-            $table->boolean('tipo')->default(0); //0-bar 1-empresa
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('companies')){
+            Schema::create('companies', function (Blueprint $table) {
+                $table->id();
+                $table->string('establecimiento')->nullable();
+                $table->boolean('tipo')->default(0); //0-bar 1-empresa
+                $table->timestamps();
+            });
+        }
     }
 
     /**

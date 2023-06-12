@@ -13,14 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('notifications', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->string('body');
-            $table->boolean('read');
-            $table->string('token');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('notifications')){
+            Schema::create('notifications', function (Blueprint $table) {
+                $table->id();
+                $table->string('title');
+                $table->string('body');
+                $table->boolean('read');
+                $table->string('token');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

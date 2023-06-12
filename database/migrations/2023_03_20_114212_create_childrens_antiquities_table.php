@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('childrens_antiquities', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('children_id')->constrained()->onDelete('cascade');
-            $table->integer('year');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('childrens_antiquities')){
+            Schema::create('childrens_antiquities', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('children_id')->constrained()->onDelete('cascade');
+                $table->integer('year');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

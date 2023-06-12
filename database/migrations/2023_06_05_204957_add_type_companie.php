@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('companies', function (Blueprint $table) {
-            $table->boolean('cuota')->default(0);
-        });
+        if (!Schema::hasColumn('companies', 'cuota')){
+            Schema::table('companies', function (Blueprint $table) {
+                $table->boolean('cuota')->default(0);
+            });
+        }
     }
 
     /**

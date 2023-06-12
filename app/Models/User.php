@@ -75,6 +75,11 @@ class User extends Authenticatable
         return $this->hasMany(IntolerancesUser::class,'id_user');
     }
 
+    public function email()
+    {
+        return $this->hasMany(Email::class);
+    }
+
 
     public function intolerances()
     {

@@ -13,14 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('godfathers', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_godfather_1')->constrained('users')->onDelete('cascade');
-            $table->foreignId('user_godfather_2')->constrained('users')->onDelete('cascade');
-            $table->foreignId('user_new')->constrained('users')->onDelete('cascade');
-            $table->year('year_godfather');
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('godfathers')){
+            Schema::create('godfathers', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_godfather_1')->constrained('users')->onDelete('cascade');
+                $table->foreignId('user_godfather_2')->constrained('users')->onDelete('cascade');
+                $table->foreignId('user_new')->constrained('users')->onDelete('cascade');
+                $table->year('year_godfather');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

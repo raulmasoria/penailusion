@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('notifications')->default(1);
-            $table->boolean('active')->default(1);
-        });
+        if (!Schema::hasColumn('users', 'notifications','active')){
+            Schema::table('users', function (Blueprint $table) {
+                $table->boolean('notifications')->default(1);
+                $table->boolean('active')->default(1);
+            });
+        }
     }
 
     /**

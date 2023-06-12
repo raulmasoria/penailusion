@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChildrenController;
 use App\Http\Controllers\CompanieController;
@@ -45,6 +46,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/nuevo_niño', [ChildrenController::class, 'create'])->name('niños.create');
     Route::patch('/nuevo_niño/guardar', [ChildrenController::class, 'store'])->name('niños.store');
     Route::patch('/niños/{nino}/adult', [ChildrenController::class, 'pasarAdulto'])->name('niños.adult');
+
+    Route::get('/email', [EmailController::class, 'edit'])->name('email');
+    Route::patch('/email/send', [EmailController::class, 'store'])->name('email.send');
 
 });
 

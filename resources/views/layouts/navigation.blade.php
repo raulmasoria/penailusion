@@ -27,6 +27,9 @@
                             <x-nav-link :href="route('niños.create')" :active="request()->routeIs('niños.create')">
                                 {{ __('Nuevo niño') }}
                             </x-nav-link>
+                            <x-nav-link :href="route('email')" :active="request()->routeIs('email')">
+                                {{ __('Envio de emails') }}
+                            </x-nav-link>
                         </div>
                     @endif
                 @endauth                
@@ -111,6 +114,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('niños.create')" :active="request()->routeIs('niños.create')">
                         {{ __('Nuevo niño') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('email')" :active="request()->routeIs('email')">
+                        {{ __('Envio de emails') }}
                     </x-responsive-nav-link>
 
                 </div>

@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('childrentoadult'); //0 = No, 1 = Si
-        });
+        if (!Schema::hasColumn('users', 'childrentoadult')){
+            Schema::table('users', function (Blueprint $table) {
+                $table->integer('childrentoadult'); //0 = No, 1 = Si
+            });
+        }
     }
 
     /**

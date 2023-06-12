@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('childrens', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('lastname');
-            $table->date('birthdate')->nullable();
-            $table->string('responsible')->nullable();
-            $table->string('phone_responsible')->nullable();
-            $table->timestamps();
-        });
+        if(!Schema::hasTable('childrens')){
+            Schema::create('childrens', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('lastname');
+                $table->date('birthdate')->nullable();
+                $table->string('responsible')->nullable();
+                $table->string('phone_responsible')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
