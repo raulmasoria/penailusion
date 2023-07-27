@@ -58,7 +58,7 @@ class PlantillaEmail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mail.PlantillaEmail',
+            view: 'mail.plantillaEmail',
         );
     }
 

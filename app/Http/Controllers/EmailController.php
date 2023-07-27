@@ -31,7 +31,7 @@ class EmailController extends Controller
     $subject = $request->asunto;
     $body = $request->cuerpo;
 
-    if($request->emails == 'prueba'){
+    if($request->emails == 'prueba'){        
         $user = User::where('email', 'soriailusion@gmail.com')->firstOrFail();
         $adress = Adress::where('user_id', $user->id)->firstOrFail();
         Mail::to('soriailusion@gmail.com')->send(new PlantillaEmail($user,$adress,$subject,$body));
@@ -53,12 +53,17 @@ class EmailController extends Controller
             ->where(function(Builder $query) {
                 $query->where('antiquities.year', 2022)
                       ->orWhere('permanences.year_permanence', 2022);
-            })       
+            })  
+            //->whereRaw("users.id BETWEEN '1' AND '150' ")     
+            //->whereRaw("users.id BETWEEN '151' AND '300' ")     
+            //->whereRaw("users.id BETWEEN '301' AND '450' ")     
+            //->whereRaw("users.id BETWEEN '451' AND '660' ")   
+            //Revisar el ultimo id de la tabla para incluirlo  
             ->groupBy('users.id')
             ->get(); 
 
         //$users = User::where('email', 'soriailusion@gmail.com')->orWhere('email', 'raulma_13@hotmail.com')->get();
-        //dd($users);
+        dd($users);
         foreach($users as $user){
             $adress = Adress::where('user_id', $user->id)->firstOrFail();
             if(!empty($user->email)){
