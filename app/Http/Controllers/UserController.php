@@ -93,7 +93,6 @@ class UserController extends Controller
             'lastname' => ['string', 'max:255'],            
             'phone' => ['Numeric'],
             'nif' => ['string', 'max:10'],
-            'carta' => ['Numeric'],
             'email' => ['email', 'max:255', 'unique:users,email,'.$user->id],
         ]);
 
@@ -101,7 +100,6 @@ class UserController extends Controller
         $user->lastname = $request->lastname;
         $user->phone = $request->phone;
         $user->nif = $request->nif;
-        $user->carta = $request->carta;
         $user->email = $request->email;        
         
         $user->save();
@@ -352,7 +350,6 @@ class UserController extends Controller
             'lastname' => ['string', 'max:255'],            
             'phone' => ['Numeric'],
             'nif' => ['string', 'max:10'],
-            'carta' => ['Numeric'],
             'email' => ['email', 'max:255', 'unique:users'],
             'via' => ['string', 'max:255'],
             'direccion' => ['string', 'max:255'],
@@ -371,7 +368,6 @@ class UserController extends Controller
         $user->lastname = $request->lastname;
         $user->phone = $request->phone;
         $user->nif = $request->nif;
-        $user->carta = $request->carta;
         $user->email = $request->email; 
 
         $user->save();      
@@ -444,7 +440,7 @@ class UserController extends Controller
         $godfather->save();
 
         if(!empty($user->email)){
-            Mail::to($user)->send(new CuotaSocioEmail($user,$adress) );
+            //Mail::to($user)->send(new CuotaSocioEmail($user,$adress) );
         } 
 
         return Redirect::route('user.edit',$user)->with('status', 'user-create');

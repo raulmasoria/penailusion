@@ -45,25 +45,16 @@ class EmailController extends Controller
         
     } else if($request->emails == 'socios'){
 
-        $users = DB::table('users')
-            ->leftJoin('antiquities', 'users.id', '=', 'antiquities.user_id')
-            ->leftJoin('permanences', 'users.id', '=', 'permanences.user_id')
-            ->select('users.id', 'users.name', 'users.lastname', 'users.email')
-            ->whereRaw("NOT users.email = ''")
-            ->where(function(Builder $query) {
-                $query->where('antiquities.year', 2022)
-                      ->orWhere('permanences.year_permanence', 2022);
-            })  
-            //->whereRaw("users.id BETWEEN '1' AND '150' ")     
-            //->whereRaw("users.id BETWEEN '151' AND '300' ")     
-            //->whereRaw("users.id BETWEEN '301' AND '450' ")     
-            //->whereRaw("users.id BETWEEN '451' AND '660' ")   
-            //Revisar el ultimo id de la tabla para incluirlo  
-            ->groupBy('users.id')
-            ->get(); 
-
+        //Poner en el Between el numero de users a filtrar [1,100]
+        $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
+                ->leftjoin('antiquities', 'users.id', '=', 'antiquities.user_id')
+                ->leftjoin('permanences', 'users.id', '=', 'permanences.user_id')
+                ->whereBetween('users.id', [601,700])   
+                ->orWhere([['antiquities.year', 2023],['permanences.year_permanence', 2023]])                                   
+                ->groupBy('users.id')
+                ->get();
         //$users = User::where('email', 'soriailusion@gmail.com')->orWhere('email', 'raulma_13@hotmail.com')->get();
-        dd($users);
+        //dd($users);
         foreach($users as $user){
             $adress = Adress::where('user_id', $user->id)->firstOrFail();
             if(!empty($user->email)){

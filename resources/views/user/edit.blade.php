@@ -24,10 +24,7 @@
             @endif
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 @include('user.partials.update-profile-information-form')
-            </div>
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                @include('user.partials.update-adress-form')
-            </div>
+            </div>            
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 @include('user.partials.update-intolerances-form')
             </div>
@@ -37,6 +34,9 @@
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 @include('user.partials.view-godfathers')
+            </div>
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                @include('user.partials.update-adress-form')
             </div>
 
             <!-- <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">

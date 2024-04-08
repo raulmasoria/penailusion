@@ -39,16 +39,6 @@
         </div>
 
         <div>
-            <x-input-label for="carta" :value="__('Carta')" />
-            <select id="carta" name="carta" class="border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
-                <option value="" >-- ¿Quiere recibir carta? --</option>
-                <option value="1" @if ($user->carta == 1) selected @endif> Si</option>
-                <option value="0" @if ($user->carta == 0) selected @endif> No</option>
-            </select>
-            <x-input-error :messages="$errors->get('carta')" class="mt-2" />
-        </div>
-
-        <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" autocomplete="email" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
