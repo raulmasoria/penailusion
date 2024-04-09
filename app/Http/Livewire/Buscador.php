@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Email;
 use App\Models\Adress;
 use Livewire\Component;
 use App\Models\Antiquity;
@@ -106,14 +107,20 @@ class Buscador extends Component
         $address = Adress::where('user_id',$id)->firstOrFail();
         if(!empty($user->email)){
             Mail::to($user)->send(new CuotaSocioEmail($user,$address));
-        }
-        
+        }       
 
         DB::table('antiquities')->insert([
             'year' => Carbon::now()->format('Y'),
             'user_id' => $id,
             'created_at' => Carbon::now()
         ]);
+
+        $log = new Email;
+        $log->user_id = $user->id;
+        $log->email = $user->email;
+        $log->asunto = 'Cuota anual';
+        $log->estado = 'ok';
+        $log->save();
     }
 
     //pagar cuota de mantenimiento
@@ -129,6 +136,13 @@ class Buscador extends Component
             'user_id' => $id,
             'created_at' => Carbon::now()
         ]);
+
+        $log = new Email;
+        $log->user_id = $user->id;
+        $log->email = $user->email;
+        $log->asunto = 'Cuota mantenimiento';
+        $log->estado = 'ok';
+        $log->save();
     }
   
 
