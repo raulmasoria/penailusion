@@ -76,7 +76,6 @@
         <p>Estimado/a socio/a:</p>
         <p>Lamentamos que no puedas disfrutar de la peña ilusión este año, notaremos tu ausencia.</p>
         <p>Seguro que también nos echaras de menos, así que esperamos que para el próximo año puedas estar con nosotros.</p>
-        <p>Mira el lado positivo, este año no te dolerá la cabeza por el pesado del altavoz.</p>
         <p>Aprovechamos esta comunicación para recortarte que la “permanencia” sólo puede abonarse durante dos años seguidos, es decir, ten presente este dato para no dejar de formar parte de la Peña Ilusión por descuido.</p>
         <p>Si te ha llegado este mensaje por error ponte en contacto con nosotros en la mayor brevedad posible, otro integrante lo estará esperando!<p>
         <p>Sin más, recibe un cordial saludo,</p>
