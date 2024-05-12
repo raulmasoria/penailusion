@@ -15,21 +15,55 @@
                     <!-- solo muestro la barra de navegación a los de la junta-->
                     @if (Auth::user()->rol === 1)
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                            <x-nav-link :href="route('socios')" :active="request()->routeIs('socios')">
-                                {{ __('Socios') }}
-                            </x-nav-link>
-                            <x-nav-link :href="route('socios.create')" :active="request()->routeIs('socios.create')">
-                                {{ __('Nuevo socio') }}
-                            </x-nav-link>
-                            <x-nav-link :href="route('niños')" :active="request()->routeIs('niños')">
-                                {{ __('Niños') }}
-                            </x-nav-link>
-                            <x-nav-link :href="route('niños.create')" :active="request()->routeIs('niños.create')">
-                                {{ __('Nuevo niño') }}
-                            </x-nav-link>
-                            <x-nav-link :href="route('email')" :active="request()->routeIs('email')">
-                                {{ __('Envio de emails') }}
-                            </x-nav-link>
+                            <x-dropdown>           
+                                <x-slot name="trigger">
+                                    <button class="inline-flex items-center mt-4 px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                       <div>Socios</div>                                       
+                                    </button>
+                                </x-slot>
+                                <x-slot name="content">
+                                    <x-dropdown-link :href="route('socios')" :active="request()->routeIs('socios')">
+                                        {{ __('Listado socios') }}
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('socios.create')" :active="request()->routeIs('socios.create')">
+                                        {{ __('Nuevo socio') }}
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('socios.create.admin')" :active="request()->routeIs('socios.create.admin')">
+                                        {{ __('Nuevo socio sin padrinos') }}
+                                    </x-dropdown-link>
+                                </x-slot>    
+                            </x-dropdown>
+                            <x-dropdown>           
+                                <x-slot name="trigger">
+                                    <button class="inline-flex items-center mt-4 px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                       <div>Niños</div>                                       
+                                    </button>
+                                </x-slot>
+                                <x-slot name="content">
+                                    <x-dropdown-link :href="route('niños')" :active="request()->routeIs('niños')">
+                                        {{ __('Niños') }}
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('niños.create')" :active="request()->routeIs('niños.create')">
+                                        {{ __('Nuevo niño') }}
+                                    </x-dropdown-link>
+                                </x-slot>    
+                            </x-dropdown>
+                            <x-dropdown>           
+                                <x-slot name="trigger">
+                                    <button class="inline-flex items-center mt-4 px-2 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                       <div>Herramientas</div>                                       
+                                    </button>
+                                </x-slot>
+                                <x-slot name="content">
+                                    <x-dropdown-link :href="route('email')" :active="request()->routeIs('email')">
+                                        {{ __('Envio de emails') }}
+                                    </x-dropdown-link>
+                                    <x-dropdown-link :href="route('user.apadrinar')" :active="request()->routeIs('user.apadrinar')">
+                                        {{ __('Padrinos') }}
+                                    </x-dropdown-link>
+                                </x-slot>    
+                            </x-dropdown>
+                           
                         </div>
                     @endif
                 @endauth                
@@ -38,9 +72,7 @@
             <!-- Settings Dropdown -->
             
                 <div class="hidden sm:flex sm:items-center sm:ml-6">
-                    <x-dropdown align="right" width="48">
-                        
-                        
+                    <x-dropdown align="right" width="48">           
                         <x-slot name="trigger">
                             <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                                 @auth    
@@ -109,6 +141,9 @@
                     <x-responsive-nav-link :href="route('socios.create')" :active="request()->routeIs('socios.create')">
                         {{ __('Nuevo socio') }}
                     </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('socios.create.admin')" :active="request()->routeIs('socios.create.admin')">
+                        {{ __('Nuevo socio sin padrinos') }}
+                    </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('niños')" :active="request()->routeIs('niños')">
                         {{ __('Niños') }}
                     </x-responsive-nav-link>
@@ -117,6 +152,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('email')" :active="request()->routeIs('email')">
                         {{ __('Envio de emails') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('user.apadrinar')" :active="request()->routeIs('user.apadrinar')">
+                        {{ __('Padrinos') }}
                     </x-responsive-nav-link>
 
                 </div>

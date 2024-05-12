@@ -82,13 +82,15 @@ class ChildrenController extends Controller
 
         $nino->save();              
 
-        //guardo antiguedad
-        $antiquity = new Childrens_antiquities();
+        //guardo antiguedad   
+         foreach ($request->antiguedad as $año) {
+            $antiquity = new Childrens_antiquities();
 
-        $antiquity->children_id = $nino->id;
-        $antiquity->year = Carbon::now()->format('Y');
-
-        $antiquity->save();        
+            $antiquity->children_id = $nino->id;
+            $antiquity->year = $año;
+    
+            $antiquity->save();
+         }    
 
         return Redirect::route('niños.edit',$nino)->with('status', 'user-create');
     }

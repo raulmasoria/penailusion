@@ -15,6 +15,7 @@
 
 <body lang="ES" link="blue" vlink="purple">
     <div class="WordSection1">
+        <!--
         <table cellspacing="0" cellpadding="0" width="714" style="width:80%;margin-left:14.15pt">
             <tr>
                 <td valign="top" style="width:25%">
@@ -71,7 +72,7 @@
                     </p>
                 </td>    
             </tr>
-        </table>
+        </table>-->
         
         {!! $body !!}
             

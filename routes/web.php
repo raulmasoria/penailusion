@@ -32,7 +32,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/socios/{user}/intolerances', [UserController::class, 'intolerances'])->name('user.intolerances');
     Route::get('/nuevo_socio', [UserController::class, 'create'])->name('socios.create');
     Route::patch('/nuevo_socio/guardar', [UserController::class, 'store'])->name('socios.store');
+    Route::get('/nuevo_socio_admin', [UserController::class, 'create_admin'])->name('socios.create.admin');
+    Route::patch('/nuevo_socio_admin/guardar', [UserController::class, 'store_admin'])->name('socios.store.admin');
     Route::get('/updatePass', [UserController::class, 'updatePass']);
+    //tabla de quién puede apadrinar
+    Route::get('/quien_apadrinar', [UserController::class, 'apadrinate'])->name('user.apadrinar');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
