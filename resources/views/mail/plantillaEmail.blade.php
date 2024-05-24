@@ -73,6 +73,11 @@
                 </td>    
             </tr>
         </table>-->
+        <p>
+            <span>
+                <img width="150" height="150" id="_x0000_i1025" src="{{ $message->embed($pathToImage) }}">
+            </span>
+        </p>
         
         {!! $body !!}
             
