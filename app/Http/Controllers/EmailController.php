@@ -45,20 +45,18 @@ class EmailController extends Controller
         
     } else if($request->emails == 'socios'){
 
-        //Poner en el Between el numero de users a filtrar [1,100]
         $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
                 ->leftjoin('antiquities', 'users.id', '=', 'antiquities.user_id')
                 ->leftjoin('permanences', 'users.id', '=', 'permanences.user_id')
-                ->whereBetween('users.id', [601,700])   
-                ->orWhere([['antiquities.year', 2023],['permanences.year_permanence', 2023]])                                   
+                ->where('antiquities.year', 2023)   
+                ->orWhere('permanences.year_permanence', 2023)                                   
                 ->groupBy('users.id')
                 ->get();
-        //$users = User::where('email', 'soriailusion@gmail.com')->orWhere('email', 'raulma_13@hotmail.com')->get();
         //dd($users);
         foreach($users as $user){
             $adress = Adress::where('user_id', $user->id)->firstOrFail();
             if(!empty($user->email)){
-                //Mail::to($user->email)->send(new PlantillaEmail($user,$adress,$subject,$body));
+                Mail::to($user->email)->send(new PlantillaEmail($user,$adress,$subject,$body));
 
                 $log = new Email;
                 $log->user_id = $user->id;
