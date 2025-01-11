@@ -7,7 +7,7 @@
         <p class="mt-1 text-sm text-gray-600">
             {{ __("Aquí puedes actualizar algunos datos como el telefono,email o dirección postal.") }}
         </p>
-        
+
     </header>
 
     <form method="post" action="{{ route('user.update' , $user) }}" class="mt-6 space-y-6">
@@ -30,12 +30,6 @@
             <x-input-label for="phone" :value="__('Telefono')" />
             <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone', $user->phone)" autofocus autocomplete="phone"/>
             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
-        </div>
-
-        <div>
-            <x-input-label for="nif" :value="__('DNI')" />
-            <x-text-input id="nif" name="nif" type="text" class="mt-1 block w-full" :value="old('nif', $user->nif)" autofocus autocomplete="nif"/>
-            <x-input-error class="mt-2" :messages="$errors->get('nif')" />
         </div>
 
         <div>

@@ -10,7 +10,7 @@
         <p class="mt-1 text-sm text-gray-600">
             Si quieres actualizar los otros campos, ponte en contacto en  <a href='mailto:soriailusion@gmail.com'> soriailusion@gmail.com </a>
         </p>
-        
+
     </header>
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
@@ -61,12 +61,6 @@
                     @endif
                 </div>
             @endif
-        </div>
-
-        <div>
-            <x-input-label for="nif" :value="__('dni')" />
-            <x-text-input id="nif" name="nif" type="text" class="mt-1 block w-full" :value="old('nif', $user->nif)" required autofocus autocomplete="nif" readonly/>
-            <x-input-error class="mt-2" :messages="$errors->get('nif')" />
         </div>
 
         <div class="flex items-center gap-4">
