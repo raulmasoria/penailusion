@@ -6,7 +6,9 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChildrenController;
 use App\Http\Controllers\CompanieController;
-use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\AdressController;
+use App\Http\Controllers\AntiquityController;
+use App\Http\Controllers\GodfatherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +28,7 @@ Route::get('/', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/socios', [UserController::class, 'index'])->name('socios');
-    Route::get('/socios/{user}', [UserController::class, 'edit'])->name('user.edit');    
+    Route::get('/socios/{user}', [UserController::class, 'edit'])->name('user.edit');
     Route::patch('/socios/{user}/edit', [UserController::class, 'update'])->name('user.update');
     Route::patch('/socios/{user}/adress', [UserController::class, 'adress'])->name('user.adress');
     Route::patch('/socios/{user}/intolerances', [UserController::class, 'intolerances'])->name('user.intolerances');
@@ -45,7 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/niños', [ChildrenController::class, 'index'])->name('niños');
-    Route::get('/niños/{nino}', [ChildrenController::class, 'edit'])->name('niños.edit');    
+    Route::get('/niños/{nino}', [ChildrenController::class, 'edit'])->name('niños.edit');
     Route::patch('/niños/{nino}/edit', [ChildrenController::class, 'update'])->name('niños.update');
     Route::get('/nuevo_niño', [ChildrenController::class, 'create'])->name('niños.create');
     Route::patch('/nuevo_niño/guardar', [ChildrenController::class, 'store'])->name('niños.store');
@@ -53,6 +55,16 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/email', [EmailController::class, 'edit'])->name('email');
     Route::patch('/email/send', [EmailController::class, 'store'])->name('email.send');
+
+    //Importaciones xlsx
+    Route::post('/import-users', [UserController::class, 'importUsers'])->name('users.import');
+    Route::get('/import-users', function () { return view('import'); });
+    Route::post('/import-adress', [AdressController::class, 'importAdress'])->name('adress.import');
+    Route::get('/import-adress', function () { return view('import'); });
+    Route::post('/import-antiquity', [AntiquityController::class, 'importAntiquity'])->name('antiquity.import');
+    Route::get('/import-antiquity', function () { return view('import'); });
+    Route::post('/import-godfather', [GodfatherController::class, 'importGodfather'])->name('godfather.import');
+    Route::get('/import-godfather', function () { return view('import'); });
 
 });
 
@@ -64,7 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/nuevo_niño_qr', [ChildrenController::class, 'createbyfathers'])->name('niñosfathers.create');
     Route::patch('/nuevo_niño_qr/guardar', [ChildrenController::class, 'storebyfathers'])->name('niñosfathers.store');
 
-    
+
 
 
 require __DIR__.'/auth.php';

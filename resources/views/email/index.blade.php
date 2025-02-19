@@ -10,24 +10,31 @@
                     <h2 class="text-lg font-medium text-gray-900">
                         {{ __('Envio de emails') }}
                     </h2>
-            
+
                     <p class="mt-1 text-sm text-gray-600">
                         {{ __("Aquí puedes redactar y enviar los emails a los socios.") }}
                     </p>
-                    
+
                 </header>
-            
+
                 <form method="post" action="{{ route('email.send') }}" class="mt-6 space-y-6">
                     @csrf
                     @method('patch')
-                    
+
                     <div>
-                        <x-input-label for="emails" :value="__('Listado de emails')" />       
+                        <x-input-label for="emails" :value="__('Listado de emails')" />
                         <select id="emails" name="emails" class="border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
                             <option value="" >-- ¿A quién quieres enviar el email? --</option>
                             <option value="prueba">Prueba</option>
                             <option value="socios">Socios del último año</option>
+                            <option value="socios_ano_actual">Socios de este año</option>
                         </select>
+                        <p class="mt-1 text-sm text-gray-600">
+                            {{ __('Se debe de utilizar "Socios del último año" cuando queremos enviar un email de enero a marzo.') }}
+                        </p>
+                        <p class="mt-1 text-sm text-gray-600">
+                            {{ __('Se debe de utilizar "Socios de este año" cuando queremos enviar un email de abril a diciembre.') }}
+                        </p>
                         <x-input-error class="mt-2" :messages="$errors->get('emails')" />
                     </div>
 
@@ -39,15 +46,15 @@
 
                     <div>
                         <x-input-label for="cuerpo" :value="__('Cuerpo del email')" />
-                        <textarea class="ckeditor" name="cuerpo" id="cuerpo" rows="10" cols="80">                            
+                        <textarea class="ckeditor" name="cuerpo" id="cuerpo" rows="10" cols="80">
                         </textarea>
                         <x-input-error class="mt-2" :messages="$errors->get('cuerpo')" />
                     </div>
-                               
-            
+
+
                     <div class="flex items-center gap-4">
                         <x-primary-button>{{ __('Enviar') }}</x-primary-button>
-            
+
                         @if (session('status') === 'email-send')
                             <p
                                 x-data="{ show: true }"
@@ -60,9 +67,9 @@
                     </div>
                 </form>
             </section>
-            
-        </div>        
+
+        </div>
     </div>
   </div>
-  
+
 @endsection

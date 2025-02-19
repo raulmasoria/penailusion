@@ -9,6 +9,8 @@ class Antiquity extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['user_id', 'year'];
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use App\Imports\UsersImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -233,14 +236,15 @@ class UserController extends Controller
         //Calculo los socios que pueden apadrinar para mostrarlos en los select de nuevo socio
 
         //Socios que han pagado cuota completa los ultimos 4 años
+
         $godfathers = DB::table('antiquities')
             ->join('users', 'users.id', '=', 'antiquities.user_id')
             ->selectRaw('count(users.id), users.id, users.name, users.lastname')
-            ->where('year', '=', 2022)
-            ->orWhere('year', '=', 2019)
-            ->orWhere('year', '=', 2018)
-            ->orWhere('year', '=', 2024)
-            ->orWhere('year', '=', 2023)
+            ->where('year', '=', YearHelperController::currentYear())
+            ->orWhere('year', '=', YearHelperController::lastYear())
+            ->orWhere('year', '=', YearHelperController::lastLastYear())
+            ->orWhere('year', '=', YearHelperController::lastLastLastYear())
+            ->orWhere('year', '=', YearHelperController::lastLastLastLastYear())
             ->groupBy('users.id')
             ->havingRaw('count(users.id) = ?', [5])
             ->orderby('users.lastname')
@@ -249,7 +253,7 @@ class UserController extends Controller
         /*select count(users.id), users.id, users.name, users.lastname
         from `antiquities`
         inner join `users` on `users`.`id` = `antiquities`.`user_id`
-        where `year` = 2022 or `year` = 2019 or `year` = 2018 or `year` = 2017
+        where `year` = 2022 or `year` = 2019 or `year` = 2025 or `year` = 2017
         group by `users`.`id`
         having count(users.id) = 4
         order by `users`.`name` asc*/
@@ -263,11 +267,11 @@ class UserController extends Controller
         $permanence = DB::table('users')
             ->join('permanences', 'permanences.user_id', '=', 'users.id')
             ->selectRaw('users.id, users.name, users.lastname')
-            ->where('permanences.year_permanence', '=', 2022)
-            ->orWhere('permanences.year_permanence', '=', 2019)
-            ->orWhere('permanences.year_permanence', '=', 2018)
-            ->orWhere('permanences.year_permanence', '=', 2024)
-            ->orWhere('permanences.year_permanence', '=', 2023)
+            ->where('permanences.year_permanence', '=', YearHelperController::currentYear())
+            ->orWhere('permanences.year_permanence', '=', YearHelperController::lastYear())
+            ->orWhere('permanences.year_permanence', '=', YearHelperController::lastLastYear())
+            ->orWhere('permanences.year_permanence', '=', YearHelperController::lastLastLastYear())
+            ->orWhere('permanences.year_permanence', '=', YearHelperController::lastLastLastLastYear())
             ->groupBy('users.id')
             ->orderby('users.lastname')
             ->get();
@@ -277,7 +281,7 @@ class UserController extends Controller
         JOIN permanences ON permanences.user_id = users.id
         WHERE permanences.year_permanence = 2022
         OR permanences.year_permanence = 2019
-        OR permanences.year_permanence = 2018
+        OR permanences.year_permanence = 2025
         OR permanences.year_permanence = 2017
         group by users.id*/
 
@@ -294,9 +298,9 @@ class UserController extends Controller
         $godfather_1 = DB::table('users')
             ->join('godfathers', 'godfathers.user_godfather_1', '=', 'users.id')
             ->selectRaw('users.id, users.name, users.lastname')
-            ->where('godfathers.year_godfather', '=', 2024)
-            ->orWhere('godfathers.year_godfather', '=', 2023)
-            ->orWhere('godfathers.year_godfather', '=', 2022)
+            ->where('godfathers.year_godfather', '=', YearHelperController::currentYear())
+            ->orWhere('godfathers.year_godfather', '=', YearHelperController::lastYear())
+            ->orWhere('godfathers.year_godfather', '=', YearHelperController::lastLastYear())
             ->groupBy('users.id')
             ->orderby('users.lastname')
             ->get();
@@ -309,9 +313,9 @@ class UserController extends Controller
         $godfather_2 = DB::table('users')
             ->join('godfathers', 'godfathers.user_godfather_2', '=', 'users.id')
             ->selectRaw('users.id, users.name, users.lastname')
-            ->where('godfathers.year_godfather', '=', 2024)
-            ->orWhere('godfathers.year_godfather', '=', 2023)
-            ->orWhere('godfathers.year_godfather', '=', 2022)
+            ->where('godfathers.year_godfather', '=', YearHelperController::currentYear())
+            ->orWhere('godfathers.year_godfather', '=', YearHelperController::lastYear())
+            ->orWhere('godfathers.year_godfather', '=', YearHelperController::lastLastYear())
             ->groupBy('users.id')
             ->orderby('users.lastname')
             ->get();
@@ -567,10 +571,10 @@ class UserController extends Controller
         $godfathers = DB::table('antiquities')
             ->join('users', 'users.id', '=', 'antiquities.user_id')
             ->selectRaw('count(users.id), users.id, users.name, users.lastname')
-            ->where('year', '=', 2022)
-            ->orWhere('year', '=', 2019)
-            ->orWhere('year', '=', 2018)
-            ->orWhere('year', '=', 2023)
+            ->where('year', '=', YearHelperController::lastYear())
+            ->orWhere('year', '=', YearHelperController::lastLastYear())
+            ->orWhere('year', '=', YearHelperController::lastLastLastYear())
+            ->orWhere('year', '=', YearHelperController::lastLastLastLastYear())
             ->groupBy('users.id')
             ->havingRaw('count(users.id) = ?', [4])
             ->orderby('users.lastname')
@@ -579,7 +583,7 @@ class UserController extends Controller
         /*select count(users.id), users.id, users.name, users.lastname
         from `antiquities`
         inner join `users` on `users`.`id` = `antiquities`.`user_id`
-        where `year` = 2022 or `year` = 2019 or `year` = 2018 or `year` = 2017
+        where `year` = 2022 or `year` = 2019 or `year` = 2024 or `year` = 2017
         group by `users`.`id`
         having count(users.id) = 4
         order by `users`.`name` asc*/
@@ -593,10 +597,10 @@ class UserController extends Controller
         $permanence = DB::table('users')
             ->join('permanences', 'permanences.user_id', '=', 'users.id')
             ->selectRaw('users.id, users.name, users.lastname')
-            ->where('permanences.year_permanence', '=', 2022)
-            ->orWhere('permanences.year_permanence', '=', 2019)
-            ->orWhere('permanences.year_permanence', '=', 2018)
-            ->orWhere('permanences.year_permanence', '=', 2023)
+            ->where('permanences.year_permanence', '=', YearHelperController::lastYear())
+            ->orWhere('permanences.year_permanence', '=', YearHelperController::lastLastYear())
+            ->orWhere('permanences.year_permanence', '=', YearHelperController::lastLastLastYear())
+            ->orWhere('permanences.year_permanence', '=', YearHelperController::lastLastLastLastYear())
             ->groupBy('users.id')
             ->orderby('users.lastname')
             ->get();
@@ -606,7 +610,7 @@ class UserController extends Controller
         JOIN permanences ON permanences.user_id = users.id
         WHERE permanences.year_permanence = 2022
         OR permanences.year_permanence = 2019
-        OR permanences.year_permanence = 2018
+        OR permanences.year_permanence = 2024
         OR permanences.year_permanence = 2017
         group by users.id*/
 
@@ -623,9 +627,8 @@ class UserController extends Controller
         $godfather_1 = DB::table('users')
             ->join('godfathers', 'godfathers.user_godfather_1', '=', 'users.id')
             ->selectRaw('users.id, users.name, users.lastname')
-            ->where('godfathers.year_godfather', '=', 2024)
-            ->orWhere('godfathers.year_godfather', '=', 2023)
-            ->orWhere('godfathers.year_godfather', '=', 2022)
+            ->where('godfathers.year_godfather', '=', YearHelperController::lastYear())
+            ->orWhere('godfathers.year_godfather', '=', YearHelperController::lastLastYear())
             ->groupBy('users.id')
             ->orderby('users.lastname')
             ->get();
@@ -638,9 +641,8 @@ class UserController extends Controller
         $godfather_2 = DB::table('users')
             ->join('godfathers', 'godfathers.user_godfather_2', '=', 'users.id')
             ->selectRaw('users.id, users.name, users.lastname')
-            ->where('godfathers.year_godfather', '=', 2024)
-            ->orWhere('godfathers.year_godfather', '=', 2023)
-            ->orWhere('godfathers.year_godfather', '=', 2022)
+            ->where('godfathers.year_godfather', '=', YearHelperController::lastYear())
+            ->orWhere('godfathers.year_godfather', '=', YearHelperController::lastLastYear())
             ->groupBy('users.id')
             ->orderby('users.lastname')
             ->get();
@@ -667,6 +669,17 @@ class UserController extends Controller
         return view('listado_apadrinar',[
             "godfathers" => $cumplenTodo
         ]);
+    }
+
+    public function importUsers(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv',
+        ]);
+
+        Excel::import(new UsersImport, $request->file('file'));
+
+        return back()->with('success', 'Usuarios importados correctamente.');
     }
 
 
