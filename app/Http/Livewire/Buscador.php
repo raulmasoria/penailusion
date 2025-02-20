@@ -15,14 +15,14 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\CuotaMantenimientoEmail;
 
 class Buscador extends Component
-{   
+{
     public $termino;
 
-    protected $listeners = ['terminosBusqueda' => 'buscar', 'pagarCuota', 'mantenimiento' => 'mantenimiento'];    
+    protected $listeners = ['terminosBusqueda' => 'buscar', 'pagarCuota', 'mantenimiento' => 'mantenimiento'];
 
     public function buscar($termino)
-    {   
-        $this->termino = $termino;        
+    {
+        $this->termino = $termino;
     }
 
     public function render()
@@ -52,13 +52,13 @@ class Buscador extends Component
 
         $noPermanence = DB::select('SELECT user_id
             FROM (
-                SELECT * 
+                SELECT *
                 FROM permanences
                 WHERE year_permanence = :year1
-                
-                UNION 
-            
-                SELECT * 
+
+                UNION
+
+                SELECT *
                 FROM permanences
                 WHERE year_permanence = :year2
             ) permanences
@@ -73,22 +73,22 @@ class Buscador extends Component
                             FROM antiquities a
                             WHERE  u.id = a.user_id
                             AND a.year = :year1) ', ['year1' => $year1]);
-        
+
         $noPermanenceLastYear = DB::select('SELECT u.id
-        FROM users as u        
+        FROM users as u
         WHERE NOT EXISTS (SELECT NULL
         FROM permanences p
         WHERE  u.id = p.user_id
         AND p.year_permanence = :year1)', ['year1' => $year1]);
-   
+
         $noAntiquitysLastYearArray = json_decode(json_encode($noAntiquitysLastYear), true);
-        $noPermanenceLastYearArray = json_decode(json_encode($noPermanenceLastYear), true);  
-                        
-        $noSocio = array();    
-        foreach($noPermanenceLastYearArray as $noPermanences){        
-            if(in_array($noPermanences,$noAntiquitysLastYearArray)){ 
+        $noPermanenceLastYearArray = json_decode(json_encode($noPermanenceLastYear), true);
+
+        $noSocio = array();
+        foreach($noPermanenceLastYearArray as $noPermanences){
+            if(in_array($noPermanences,$noAntiquitysLastYearArray)){
                 array_push($noSocio, $noPermanences);
-            } 
+            }
         }
 
         return view('livewire.buscador',[
@@ -106,8 +106,8 @@ class Buscador extends Component
         $user = User::where('id',$id)->firstOrFail();
         $address = Adress::where('user_id',$id)->firstOrFail();
         if(!empty($user->email)){
-            Mail::to($user)->send(new CuotaSocioEmail($user,$address));
-        }       
+            //Mail::to($user)->send(new CuotaSocioEmail($user,$address));
+        }
 
         DB::table('antiquities')->insert([
             'year' => Carbon::now()->format('Y'),
@@ -129,8 +129,8 @@ class Buscador extends Component
         $user = User::where('id',$id)->firstOrFail();
         $address = Adress::where('user_id',$id)->firstOrFail();
         if(!empty($user->email)){
-            Mail::to($user)->send(new CuotaMantenimientoEmail($user,$address) );
-        }    
+            //Mail::to($user)->send(new CuotaMantenimientoEmail($user,$address) );
+        }
         DB::table('permanences')->insert([
             'year_permanence' => Carbon::now()->format('Y'),
             'user_id' => $id,
@@ -144,7 +144,7 @@ class Buscador extends Component
         $log->estado = 'ok';
         $log->save();
     }
-  
 
-    
+
+
 }

@@ -442,7 +442,7 @@ class UserController extends Controller
         $godfather->save();
 
         if(!empty($user->email)){
-            Mail::to($user)->send(new CuotaSocioEmail($user,$adress) );
+            //Mail::to($user)->send(new CuotaSocioEmail($user,$adress) );
         }
 
         return Redirect::route('user.edit',$user)->with('status', 'user-create');
