@@ -270,7 +270,7 @@ class UserController extends Controller
             ->orWhere('permanences.year_permanence', '=', YearHelperController::lastLastYear())
             ->orWhere('permanences.year_permanence', '=', YearHelperController::lastLastLastYear())
             ->orWhere('permanences.year_permanence', '=', YearHelperController::lastLastLastLastYear())
-            ->groupBy('users.id')
+            ->groupBy('users.id', 'users.name', 'users.lastname')
             ->orderby('users.lastname')
             ->get();
 
@@ -299,7 +299,7 @@ class UserController extends Controller
             ->where('godfathers.year_godfather', '=', YearHelperController::currentYear())
             ->orWhere('godfathers.year_godfather', '=', YearHelperController::lastYear())
             ->orWhere('godfathers.year_godfather', '=', YearHelperController::lastLastYear())
-            ->groupBy('users.id')
+            ->groupBy('users.id', 'users.name', 'users.lastname')
             ->orderby('users.lastname')
             ->get();
 
@@ -314,7 +314,7 @@ class UserController extends Controller
             ->where('godfathers.year_godfather', '=', YearHelperController::currentYear())
             ->orWhere('godfathers.year_godfather', '=', YearHelperController::lastYear())
             ->orWhere('godfathers.year_godfather', '=', YearHelperController::lastLastYear())
-            ->groupBy('users.id')
+            ->groupBy('users.id', 'users.name', 'users.lastname')
             ->orderby('users.lastname')
             ->get();
         /*
@@ -599,7 +599,7 @@ class UserController extends Controller
             ->orWhere('permanences.year_permanence', '=', YearHelperController::lastLastYear())
             ->orWhere('permanences.year_permanence', '=', YearHelperController::lastLastLastYear())
             ->orWhere('permanences.year_permanence', '=', YearHelperController::lastLastLastLastYear())
-            ->groupBy('users.id')
+            ->groupBy('users.id', 'users.name', 'users.lastname')
             ->orderby('users.lastname')
             ->get();
 
@@ -627,7 +627,7 @@ class UserController extends Controller
             ->selectRaw('users.id, users.name, users.lastname')
             ->where('godfathers.year_godfather', '=', YearHelperController::lastYear())
             ->orWhere('godfathers.year_godfather', '=', YearHelperController::lastLastYear())
-            ->groupBy('users.id')
+            ->groupBy('users.id', 'users.name', 'users.lastname')
             ->orderby('users.lastname')
             ->get();
 
@@ -641,7 +641,7 @@ class UserController extends Controller
             ->selectRaw('users.id, users.name, users.lastname')
             ->where('godfathers.year_godfather', '=', YearHelperController::lastYear())
             ->orWhere('godfathers.year_godfather', '=', YearHelperController::lastLastYear())
-            ->groupBy('users.id')
+            ->groupBy('users.id', 'users.name', 'users.lastname')
             ->orderby('users.lastname')
             ->get();
         /*
