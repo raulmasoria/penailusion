@@ -34,7 +34,8 @@ class EmailController extends Controller
     if($request->emails == 'prueba'){
         $user = User::where('email', 'soriailusion@gmail.com')->firstOrFail();
         $adress = Adress::where('user_id', $user->id)->firstOrFail();
-        Mail::to('soriailusion@gmail.com')->send(new PlantillaEmail($user,$adress,$subject,$body));
+        //Mail::to('soriailusion@gmail.com')->send(new PlantillaEmail($user,$adress,$subject,$body));
+        Mail::to('raulma_13@hotmail.com')->send(new PlantillaEmail($user,$adress,$subject,$body));
 
         $log = new Email();
         $log->user_id = $user->id;
