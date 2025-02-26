@@ -60,7 +60,7 @@
                 @foreach ($all_godfather as $year => $data_godfather)
                     <tr class="hover:bg-gray-50">
                         <th class="flex gap-3 px-6 py-4 font-normal text-gray-900 text-center">
-                            {{ $data_godfather->name . ' ' . $data_godfather->lastname}}
+                            <a class="underline" href="/socios/{{ $data_godfather->id }}">{{ $data_godfather->name . ' ' . $data_godfather->lastname}}</a>
                         </th>
                         <td class="px-6 py-4 font-normal text-gray-900 text-center">
                             {{ $year }}
