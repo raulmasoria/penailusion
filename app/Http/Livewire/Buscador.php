@@ -37,7 +37,9 @@ class Buscador extends Component
             $query->orWhere('phone','LIKE', '%'.$this->termino.'%');
         })->when($this->termino, function($query){
             $query->orWhere('nif','LIKE', '%'.$this->termino.'%');
-        })->orderBy('name', 'asc')
+        })
+        ->orderBy('name', 'asc')
+        ->orderBy('lastname', 'asc')
         ->paginate(50);
 
         //Obtener si ya ha pagado cuota o permanencia este año
