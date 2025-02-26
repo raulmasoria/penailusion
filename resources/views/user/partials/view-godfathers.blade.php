@@ -23,10 +23,10 @@
 
                     <tr class="hover:bg-gray-50">
                         <th class="flex gap-3 px-6 py-4 font-normal text-gray-900 text-center">
-                            <a href="/socios/{{ $godfather1->id }}">{{ $godfather1->name . ' ' . $godfather1->lastname}}</a>
+                            <a class="underline" href="/socios/{{ $godfather1->id }}">{{ $godfather1->name . ' ' . $godfather1->lastname}}</a>
                         </th>
                         <td class="px-6 py-4 font-normal text-gray-900 text-center">
-                            <a href="/socios/{{ $godfather2->id }}">{{ $godfather2->name . ' ' . $godfather2->lastname }}</a>
+                            <a class="underline" href="/socios/{{ $godfather2->id }}">{{ $godfather2->name . ' ' . $godfather2->lastname }}</a>
                         </td>
                         <td class="px-6 py-4 font-normal text-gray-900 text-center">
                             {{ $godfathers->year_godfather }}
