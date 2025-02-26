@@ -243,7 +243,7 @@ class UserController extends Controller
             ->orWhere('year', '=', YearHelperController::lastLastYear())
             ->orWhere('year', '=', YearHelperController::lastLastLastYear())
             ->orWhere('year', '=', YearHelperController::lastLastLastLastYear())
-            ->groupBy('users.id')
+            ->groupBy('users.id', 'users.name', 'users.lastname')
             ->havingRaw('count(users.id) = ?', [5])
             ->orderby('users.lastname')
             ->get();
@@ -573,7 +573,7 @@ class UserController extends Controller
             ->orWhere('year', '=', YearHelperController::lastLastYear())
             ->orWhere('year', '=', YearHelperController::lastLastLastYear())
             ->orWhere('year', '=', YearHelperController::lastLastLastLastYear())
-            ->groupBy('users.id')
+            ->groupBy('users.id', 'users.name', 'users.lastname')
             ->havingRaw('count(users.id) = ?', [4])
             ->orderby('users.lastname')
             ->get();
