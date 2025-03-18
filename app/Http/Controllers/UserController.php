@@ -8,16 +8,14 @@ use App\Models\Adress;
 use App\Models\Antiquity;
 use App\Models\Godfather;
 use App\Models\Permanence;
-use Illuminate\Http\Request;
-use App\Mail\CuotaSocioEmail;
-use App\Models\IntolerancesUser;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Redirect;
+use App\Exports\UsersExport;
 use App\Imports\UsersImport;
+use Illuminate\Http\Request;
+use App\Models\IntolerancesUser;
+use App\DataTables\UsersDataTable;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
@@ -664,11 +662,12 @@ class UserController extends Controller
         //Descarto los que han apadrinado los dos ultimos años, del listado que cumplen con las cuotas
         $cumplenTodo = array_diff_key($cuotasOk, $godfather);
 
-        return view('listado_apadrinar',[
+        return view('tools.listado_apadrinar',[
             "godfathers" => $cumplenTodo
         ]);
     }
 
+    //Importar usuario desde excel
     public function importUsers(Request $request)
     {
         $request->validate([
@@ -678,6 +677,18 @@ class UserController extends Controller
         Excel::import(new UsersImport, $request->file('file'));
 
         return back()->with('success', 'Usuarios importados correctamente.');
+    }
+
+    //Tablas de usuarios con filtros
+    public function rendertable(UsersDataTable $dataTable)
+    {
+        return $dataTable->render('tools.tabla_filtros');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $filters = $request->all();
+        return Excel::download(new UsersExport($filters), 'usuarios_filtrados.xlsx');
     }
 
 

@@ -1,12 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\AdressController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChildrenController;
 use App\Http\Controllers\CompanieController;
-use App\Http\Controllers\AdressController;
 use App\Http\Controllers\AntiquityController;
 use App\Http\Controllers\GodfatherController;
 
@@ -27,6 +28,7 @@ Route::get('/', function () {
 
 
 Route::middleware('auth')->group(function () {
+    //Socios
     Route::get('/socios', [UserController::class, 'index'])->name('socios');
     Route::get('/socios/{user}', [UserController::class, 'edit'])->name('user.edit');
     Route::patch('/socios/{user}/edit', [UserController::class, 'update'])->name('user.update');
@@ -37,15 +39,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/nuevo_socio_admin', [UserController::class, 'create_admin'])->name('socios.create.admin');
     Route::patch('/nuevo_socio_admin/guardar', [UserController::class, 'store_admin'])->name('socios.store.admin');
     Route::get('/updatePass', [UserController::class, 'updatePass']);
+
     //tabla de quién puede apadrinar
     Route::get('/quien_apadrinar', [UserController::class, 'apadrinate'])->name('user.apadrinar');
 
+    //Perfil usuario propio
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile', [ProfileController::class, 'updateAdress'])->name('profile.adress');
     Route::patch('/profile/{user}/intolerances', [ProfileController::class, 'updateIntolerances'])->name('intolerances.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    //Niños
     Route::get('/niños', [ChildrenController::class, 'index'])->name('niños');
     Route::get('/niños/{nino}', [ChildrenController::class, 'edit'])->name('niños.edit');
     Route::patch('/niños/{nino}/edit', [ChildrenController::class, 'update'])->name('niños.update');
@@ -53,6 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/nuevo_niño/guardar', [ChildrenController::class, 'store'])->name('niños.store');
     Route::patch('/niños/{nino}/adult', [ChildrenController::class, 'pasarAdulto'])->name('niños.adult');
 
+    //Enviar emails
     Route::get('/email', [EmailController::class, 'edit'])->name('email');
     Route::patch('/email/send', [EmailController::class, 'store'])->name('email.send');
 
@@ -66,6 +72,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/import-godfather', [GodfatherController::class, 'importGodfather'])->name('godfather.import');
     Route::get('/import-godfather', function () { return view('import'); });
 
+    //Tabla de usuarios con filtros
+    Route::get('/socios_filtros', [UserController::class, 'rendertable'])->name('users.filter');
+    Route::get('/socios_filtros/export-excel', [UserController::class, 'exportExcel'])->name('users.export.excel');
+
+
+
 });
 
     Route::apiResource('getCompanies', CompanieController::class)->only(['index']);
@@ -73,8 +85,8 @@ Route::middleware('auth')->group(function () {
     Route::get('getCompaniesRounds', [CompanieController::class, 'showAllBar']);
 
     //crear niño siendo padre
-    Route::get('/nuevo_niño_qr', [ChildrenController::class, 'createbyfathers'])->name('niñosfathers.create');
-    Route::patch('/nuevo_niño_qr/guardar', [ChildrenController::class, 'storebyfathers'])->name('niñosfathers.store');
+    //Route::get('/nuevo_niño_qr', [ChildrenController::class, 'createbyfathers'])->name('niñosfathers.create');
+    //Route::patch('/nuevo_niño_qr/guardar', [ChildrenController::class, 'storebyfathers'])->name('niñosfathers.store');
 
 
 
