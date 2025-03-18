@@ -79,6 +79,13 @@ class UsersDataTable extends DataTable
                     'info' => "Mostrando _START_ a _END_ de _TOTAL_ registros",
                     'infoEmpty' => "No hay registros disponibles",
                     'infoFiltered' => "(filtrado de _MAX_ registros en total)",
+                    'search' => "Buscar:",
+                    'paginate' => [
+                        'first' => "Primero",
+                        'last' => "Último",
+                        'next' => "Siguiente",
+                        'previous' => "Anterior",
+                    ],
                 ],
                 'dom' => 'Blfrtip',
                 'buttons' => [
