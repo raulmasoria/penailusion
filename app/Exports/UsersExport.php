@@ -23,6 +23,9 @@ class UsersExport implements FromQuery
             ->select('users.id', DB::raw('UPPER(users.name) as name'), DB::raw('UPPER(users.lastname) as lastname'), 'users.phone', 'users.email')
             ->groupBy('users.id', 'users.name', 'users.lastname', 'users.phone', 'users.email');
 
+
+        \Log::info('filters export:', $this->filters );
+
         if (!empty($this->filters['filter_name'])) {
             $query->where('users.name', 'like', '%' . $this->filters['filter_name'] . '%');
         }
@@ -40,16 +43,24 @@ class UsersExport implements FromQuery
         }
 
         if (!empty($this->filters['filter_antiquity']) && is_array($this->filters['filter_antiquity'])) {
-            $query->whereIn('antiquities.year', $this->filters['filter_antiquity'])
-                ->havingRaw('COUNT(DISTINCT antiquities.year) = ?', [count($this->filters['filter_antiquity'])])
+            $years = $this->filters['filter_antiquity'];
+            \Log::info('filter_antiquity:', $years);
+
+            $query->whereIn('antiquities.year', $years)
+                ->havingRaw('COUNT(DISTINCT antiquities.year) = ?', [count($years)])
                 ->join('antiquities', 'users.id', '=', 'antiquities.user_id');
         }
 
         if (!empty($this->filters['filter_permanence']) && is_array($this->filters['filter_permanence'])) {
-            $query->whereIn('permanences.year_permanence', $this->filters['filter_permanence'])
-                ->havingRaw('COUNT(DISTINCT permanences.year_permanence) = ?', [count($this->filters['filter_permanence'])])
+            $years = $this->filters['filter_permanence'];
+            \Log::info('filter_permanence:', $years);
+
+            $query->whereIn('permanences.year_permanence', $years)
+                ->havingRaw('COUNT(DISTINCT permanences.year_permanence) = ?', [count($years)])
                 ->join('permanences', 'users.id', '=', 'permanences.user_id');
         }
+
+        \Log::info('Consulta SQL export:', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
 
         return $query;
     }

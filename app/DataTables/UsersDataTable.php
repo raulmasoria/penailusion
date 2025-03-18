@@ -91,8 +91,10 @@ class UsersDataTable extends DataTable
                                 filter_lastname: $("input[name=\'filter_lastname\']").val(),
                                 filter_email: $("input[name=\'filter_email\']").val(),
                                 filter_phone: $("input[name=\'filter_phone\']").val(),
-                                filter_antiquity : $("input[name=\'filter_antiquity\']").val(),
+                                filter_antiquity: $("select[name=\'filter_antiquity[]\']").val() || [],
+                                filter_permanence: $("select[name=\'filter_permanence[]\']").val() || [],
                             };
+
                             var url = "' . route('users.export.excel') . '?" + $.param(filters);
                             window.location.href = url;
                         }'

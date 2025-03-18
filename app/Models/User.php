@@ -55,12 +55,12 @@ class User extends Authenticatable
         return $this->hasOne(Adress::class);
     }
 
-    public function antiquity()
+    public function antiquities()
     {
         return $this->hasMany(Antiquity::class);
     }
 
-    public function permanence()
+    public function permanences()
     {
         return $this->hasMany(Permanence::class);
     }
