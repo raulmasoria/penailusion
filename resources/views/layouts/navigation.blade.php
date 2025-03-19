@@ -156,6 +156,9 @@
                     <x-responsive-nav-link :href="route('email')" :active="request()->routeIs('email')">
                         {{ __('Envio de emails') }}
                     </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('users.filter')" :active="request()->routeIs('users.filter')">
+                        {{ __('Exportar adultos') }}
+                    </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('user.apadrinar')" :active="request()->routeIs('user.apadrinar')">
                         {{ __('Padrinos') }}
                     </x-responsive-nav-link>
