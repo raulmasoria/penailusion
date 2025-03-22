@@ -21,8 +21,25 @@
                                 </h2>
 
                                 <p class="mt-1 text-sm text-gray-600">
-                                    {{ __("Aquí puedes consultar quien puede apadrinar este año.") }}
+                                    {{ __("Aquí puedes consultar quien puede apadrinar, una vez pagada la cuota este año.") }}
                                 </p>
+                                <div class="border border-orange-500 p-4 m-5 rounded-2xl bg-orange-100">
+                                    <p class="mt-1 text-sm text-gray-600">
+                                        {{ __("Las condiciones para poder apadrinar son:") }}
+                                    </p>
+                                    <p class="mt-1 text-sm text-gray-600">
+                                        {{ __("1 - Usuarios con cuota completa pagada en los años $lastYear, $lastLastYear, $lastLastLastYear y $lastLastLastLastYear.") }}
+                                    </p>
+                                    <p class="mt-1 text-sm text-gray-600">
+                                        {{ __("2 - Usuarios que NO tengan pagada una cuota de permanencia en $lastYear, $lastLastYear, $lastLastLastYear o $lastLastLastLastYear.") }}
+                                    </p>
+                                    <p class="mt-1 text-sm text-gray-600">
+                                        {{ __("3 - Usuarios que NO hayan sido padrinos en $lastYear o $lastLastYear.") }}
+                                    </p>
+                                    <p class="mt-1 text-sm text-gray-600">
+                                        {{ __("4 - Pagar la cuota del año $currentYear.") }}
+                                    </p>
+                                </div>
                             </header>
 
                             <div class="m-5">

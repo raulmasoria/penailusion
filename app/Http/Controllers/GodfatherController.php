@@ -26,7 +26,12 @@ class GodfatherController extends Controller
     //Tabla de padrinos exportable
     public function rendertable(GodfatherDataTable $dataTable)
     {
-        return $dataTable->render('tools.listado_apadrinar');
+        $currentYear = YearHelperController::currentYear();
+        $lastYear = YearHelperController::lastYear();
+        $lastLastYear = YearHelperController::lastLastYear();
+        $lastLastLastYear = YearHelperController::lastLastLastYear();
+        $lastLastLastLastYear = YearHelperController::lastLastLastLastYear();
+        return $dataTable->render('tools.listado_apadrinar', compact('currentYear', 'lastYear', 'lastLastYear', 'lastLastLastYear', 'lastLastLastLastYear'));
     }
 
     public function exportExcel(Request $request)
