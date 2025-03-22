@@ -56,6 +56,16 @@
             @endif
         </div>
 
+        <div>
+            <x-input-label for="RGPD" :value="__('Ha aceptado la cesión de los datos')" />
+            @if($user->RGPD == 1)
+                <x-text-input id="RGPD" name="RGPD" type="checkbox" class="mt-1 block" value="RGPD" checked="checked" autofocus autocomplete="RGPD" />
+            @else
+                <x-text-input id="RGPD" name="RGPD" type="checkbox" class="mt-1 block" value="RGPD" autofocus autocomplete="RGPD" />
+            @endif
+            <x-input-error class="mt-2" :messages="$errors->get('RGPD')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Guardar') }}</x-primary-button>
 

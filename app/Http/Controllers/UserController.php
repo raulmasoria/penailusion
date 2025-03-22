@@ -98,6 +98,12 @@ class UserController extends Controller
         $user->lastname = $request->lastname;
         $user->phone = $request->phone;
         $user->email = $request->email;
+        //$user->RGPD = $request->RGPD;
+        if($request->RGPD == 'RGPD') {
+            $user->RGPD = 1;
+        } else {
+            $user->RGPD = 0;
+        }
 
         $user->save();
 
