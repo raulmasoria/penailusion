@@ -10,6 +10,7 @@ use App\Http\Controllers\ChildrenController;
 use App\Http\Controllers\CompanieController;
 use App\Http\Controllers\AntiquityController;
 use App\Http\Controllers\GodfatherController;
+use App\Models\Godfather;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,9 +40,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/nuevo_socio_admin', [UserController::class, 'create_admin'])->name('socios.create.admin');
     Route::patch('/nuevo_socio_admin/guardar', [UserController::class, 'store_admin'])->name('socios.store.admin');
     Route::get('/updatePass', [UserController::class, 'updatePass']);
-
-    //tabla de quién puede apadrinar
-    Route::get('/quien_apadrinar', [UserController::class, 'apadrinate'])->name('user.apadrinar');
 
     //Perfil usuario propio
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -76,7 +74,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/socios_filtros', [UserController::class, 'rendertable'])->name('users.filter');
     Route::get('/socios_filtros/export-excel', [UserController::class, 'exportExcel'])->name('users.export.excel');
 
-
+    //tabla de quién puede apadrinar
+    Route::get('/quien_apadrinar', [GodfatherController::class, 'rendertable'])->name('godfather.show');
+    Route::get('/quien_apadrinar/export-excel', [GodfatherController::class, 'exportExcel'])->name('godfather.export.excel');
 
 });
 

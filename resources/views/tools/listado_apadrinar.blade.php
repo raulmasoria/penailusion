@@ -1,49 +1,51 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('¿Quien puede apadrinar?') }}
-        </h2>
-    </x-slot>
+@extends('layouts.plantilla')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-7xl">
-                    <section>
-                        <header>
-                            <h2 class="text-lg font-medium text-gray-900">
-                                {{ __('Apadrinamientos') }}
-                            </h2>
-                    
-                            <p class="mt-1 text-sm text-gray-600">
-                                {{ __("Aquí puedes consultar quien puede apadrinar este año.") }}
-                            </p>
-                        </header>
-                        <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
-                            <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
-                                <thead class="bg-gray-200">
-                                    <tr class="border-b border-gray-200 bg-gray-200">
-                                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Id</th>
-                                        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Nombre y apellidos</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200 border-t border-gray-200">
-                                    @foreach ($godfathers as $godfather_id => $godfather )
-                                        <tr class="hover:bg-gray-200 border">              
-                                            <td class="px-6 py-4">                    
-                                                {{ $godfather_id }}            
-                                            </td>
-                                            <td class="px-6 py-4">                   
-                                                {{ $godfather }}          
-                                            </td>
-                                        </tr> 
-                                    @endforeach    
-                                </tbody>                            
-                            </table>
-                        </div>    
-                    </section>
+@section('contenido')
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Usuarios</title>
+        <!-- Estilos de DataTables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+    </head>
+    <body>
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                    <div class="max-w-7xl">
+                        <section>
+                            <header>
+                                <h2 class="text-lg font-medium text-gray-900">
+                                    {{ __('Apadrinamientos') }}
+                                </h2>
+
+                                <p class="mt-1 text-sm text-gray-600">
+                                    {{ __("Aquí puedes consultar quien puede apadrinar este año.") }}
+                                </p>
+                            </header>
+
+                            <div class="m-5">
+                                {!! $dataTable->table() !!}
+                            </div>
+                        </section>
+                    </div>
                 </div>
-            </div>            
+            </div>
         </div>
-    </div>
-</x-app-layout>
+
+        <!-- Scripts de DataTables y botones -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+        <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="/vendor/datatables/buttons.server-side.js"></script>
+
+        {!! $dataTable->scripts() !!}
+
+    </body>
+    </html>
+@endsection
+
