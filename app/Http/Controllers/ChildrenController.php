@@ -21,10 +21,10 @@ class ChildrenController extends Controller
 
     //obtener datos de un niño siendo junta directiva
     public function edit(Children $nino)
-    {          
+    {
 
-        $antiquity = Childrens_antiquities::where('children_id', $nino->id)->get();       
-    
+        $antiquity = Childrens_antiquities::where('children_id', $nino->id)->get();
+
         return view('children.edit',[
             "nino" => $nino,
             "antiquitys" => $antiquity,
@@ -33,10 +33,10 @@ class ChildrenController extends Controller
 
     //editar un niño siendo junta directiva
     public function update(Request $request, Children $nino)
-    {   
+    {
         $request->validate([
             'name' => ['string', 'max:255'],
-            'lastname' => ['string', 'max:255'],            
+            'lastname' => ['string', 'max:255'],
             'fecha' => ['date'],
             'responsible' => ['string', 'max:255'],
             'phone_responsible' => ['Numeric'],
@@ -46,18 +46,18 @@ class ChildrenController extends Controller
         $nino->lastname = $request->lastname;
         $nino->birthdate = $request->fecha;
         $nino->responsible = $request->responsible;
-        $nino->phone_responsible = $request->phone_responsible;   
-        
+        $nino->phone_responsible = $request->phone_responsible;
+
         $nino->save();
 
         return Redirect::route('niños.edit',$nino)->with('status', 'nino-updated');
-        
+
     }
 
     //página de crear un niño siendo junta directiva
     public function create()
-    {        
-        return view('children.new_niño');        
+    {
+        return view('children.new_niño');
     }
 
     //crear un usuario niño junta directiva
@@ -65,68 +65,55 @@ class ChildrenController extends Controller
     {
         $request->validate([
             'name' => ['string', 'max:255'],
-            'lastname' => ['string', 'max:255'],            
+            'lastname' => ['string', 'max:255'],
             'fecha' => ['date'],
             'responsible' => ['string', 'max:255'],
-            'phone_responsible' => ['Numeric'],         
+            'phone_responsible' => ['Numeric'],
         ]);
 
         //guardo usuario
-        $nino = new Children();              
- 
+        $nino = new Children();
+
         $nino->name = $request->name;
         $nino->lastname = $request->lastname;
         $nino->birthdate = $request->fecha;
         $nino->responsible = $request->responsible;
-        $nino->phone_responsible = $request->phone_responsible;  
+        $nino->phone_responsible = $request->phone_responsible;
 
-        $nino->save();              
+        $nino->save();
 
-        //guardo antiguedad   
+        //guardo antiguedad
          foreach ($request->antiguedad as $año) {
             $antiquity = new Childrens_antiquities();
 
             $antiquity->children_id = $nino->id;
             $antiquity->year = $año;
-    
+
             $antiquity->save();
-         }    
+         }
 
         return Redirect::route('niños.edit',$nino)->with('status', 'user-create');
     }
 
     //Pasar de niño a adulto
     public function pasarAdulto(Request $request, Children $nino){
-        //Solicito unos datos como email, telefono, dirección 
-        $request->validate([                     
-            'phone' => ['Numeric'],
-            'nif' => ['string', 'max:10'],
-            'email' => ['email', 'max:255', 'unique:users'],
-            'via' => ['string', 'max:255'],
-            'direccion' => ['string', 'max:255'],
-            'piso' => ['string', 'max:255'],
-            'cp' => ['Numeric'],
-            'ciudad' => ['string', 'max:255'],
-            'provincia' => ['string', 'max:255']
-        ]);
+        //Los doy de alta en users, address y antiquity
+        $user = new User;
 
-        //Los doy de alta en users, address y antiquity        
-        $user = new User;              
- 
         $user->name = $nino->name;
         $user->lastname = $nino->lastname;
         $user->phone = $request->phone;
         $user->nif = $request->nif;
         $user->password = Hash::make($request->nif, ['rounds' => 10]);
         $user->carta = '0';
-        $user->email = $request->email; 
+        $user->email = $request->email;
         $user->rol = '0';
         $user->childrentoadult = '1';
 
-        $user->save();  
-        
+        $user->save();
+
         //guardo dirección
-        $adress = new Adress;  
+        $adress = new Adress;
 
         $adress->user_id = $user->id;
         $adress->via = $request->via;
@@ -134,8 +121,8 @@ class ChildrenController extends Controller
         $adress->piso = $request->piso;
         $adress->cp = $request->cp;
         $adress->ciudad = $request->ciudad;
-        $adress->provincia = $request->provincia; 
-        
+        $adress->provincia = $request->provincia;
+
         $adress->save();
 
         //guardo antiguedad
@@ -157,8 +144,8 @@ class ChildrenController extends Controller
 
     //página de crear un niño siendo un padre (publica)
     public function createbyfathers()
-    {        
-        return view('children.new_niño_fathers');        
+    {
+        return view('children.new_niño_fathers');
     }
 
     //crear un usuario niño siendo un padre (publica)
@@ -166,22 +153,22 @@ class ChildrenController extends Controller
     {
         $request->validate([
             'name' => ['string', 'max:255'],
-            'lastname' => ['string', 'max:255'],            
+            'lastname' => ['string', 'max:255'],
             'fecha' => ['date'],
             'responsible' => ['string', 'max:255'],
-            'phone_responsible' => ['Numeric'],         
+            'phone_responsible' => ['Numeric'],
         ]);
 
         //guardo usuario
-        $nino = new Children();              
- 
+        $nino = new Children();
+
         $nino->name = $request->name;
         $nino->lastname = $request->lastname;
         $nino->birthdate = $request->fecha;
         $nino->responsible = $request->responsible;
-        $nino->phone_responsible = $request->phone_responsible;  
+        $nino->phone_responsible = $request->phone_responsible;
 
-        $nino->save();              
+        $nino->save();
 
         //guardo antiguedad
         $antiquity = new Childrens_antiquities();
@@ -189,7 +176,7 @@ class ChildrenController extends Controller
         $antiquity->children_id = $nino->id;
         $antiquity->year = Carbon::now()->format('Y');
 
-        $antiquity->save();        
+        $antiquity->save();
 
         return Redirect::route('niñosfathers.create')->with('status', 'children-create');
     }
