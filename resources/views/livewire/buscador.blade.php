@@ -18,13 +18,14 @@
                                             <th scope="col" class="px-6 py-4 font-medium text-gray-900 ">Estado</th>
                                             <th scope="col" class="px-6 py-4 font-medium text-gray-900">Email</th>
                                             <th scope="col" class="px-6 py-4 font-medium text-gray-900">Teléfono</th>
+                                            <th scope="col" class="px-6 py-4 font-medium text-gray-900">RGPD</th>
                                             <th scope="col" class="px-6 py-4 font-medium text-gray-900">Cuota completa - Permanencia - Editar</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($socios as $socio)
                                         <tr class="hover:bg-gray-50 border">
-                                            <th class="flex gap-3 px-6 py-4 font-normal text-gray-900">
+                                            <th class="flex gap-3 px-4 py-4 font-normal text-gray-900">
                                                 <div class="text-sm">
                                                     <div class="font-medium text-gray-700">{{ $socio->name }}</div>
                                                     <div class="text-gray-400">{{ $socio->lastname }}</div>
@@ -62,38 +63,53 @@
                                                 @endif
                                             @endforeach
 
-                                            <td class="px-6 py-4">
+                                            <td class="px-2 py-4">
                                                 @if ($noRenovar)
-                                                    <span class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-gray-900">
+                                                    <span class="inline-flex items-center gap-1 rounded-full bg-green-50 py-1 text-xs font-semibold text-gray-900">
                                                         <span class="h-1.5 w-1.5 rounded-full bg-gray-900"></span>
                                                         Ya no es socio
                                                     </span>
                                                 @elseif($activo)
-                                                    <span class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-1 text-xs font-semibold text-green-600">
+                                                    <span class="inline-flex items-center gap-1 rounded-full bg-green-50 py-1 text-xs font-semibold text-green-600">
                                                         <span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
                                                         Cuota pagada
                                                     </span>
                                                 @elseif($mantenimiento)
-                                                    <span class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-blue-600">
+                                                    <span class="inline-flex items-center gap-1 rounded-full bg-red-50 py-1 text-xs font-semibold text-blue-600">
                                                         <span class="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
                                                         Cuota de permanencia
                                                     </span>
                                                 @else
-                                                    <span class="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-semibold text-red-600">
+                                                    <span class="inline-flex items-center gap-1 rounded-full bg-red-50 py-1 text-xs font-semibold text-red-600">
                                                         <span class="h-1.5 w-1.5 rounded-full bg-red-600"></span>
                                                         Cuota no pagada
                                                     </span>
                                                 @endif
 
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="px-4 py-4">
                                                 <div class="font-medium text-gray-700">{{ $socio->email }}</div>
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="px-4 py-4">
                                                 <div class="font-medium text-gray-700">{{ $socio->phone }}</div>
                                             </td>
+                                            <td class="px-2 py-4">
+                                                <div class="font-medium text-gray-700">
+                                                    @if ($socio->RGPD == 1)
+                                                        <span class="inline-flex items-center gap-1 rounded-full bg-green-50 py-1 text-xs font-semibold text-green-600">
+                                                            <span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
+                                                            Aceptado
+                                                        </span>
+                                                    @else
+                                                        <span class="inline-flex items-center gap-1 rounded-full bg-red-50 py-1 text-xs font-semibold text-red-600">
+                                                            <span class="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+                                                            No aceptado
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </td>
 
-                                            <td class="px-6 py-4">
+                                            <td class="px-2 py-4">
                                             <div class="flex justify-end gap-4">
                                                 @php
                                                     $socioname = '"'.$socio->id. '-' . $socio->name.'"';
