@@ -8,8 +8,10 @@ use App\Models\Adress;
 use App\Models\Children;
 use App\Models\Antiquity;
 use Illuminate\Http\Request;
+use App\Imports\ChildrensImport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Childrens_antiquities;
 use Illuminate\Support\Facades\Redirect;
 
@@ -179,6 +181,18 @@ class ChildrenController extends Controller
         $antiquity->save();
 
         return Redirect::route('niñosfathers.create')->with('status', 'children-create');
+    }
+
+    //Importar usuario desde excel
+    public function importChildrens(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv',
+        ]);
+
+        Excel::import(new ChildrensImport, $request->file('file'));
+
+        return back()->with('success', 'Niños importados correctamente.');
     }
 
 }

@@ -27,3 +27,10 @@
     <button type="submit">Importar padrinos</button>
 </form>
 <br>
+<h2>Importar niños</h2>
+<form action="{{ route('children.import') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="file" name="file" required>
+    <button type="submit">Importar niños</button>
+</form>
+<br>

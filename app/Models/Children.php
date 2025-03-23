@@ -12,8 +12,12 @@ class Children extends Model
     protected $fillable = [
         'name',
         'lastname',
-        'birthday',
+        'birthdate',
         'responsible',
         'phone_responsible',
+    ];
+
+    protected $casts = [
+        'birthdate' => 'date',
     ];
 }
