@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use DateTime;
 use Carbon\Carbon;
 use Livewire\Component;
-use App\Models\Children;
+use App\Models\Childrens;
 use Illuminate\Support\Facades\DB;
 use App\Models\Childrens_antiquities;
 
@@ -13,16 +13,16 @@ class BuscadorNinos extends Component
 {
     public $termino;
 
-    protected $listeners = ['terminosBusqueda' => 'buscar', 'pagarCuota'];    
-    
+    protected $listeners = ['terminosBusqueda' => 'buscar', 'pagarCuota'];
+
     public function buscar($termino)
-    {   
-        $this->termino = $termino;   
+    {
+        $this->termino = $termino;
     }
 
     public function render()
     {
-        $ninos = Children::when($this->termino, function($query){
+        $ninos = Childrens::when($this->termino, function($query){
             $query->where('name','LIKE', '%'.$this->termino.'%');
         })->when($this->termino, function($query){
             $query->orWhere('lastname','LIKE', '%'.$this->termino.'%');
@@ -38,17 +38,14 @@ class BuscadorNinos extends Component
         foreach($ninos as $nino)
         {
             if(!empty($nino->birthdate)){
-                $fecha = Carbon::parse($nino->birthdate)->format('d-m-Y');
-                $anios = $this->obtener_edad_segun_fecha($nino->birthdate);
-
-                $nino->birthdate = $fecha;
-                $nino['anios'] = $anios;
-            }    
+                $nino->birthdate = $nino->birthdate ? \Carbon\Carbon::parse($nino->birthdate) : null;
+                $nino['anios'] = $this->obtener_edad_segun_fecha($nino->birthdate);
+            }
         }
 
         $year = Carbon::now()->format('Y');
         $antiquitys = Childrens_antiquities::select('children_id')->where('year',$year)->get();
-        
+
         return view('livewire.buscador-ninos',[
             "ninos" => $ninos,
             "antiquitys" => $antiquitys,

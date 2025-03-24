@@ -2,11 +2,13 @@
 namespace App\Imports;
 
 use Carbon\Carbon;
-use App\Models\Children;
+use App\Models\Childrens;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Illuminate\Support\Facades\DB;
+
 
 class ChildrensImport implements ToCollection
 {
@@ -32,38 +34,43 @@ class ChildrensImport implements ToCollection
 
             Log::info("Usuario ID {$id} - Nombre: {$name} - Apellido: {$lastname} - Fecha de nacimiento: {$birthdate} - Responsable: {$responsible} - Teléfono responsable: {$phone_responsible}");
 
-            $children = Children::find($id);
+            $children = Childrens::find($id);
 
             Log::info("Children {$children} ");
 
             if ($children) {
+                // Habilitar el log de consultas
+                DB::enableQueryLog();
+
+                // Realiza la actualización manual
                 $children->name = $name ?? '';
                 $children->lastname = $lastname ?? '';
                 $children->birthdate = $birthdate ?? '';
                 $children->responsible = $responsible ?? '';
                 $children->phone_responsible = $phone_responsible ?? '';
-                $children->updated_at = Carbon::now();
+                $children->created_at = $children->created_at ?? Carbon::now();
 
-                // Intentar guardar directamente
-                $children->save();
+                $updated = $children->save();
+                if ($updated) {
+                    Log::info("Usuario actualizado correctamente para el ID: {$children->id}");
+                } else {
+                    Log::error("Error al actualizar el usuario con ID: {$children->id}");
+                }
             }
              else {
                 // Si el usuario no existe, lo creamos
-                Children::create([
-                    'name' => $this->cleanValue($row[1]) ?? '',
-                    'lastname' => $this->cleanValue($row[2]) ?? '',
-                    'birthdate' => $this->cleanValue($row[3]) ?? '',
-                    'responsible' => $this->cleanValue($row[4]) ?? '',
-                    'phone_responsible' => $this->cleanValue($row[5]) ?? '',
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
+                Childrens::create([
+                    'name' => $name ?? '',
+                    'lastname' => $lastname ?? '',
+                    'birthdate' => $birthdate ?? '',
+                    'responsible' => $responsible ?? '',
+                    'phone_responsible' => $phone_responsible ?? ''
                 ]);
 
-                Log::info("Nuevo usuario agregado: ID {$id}");
+                Log::info("Nuevo usuario agregado: {$name } {$lastname}");
 
             }
 
-            die();
         }
     }
 

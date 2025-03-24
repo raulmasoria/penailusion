@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Adress;
-use App\Models\Children;
+use App\Models\Childrens;
 use App\Models\Antiquity;
 use Illuminate\Http\Request;
 use App\Imports\ChildrensImport;
@@ -22,7 +22,7 @@ class ChildrenController extends Controller
     }
 
     //obtener datos de un niño siendo junta directiva
-    public function edit(Children $nino)
+    public function edit(Childrens $nino)
     {
 
         $antiquity = Childrens_antiquities::where('children_id', $nino->id)->get();
@@ -34,7 +34,7 @@ class ChildrenController extends Controller
     }
 
     //editar un niño siendo junta directiva
-    public function update(Request $request, Children $nino)
+    public function update(Request $request, Childrens $nino)
     {
         $request->validate([
             'name' => ['string', 'max:255'],
@@ -43,6 +43,9 @@ class ChildrenController extends Controller
             'responsible' => ['string', 'max:255'],
             'phone_responsible' => ['Numeric'],
         ]);
+
+        dump($nino);
+        die();
 
         $nino->name = $request->name;
         $nino->lastname = $request->lastname;
@@ -98,7 +101,7 @@ class ChildrenController extends Controller
     }
 
     //Pasar de niño a adulto
-    public function pasarAdulto(Request $request, Children $nino){
+    public function pasarAdulto(Request $request, Childrens $nino){
         //Los doy de alta en users, address y antiquity
         $user = new User;
 

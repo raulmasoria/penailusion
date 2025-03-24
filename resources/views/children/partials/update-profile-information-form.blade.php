@@ -7,7 +7,7 @@
         <p class="mt-1 text-sm text-gray-600">
             {{ __("Aquí puedes actualizar algunos datos como el telefono,email o dirección postal.") }}
         </p>
-        
+
     </header>
 
     <form method="post" action="{{ route('niños.update' , $nino) }}" class="mt-6 space-y-6">
@@ -27,8 +27,8 @@
         </div>
 
         <div>
-            <x-input-label for="fecha" :value="__('Fecha nacimiento')" />       
-            <x-text-input id="fecha" name="fecha" type="date" class="mt-1 block w-full" :value="old('fecha', $nino->birthdate)" required autofocus autocomplete="fecha"/>
+            <x-input-label for="fecha" :value="__('Fecha nacimiento')" />
+            <x-text-input id="fecha" name="fecha" type="date" class="mt-1 block w-full" :value="old('fecha', $nino->birthdate ? $nino->birthdate->format('Y-m-d') : '')" required autofocus autocomplete="fecha"/>
             <x-input-error class="mt-2" :messages="$errors->get('fecha')" />
         </div>
 
@@ -44,7 +44,7 @@
             <x-input-error class="mt-2" :messages="$errors->get('responsiblePhone')" />
         </div>
 
-        
+
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Guardar') }}</x-primary-button>
