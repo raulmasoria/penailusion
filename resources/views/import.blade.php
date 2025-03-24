@@ -34,3 +34,10 @@
     <button type="submit">Importar niños</button>
 </form>
 <br>
+<h2>Importar antigüedad niños</h2>
+<form action="{{ route('children.antiquity.import') }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="file" name="file" required>
+    <button type="submit">Importar ant niños</button>
+</form>
+<br>

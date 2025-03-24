@@ -71,6 +71,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/import-godfather', function () { return view('import'); });
     Route::post('/import-childrens', [ChildrenController::class, 'importChildrens'])->name('children.import');
     Route::get('/import-childrens', function () { return view('import'); });
+    Route::post('/import-antiquity-childrens', [ChildrenController::class, 'importChildrensAntiquities'])->name('children.antiquity.import');
+    Route::get('/import-antiquity-childrens', function () { return view('import'); });
 
 
     //Tabla de usuarios con filtros

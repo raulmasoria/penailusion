@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Adress;
-use App\Models\Childrens;
 use App\Models\Antiquity;
+use App\Models\Childrens;
 use Illuminate\Http\Request;
 use App\Imports\ChildrensImport;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Childrens_antiquities;
 use Illuminate\Support\Facades\Redirect;
+use App\Imports\AntiquitiesChildrensImport;
 
 class ChildrenController extends Controller
 {
@@ -194,6 +195,17 @@ class ChildrenController extends Controller
         ]);
 
         Excel::import(new ChildrensImport, $request->file('file'));
+
+        return back()->with('success', 'Niños importados correctamente.');
+    }
+
+    public function importChildrensAntiquities(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv',
+        ]);
+
+        Excel::import(new AntiquitiesChildrensImport, $request->file('file'));
 
         return back()->with('success', 'Niños importados correctamente.');
     }
