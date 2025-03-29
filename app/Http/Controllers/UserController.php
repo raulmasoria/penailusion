@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Adress;
 use App\Models\Antiquity;
+use App\Models\Childrens_antiquities_old;
 use App\Models\Godfather;
 use App\Models\Permanence;
 use App\Exports\UsersExport;
@@ -36,6 +37,7 @@ class UserController extends Controller
         $adress = Adress::where('user_id', $user->id)->firstOrFail();
         $antiquity = Antiquity::where('user_id', $user->id)->get();
         $permanence = Permanence::where('user_id', $user->id)->get();
+        $antiquity_children_old = Childrens_antiquities_old::where('user_id', $user->id)->get();
         $intolerances = DB::table('intolerances')
         ->join('intolerances_users', 'intolerances.id', '=', 'intolerances_users.id_intolerance')
         ->join('users', 'users.id', '=', 'intolerances_users.id_user')
@@ -71,6 +73,9 @@ class UserController extends Controller
         }
         foreach ($permanence as $perman){
             $anos[$perman->year_permanence] = "Cuota de permanencia";
+        }
+        foreach ($antiquity_children_old as $anti){
+            $anos[$anti->year] = "Cuota de niño";
         }
         ksort($anos);
 

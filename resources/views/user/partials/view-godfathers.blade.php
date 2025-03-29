@@ -34,6 +34,10 @@
                     </tr>
             </tbody>
         </table>
+    @elseif ($user->childrentoadult)
+        <div class="mt-6">
+            <h4>Este peñista ha pasado de niño a adulto.</h4>
+        </div>
     @else
         <div class="mt-6">
             <h4>Este peñista no tiene padrinos</h4>

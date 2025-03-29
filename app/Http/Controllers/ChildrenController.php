@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Childrens_antiquities;
+use App\Models\Childrens_antiquities_old;
 use Illuminate\Support\Facades\Redirect;
 use App\Imports\AntiquitiesChildrensImport;
 
@@ -136,10 +137,25 @@ class ChildrenController extends Controller
 
         $antiquity->save();
 
-        //Borro de children y childrenAnqtiquity
+        //Obtengo las antiguedades del niño y me quedo con las dos últimas si coinciden con los dos ultimos años para llevarlos a antiquities, las otras las guardo en childrens_antiquities_old
+        $antiquities = Childrens_antiquities::where('children_id', $nino->id)->orderBy('year', 'desc')->get();
+        foreach ($antiquities as $antiquity) {
+            if ($antiquity->year == YearHelperController::lastYear() || $antiquity->year == YearHelperController::lastLastYear()) {
+                $newAntiquity = new Antiquity;
+                $newAntiquity->year = $antiquity->year;
+                $newAntiquity->user_id = $user->id;
+                $newAntiquity->save();
+            } else {
+                $oldAntiquity = new Childrens_antiquities_old;
+                $oldAntiquity->user_id = $user->id;
+                $oldAntiquity->year = $antiquity->year;
+                $oldAntiquity->save();
+            }
+        }
 
-        DB::table('childrens')->where('id', '=', $nino->id)->delete();
-        DB::table('childrens_antiquities')->where('id', '=', $nino->id)->delete();
+        //Borro de children y childrenAnqtiquity
+        //DB::table('childrens')->where('id', '=', $nino->id)->delete();
+        //DB::table('childrens_antiquities')->where('id', '=', $nino->id)->delete();
 
         return Redirect::route('user.edit',$user)->with('status', 'nino-adult');
 
