@@ -33,6 +33,7 @@ class BuscadorNinos extends Component
         })->when($this->termino, function($query){
             $query->orWhere('phone_responsible','LIKE', '%'.$this->termino.'%');
         })->orderBy('name', 'asc')
+        ->orderBy('lastname', 'asc')
         ->paginate(50);
 
         foreach($ninos as $nino)

@@ -45,9 +45,6 @@ class ChildrenController extends Controller
             'phone_responsible' => ['Numeric'],
         ]);
 
-        dump($nino);
-        die();
-
         $nino->name = $request->name;
         $nino->lastname = $request->lastname;
         $nino->birthdate = $request->fecha;
