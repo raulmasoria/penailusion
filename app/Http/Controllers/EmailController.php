@@ -34,7 +34,7 @@ class EmailController extends Controller
     if($request->emails == 'prueba'){
         $user = User::where('email', 'soriailusion@gmail.com')->firstOrFail();
         $adress = Adress::where('user_id', $user->id)->firstOrFail();
-        Mail::to('soriailusion@gmail.com')->send(new PlantillaEmail($user,$adress,$subject,$body));
+        Mail::mailer('mailrelay')->to('soriailusion@gmail.com')->send(new PlantillaEmail($user,$adress,$subject,$body));
         //Mail::to('raulmasoria@gmail.com')->send(new PlantillaEmail($user,$adress,$subject,$body));
 
         $log = new Email();
@@ -47,13 +47,18 @@ class EmailController extends Controller
     } else if($request->emails == 'socios'){
 
         $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
-                ->leftjoin('antiquities', 'users.id', '=', 'antiquities.user_id')
-                ->leftjoin('permanences', 'users.id', '=', 'permanences.user_id')
-                ->where('antiquities.year', YearHelperController::lastYear())
-                ->orWhere('permanences.year_permanence', YearHelperController::lastYear())
-                ->groupBy('users.id')
-                ->get();
-        dd($users);
+            ->leftJoin('antiquities', 'users.id', '=', 'antiquities.user_id')
+            ->leftJoin('permanences', 'users.id', '=', 'permanences.user_id')
+            ->where(function ($query) {
+                $query->where('antiquities.year', YearHelperController::lastYear())
+                        ->orWhere('permanences.year_permanence', YearHelperController::lastYear());
+            })
+            ->whereNotNull('users.email')
+            ->where('users.email', '<>', '')
+            ->groupBy('users.id', 'users.name', 'users.lastname', 'users.email')
+            ->get();
+
+        //dd($users);
         foreach($users as $user){
             $adress = Adress::where('user_id', $user->id)->firstOrFail();
             if(!empty($user->email)){
@@ -72,9 +77,13 @@ class EmailController extends Controller
         $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
                 ->leftjoin('antiquities', 'users.id', '=', 'antiquities.user_id')
                 ->leftjoin('permanences', 'users.id', '=', 'permanences.user_id')
-                ->where('antiquities.year', YearHelperController::currentYear())
-                ->orWhere('permanences.year_permanence', YearHelperController::currentYear())
-                ->groupBy('users.id')
+                ->where(function ($query) {
+                    $query->where('antiquities.year', YearHelperController::currentYear())
+                            ->orWhere('permanences.year_permanence', YearHelperController::currentYear());
+                })
+                ->whereNotNull('users.email')
+                ->where('users.email', '<>', '')
+                ->groupBy('users.id', 'users.name', 'users.lastname', 'users.email')
                 ->get();
         //dd($users);
         foreach($users as $user){

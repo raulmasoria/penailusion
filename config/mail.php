@@ -36,13 +36,22 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+            'host' => env('MAIL_HOST', 'smtp.gmail.com'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
+        ],
+        'mailrelay' => [
+            'transport' => 'smtp',
+            'host' => env('MAILRELAY_HOST', 'smtp.mailgun.org'),
+            'port' => env('MAILRELAY_PORT', 587),
+            'encryption' => env('MAILRELAY_ENCRYPTION', 'tls'),
+            'username' => env('MAILRELAY_USERNAME'),
+            'password' => env('MAILRELAY_PASSWORD'),
+            'timeout' => null,
         ],
 
         'ses' => [
