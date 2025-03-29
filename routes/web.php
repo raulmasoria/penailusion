@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/email/send', [EmailController::class, 'store'])->name('email.send');
 
     //Importaciones xlsx
-    /*Route::post('/import-users', [UserController::class, 'importUsers'])->name('users.import');
+    Route::post('/import-users', [UserController::class, 'importUsers'])->name('users.import');
     Route::get('/import-users', function () { return view('import'); });
     Route::post('/import-adress', [AdressController::class, 'importAdress'])->name('adress.import');
     Route::get('/import-adress', function () { return view('import'); });
@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/import-childrens', [ChildrenController::class, 'importChildrens'])->name('children.import');
     Route::get('/import-childrens', function () { return view('import'); });
     Route::post('/import-antiquity-childrens', [ChildrenController::class, 'importChildrensAntiquities'])->name('children.antiquity.import');
-    Route::get('/import-antiquity-childrens', function () { return view('import'); });*/
+    Route::get('/import-antiquity-childrens', function () { return view('import'); });
 
 
     //Tabla de usuarios con filtros
