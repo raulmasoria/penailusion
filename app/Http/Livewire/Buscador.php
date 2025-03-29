@@ -119,7 +119,9 @@ class Buscador extends Component
 
         $log = new Email;
         $log->user_id = $user->id;
-        $log->email = $user->email;
+        if(!empty($user->email)){
+            $log->email = $user->email;
+        }
         $log->asunto = 'Cuota anual';
         $log->estado = 'ok';
         $log->save();
@@ -141,7 +143,9 @@ class Buscador extends Component
 
         $log = new Email;
         $log->user_id = $user->id;
-        $log->email = $user->email;
+        if(!empty($user->email)){
+            $log->email = $user->email;
+        }
         $log->asunto = 'Cuota mantenimiento';
         $log->estado = 'ok';
         $log->save();
