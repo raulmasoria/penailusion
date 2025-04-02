@@ -117,14 +117,14 @@ class Buscador extends Component
             'created_at' => Carbon::now()
         ]);
 
-        $log = new Email;
+        /*$log = new Email;
         $log->user_id = $user->id;
         if(!empty($user->email)){
             $log->email = $user->email;
         }
         $log->asunto = 'Cuota anual';
         $log->estado = 'ok';
-        $log->save();
+        $log->save();*/
     }
 
     //pagar cuota de mantenimiento
@@ -141,14 +141,14 @@ class Buscador extends Component
             'created_at' => Carbon::now()
         ]);
 
-        $log = new Email;
+        /*$log = new Email;
         $log->user_id = $user->id;
         if(!empty($user->email)){
             $log->email = $user->email;
         }
         $log->asunto = 'Cuota mantenimiento';
         $log->estado = 'ok';
-        $log->save();
+        $log->save();*/
     }
 
 
