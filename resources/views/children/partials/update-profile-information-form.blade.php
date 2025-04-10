@@ -34,17 +34,26 @@
 
         <div>
             <x-input-label for="responsible" :value="__('Responsable')" />
-            <x-text-input id="responsible" name="responsible" type="text" class="mt-1 block w-full" :value="old('responsible', $nino->responsible)" required autofocus autocomplete="responsible"/>
+            <x-text-input id="responsible" name="responsible" type="text" class="mt-1 block w-full" :value="old('responsible', $responsible[0]->name . ' ' . $responsible[0]->lastname)" required autofocus autocomplete="responsible" disabled/>
             <x-input-error class="mt-2" :messages="$errors->get('responsible')" />
         </div>
 
         <div>
             <x-input-label for="responsiblePhone" :value="__('Telefono del responsable')" />
-            <x-text-input id="responsiblePhone" name="phone_responsible" type="text" class="mt-1 block w-full" :value="old('responsiblePhone', $nino->phone_responsible)" required autofocus autocomplete="responsiblePhone"/>
+            <x-text-input id="responsiblePhone" name="phone_responsible" type="text" class="mt-1 block w-full" :value="old('responsiblePhone', $responsible[0]->phone)" required autofocus autocomplete="responsiblePhone" disabled/>
             <x-input-error class="mt-2" :messages="$errors->get('responsiblePhone')" />
         </div>
 
-
+        <div>
+            <x-input-label for="changeeResponsible" :value="__('Asignar otro responsable')" />
+            <select id="changeeResponsible" name="changeeResponsible" class="select2 w-full border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm">
+                <option value="">-- Selecciona un adulto responsable para cambiarlo --</option>
+                @foreach($users as $user)
+                    <option value="{{ $user->id }}">{{ $user->name }} {{ $user->lastname }}</option>
+                @endforeach
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('changeeResponsible')" />
+        </div>
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Guardar') }}</x-primary-button>
@@ -61,3 +70,12 @@
         </div>
     </form>
 </section>
+@push('scripts')
+<script>
+    $('#changeeResponsible').select2({
+        placeholder: "-- Selecciona un adulto responsable para cambiarlo --",
+        allowClear: true,
+        width: '100%'
+    });
+</script>
+@endpush

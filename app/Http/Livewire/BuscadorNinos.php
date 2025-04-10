@@ -28,10 +28,6 @@ class BuscadorNinos extends Component
             $query->orWhere('lastname','LIKE', '%'.$this->termino.'%');
         })->when($this->termino, function($query){
             $query->orWhere('birthdate','LIKE', '%'.$this->termino.'%');
-        })->when($this->termino, function($query){
-            $query->orWhere('responsible','LIKE', '%'.$this->termino.'%');
-        })->when($this->termino, function($query){
-            $query->orWhere('phone_responsible','LIKE', '%'.$this->termino.'%');
         })->orderBy('name', 'asc')
         ->orderBy('lastname', 'asc')
         ->paginate(50);
@@ -41,6 +37,15 @@ class BuscadorNinos extends Component
             if(!empty($nino->birthdate)){
                 $nino->birthdate = $nino->birthdate ? \Carbon\Carbon::parse($nino->birthdate) : null;
                 $nino['anios'] = $this->obtener_edad_segun_fecha($nino->birthdate);
+            }
+
+            //Asocio el niño con su responsable
+            $responsible = DB::table('childrens_responsible')->where('children_id', $nino->id)->first();
+            if($responsible){
+                $contentResponsible = DB::table('users')->where('id', $responsible->user_id)->first();
+                $nino['responsable'] = $contentResponsible->name . ' ' . $contentResponsible->lastname;
+                $nino['phone_responsable'] = $contentResponsible->phone;
+                $nino['responsable_id'] = $responsible->user_id;
             }
         }
 

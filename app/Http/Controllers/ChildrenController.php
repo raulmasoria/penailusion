@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Childrens_antiquities;
 use App\Models\Childrens_antiquities_old;
+use App\Models\Childrens_responsible;
 use Illuminate\Support\Facades\Redirect;
 use App\Imports\AntiquitiesChildrensImport;
 
@@ -28,10 +29,15 @@ class ChildrenController extends Controller
     {
 
         $antiquity = Childrens_antiquities::where('children_id', $nino->id)->get();
+        $responsible_id = Childrens_responsible::where('children_id', $nino->id)->get();
+        $user_responsible = User::where('id', $responsible_id[0]->user_id)->get();
+        $users = User::get();
 
         return view('children.edit',[
             "nino" => $nino,
             "antiquitys" => $antiquity,
+            "responsible" => $user_responsible,
+            "users" => $users,
         ]);
     }
 
@@ -42,17 +48,29 @@ class ChildrenController extends Controller
             'name' => ['string', 'max:255'],
             'lastname' => ['string', 'max:255'],
             'fecha' => ['date'],
-            'responsible' => ['string', 'max:255'],
-            'phone_responsible' => ['Numeric'],
         ]);
 
         $nino->name = $request->name;
         $nino->lastname = $request->lastname;
         $nino->birthdate = $request->fecha;
-        $nino->responsible = $request->responsible;
-        $nino->phone_responsible = $request->phone_responsible;
-
         $nino->save();
+
+        //guardo responsable y borro el anterior si tuviera.
+        $responsible_id = $request->changeeResponsible;
+        $responsible = Childrens_responsible::where('children_id', $nino->id)->first();
+        if ($responsible != null) {
+            $responsible->delete();
+
+            $responsible = new Childrens_responsible;
+            $responsible->children_id = $nino->id;
+            $responsible->user_id = $responsible_id;
+            $responsible->save();
+        } else {
+            $responsible = new Childrens_responsible;
+            $responsible->children_id = $nino->id;
+            $responsible->user_id = $responsible_id;
+            $responsible->save();
+        }
 
         return Redirect::route('niños.edit',$nino)->with('status', 'nino-updated');
 
@@ -61,7 +79,11 @@ class ChildrenController extends Controller
     //página de crear un niño siendo junta directiva
     public function create()
     {
-        return view('children.new_niño');
+        $users = User::get();
+
+        return view('children.new_niño',[
+            "users" => $users,
+        ]);
     }
 
     //crear un usuario niño junta directiva
@@ -70,31 +92,27 @@ class ChildrenController extends Controller
         $request->validate([
             'name' => ['string', 'max:255'],
             'lastname' => ['string', 'max:255'],
-            'fecha' => ['date'],
-            'responsible' => ['string', 'max:255'],
-            'phone_responsible' => ['Numeric'],
+            'fecha' => ['date']
         ]);
 
-        //guardo usuario
-        $nino = new Children();
-
+        //guardo niño
+        $nino = new Childrens();
         $nino->name = $request->name;
         $nino->lastname = $request->lastname;
         $nino->birthdate = $request->fecha;
-        $nino->responsible = $request->responsible;
-        $nino->phone_responsible = $request->phone_responsible;
-
         $nino->save();
 
+        //guardo responsable
+        $responsible = new Childrens_responsible;
+        $responsible->children_id = $nino->id;
+        $responsible->user_id = $request->responsible_id;
+        $responsible->save();
+
         //guardo antiguedad
-         foreach ($request->antiguedad as $año) {
-            $antiquity = new Childrens_antiquities();
-
-            $antiquity->children_id = $nino->id;
-            $antiquity->year = $año;
-
-            $antiquity->save();
-         }
+        $antiquity = new Childrens_antiquities();
+        $antiquity->children_id = $nino->id;
+        $antiquity->year = YearHelperController::currentYear();;
+        $antiquity->save();
 
         return Redirect::route('niños.edit',$nino)->with('status', 'user-create');
     }

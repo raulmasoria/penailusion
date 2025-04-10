@@ -67,10 +67,14 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="font-medium text-gray-700">{{ $nino->responsible }}</div>
+                                        <div class="font-medium text-gray-700">
+                                            <a href="/socios/{{ $nino->responsable_id }}" class="underline">
+                                                {{ $nino->responsable }}
+                                            </a>
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="font-medium text-gray-700">{{ $nino->phone_responsible }}</div>
+                                        <div class="font-medium text-gray-700">{{ $nino->phone_responsable }}</div>
                                     </td>
 
                                     <td class="px-6 py-4">
