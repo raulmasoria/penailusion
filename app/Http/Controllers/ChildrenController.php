@@ -7,16 +7,17 @@ use App\Models\User;
 use App\Models\Adress;
 use App\Models\Antiquity;
 use App\Models\Childrens;
+use App\Models\Childrens_antiquities_old;
+use App\Models\Childrens_antiquities;
+use App\Models\Childrens_responsible;
 use Illuminate\Http\Request;
-use App\Imports\ChildrensImport;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Models\Childrens_antiquities;
-use App\Models\Childrens_antiquities_old;
-use App\Models\Childrens_responsible;
-use Illuminate\Support\Facades\Redirect;
+use App\DataTables\ChildrensDataTable;
+use App\Imports\ChildrensImport;
 use App\Imports\AntiquitiesChildrensImport;
+use App\Exports\ChildrensExport;
 
 class ChildrenController extends Controller
 {
@@ -239,6 +240,18 @@ class ChildrenController extends Controller
         Excel::import(new AntiquitiesChildrensImport, $request->file('file'));
 
         return back()->with('success', 'Niños importados correctamente.');
+    }
+
+    //Tablas de niños con filtros (Exportar niños)
+    public function rendertable(ChildrensDataTable $dataTable)
+    {
+        return $dataTable->render('tools.tabla_filtros_children');
+    }
+
+    public function exportExcel(Request $request)
+    {
+        $filters = $request->all();
+        return Excel::download(new ChildrensExport($filters), 'menores_filtrados.xlsx');
     }
 
 }

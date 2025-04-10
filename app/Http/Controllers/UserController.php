@@ -581,7 +581,7 @@ class UserController extends Controller
         return back()->with('success', 'Usuarios importados correctamente.');
     }
 
-    //Tablas de usuarios con filtros
+    //Tablas de usuarios con filtros (Exportar adultos)
     public function rendertable(UsersDataTable $dataTable)
     {
         return $dataTable->render('tools.tabla_filtros');

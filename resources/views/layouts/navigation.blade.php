@@ -61,6 +61,9 @@
                                     <x-dropdown-link :href="route('users.filter')" :active="request()->routeIs('users.filter')">
                                         {{ __('Exportar adultos') }}
                                     </x-dropdown-link>
+                                    <x-dropdown-link :href="route('childrens.filter')" :active="request()->routeIs('childrens.filter')">
+                                        {{ __('Exportar niños') }}
+                                    </x-dropdown-link>
                                     <x-dropdown-link :href="route('godfather.show')" :active="request()->routeIs('godfather.show')">
                                         {{ __('Padrinos') }}
                                     </x-dropdown-link>
@@ -158,6 +161,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('users.filter')" :active="request()->routeIs('users.filter')">
                         {{ __('Exportar adultos') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('childrens.filter')" :active="request()->routeIs('childrens.filter')">
+                        {{ __('Exportar niños') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('godfather.show')" :active="request()->routeIs('godfather.show')">
                         {{ __('Padrinos') }}

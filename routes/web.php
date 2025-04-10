@@ -75,9 +75,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/import-antiquity-childrens', function () { return view('import'); });*/
 
 
-    //Tabla de usuarios con filtros
+    //Tabla de usuarios con filtros (Exportar adultos)
     Route::get('/socios_filtros', [UserController::class, 'rendertable'])->name('users.filter');
     Route::get('/socios_filtros/export-excel', [UserController::class, 'exportExcel'])->name('users.export.excel');
+
+    //Tabla de niños con filtros (Exportar niños)
+    Route::get('/ninos_filtros', [ChildrenController::class, 'rendertable'])->name('childrens.filter');
+    Route::get('/ninos_filtros/export-excel', [ChildrenController::class, 'exportExcel'])->name('childrens.export.excel');
 
     //tabla de quién puede apadrinar
     Route::get('/quien_apadrinar', [GodfatherController::class, 'rendertable'])->name('godfather.show');
