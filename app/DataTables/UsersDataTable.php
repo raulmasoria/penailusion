@@ -14,14 +14,16 @@ class UsersDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', 'users.action');
+            ->editColumn('RGPD', function ($user) {
+                return $user->RGPD ? 'Sí' : 'No';
+            });
     }
 
     public function query()
     {
         $query = User::query()
-            ->select('users.id', DB::raw('UPPER(users.name) as name'), DB::raw('UPPER(users.lastname) as lastname'), 'users.phone', 'users.email')
-            ->groupBy('users.id', 'users.name', 'users.lastname', 'users.phone', 'users.email');
+            ->select('users.id', DB::raw('UPPER(users.name) as name'), DB::raw('UPPER(users.lastname) as lastname'), 'users.phone', 'users.email', 'users.RGPD')
+            ->groupBy('users.id', 'users.name', 'users.lastname', 'users.phone', 'users.email', 'users.RGPD');
 
         if (!empty(request('filter_name'))) {
             $query->where('users.name', 'like', '%' . request('filter_name') . '%');
@@ -138,6 +140,10 @@ class UsersDataTable extends DataTable
             [
                 'data' => 'phone',
                 'title' => 'Teléfono',
+            ],
+            [
+                'data' => 'RGPD',
+                'title' => 'RGPD',
             ],
         ];
     }

@@ -4,9 +4,11 @@ namespace App\Exports;
 use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Support\Facades\DB;
 
-class UsersExport implements FromQuery
+class UsersExport implements FromQuery, WithMapping, WithHeadings
 {
     use Exportable;
 
@@ -20,8 +22,8 @@ class UsersExport implements FromQuery
     public function query()
     {
         $query = User::query()
-            ->select('users.id', DB::raw('UPPER(users.name) as name'), DB::raw('UPPER(users.lastname) as lastname'), 'users.phone', 'users.email')
-            ->groupBy('users.id', 'users.name', 'users.lastname', 'users.phone', 'users.email');
+            ->select('users.id', DB::raw('UPPER(users.name) as name'), DB::raw('UPPER(users.lastname) as lastname'), 'users.phone', 'users.email', 'users.RGPD')
+            ->groupBy('users.id', 'users.name', 'users.lastname', 'users.phone', 'users.email', 'users.RGPD');
 
 
         \Log::info('filters export:', $this->filters );
@@ -63,6 +65,28 @@ class UsersExport implements FromQuery
         \Log::info('Consulta SQL export:', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
 
         return $query;
+    }
+
+    public function map($user): array
+    {
+        return [
+            $user->name,
+            $user->lastname,
+            $user->email,
+            $user->phone,
+            $user->RGPD ? 'Sí' : 'No',
+        ];
+    }
+
+    public function headings(): array
+    {
+        return [
+            'Nombre',
+            'Apellido',
+            'Correo Electrónico',
+            'Teléfono',
+            'RGPD',
+        ];
     }
 
 }
