@@ -45,7 +45,7 @@
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div class="flex flex-col w-full">
                                             <label class="text-orange-600 font-semibold">Responsable</label>
-                                            <input type="text" name="filter_responsible" placeholder="Email" value="{{ request('filter_responsible') }}"
+                                            <input type="text" name="filter_responsible" placeholder="Responsable" value="{{ request('filter_responsible') }}"
                                                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-300 p-2">
                                         </div>
                                         <div class="flex flex-col w-full">
