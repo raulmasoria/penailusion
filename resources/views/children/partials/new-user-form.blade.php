@@ -54,7 +54,7 @@
         </div>
         <div>
             <x-input-label for="padrino1" :value="__('Primer padrino')" />
-                <select id="padrino1" name="padrino1" class="border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
+                <select id="padrino1" name="padrino1" class="select2 border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
                     <option value="" >-- Elige un socio --</option>
                     @foreach ($godfathers as $godfather_id => $godfather)
                         <option value="{{ $godfather_id }}"> {{$godfather }} </option>
@@ -65,7 +65,7 @@
 
         <div>
             <x-input-label for="padrino2" :value="__('Segundo padrino')" />
-                <select id="padrino2" name="padrino2" class="border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
+                <select id="padrino2" name="padrino2" class="select2 border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
                     <option value="" >-- Elige un socio --</option>
                     @foreach ($godfathers as $godfather_id => $godfather)
                         <option value="{{ $godfather_id }}"> {{$godfather }} </option>
@@ -84,6 +84,18 @@
 <script>
     $('#responsible').select2({
         placeholder: "-- Selecciona un adulto responsable --",
+        allowClear: true,
+        width: '100%'
+    });
+
+    $('#padrino1').select2({
+        placeholder: "-- Elige un socio --",
+        allowClear: true,
+        width: '100%'
+    });
+
+    $('#padrino2').select2({
+        placeholder: "-- Elige un socio --",
         allowClear: true,
         width: '100%'
     });

@@ -7,7 +7,7 @@
         <p class="mt-1 text-sm text-gray-600">
             {{ __("Aquí puedes añadir los datos del nuevo peñista") }}
         </p>
-        
+
     </header>
 
     <form method="post" action="{{ route('socios.store') }}" class="mt-6 space-y-6">
@@ -93,7 +93,7 @@
         </p>
 
         <div>
-            <x-input-label for="lactosa" :value="__('Lactosa')" />             
+            <x-input-label for="lactosa" :value="__('Lactosa')" />
             <x-text-input id="lactosa" name="lactosa" type="checkbox" class="mt-1 block" value="lactosa" autofocus autocomplete="lactosa" />
             <x-input-error class="mt-2" :messages="$errors->get('lactosa')" />
         </div>
@@ -130,28 +130,43 @@
 
         <div>
             <x-input-label for="padrino1" :value="__('Primer padrino')" />
-                <select id="padrino1" name="padrino1" required class="border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
+                <select id="padrino1" name="padrino1" required class="select2 border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
                     <option value="" >-- Elige un socio --</option>
                     @foreach ($godfathers as $godfather_id => $godfather)
                         <option value="{{ $godfather_id }}"> {{$godfather }} </option>
-                    @endforeach                    
+                    @endforeach
                 </select>
             <x-input-error :messages="$errors->get('padrino1')" class="mt-2" />
         </div>
 
         <div>
             <x-input-label for="padrino2" :value="__('Segundo padrino')" />
-                <select id="padrino2" name="padrino2" required class="border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
+                <select id="padrino2" name="padrino2" required class="select2 border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
                     <option value="" >-- Elige un socio --</option>
                     @foreach ($godfathers as $godfather_id => $godfather)
                         <option value="{{ $godfather_id }}"> {{$godfather }} </option>
-                    @endforeach                     
+                    @endforeach
                 </select>
             <x-input-error :messages="$errors->get('padrino2')" class="mt-2" />
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Guardar') }}</x-primary-button>           
+            <x-primary-button>{{ __('Guardar') }}</x-primary-button>
         </div>
     </form>
 </section>
+@push('scripts')
+<script>
+    $('#padrino1').select2({
+        placeholder: "-- Elige un socio --",
+        allowClear: true,
+        width: '100%'
+    });
+
+    $('#padrino2').select2({
+        placeholder: "-- Elige un socio --",
+        allowClear: true,
+        width: '100%'
+    });
+</script>
+@endpush
