@@ -41,6 +41,10 @@ class UsersDataTable extends DataTable
             $query->where('users.phone', 'like', '%' . request('filter_phone') . '%');
         }
 
+        if (!empty(request('filter_rgpd'))) {
+            $query->where('users.RGPD', request('filter_rgpd') == '1' ? 1 : 0);
+        }
+
         if (!empty(request('filter_antiquity')) && is_array(request('filter_antiquity'))) {
             $years = request('filter_antiquity');
             \Log::info('filter_antiquity:', $years);
@@ -102,6 +106,7 @@ class UsersDataTable extends DataTable
                                 filter_phone: $("input[name=\'filter_phone\']").val(),
                                 filter_antiquity: $("select[name=\'filter_antiquity[]\']").val() || [],
                                 filter_permanence: $("select[name=\'filter_permanence[]\']").val() || [],
+                                filter_rgpd: $("select[name=\'filter_rgpd\']").val(),
                             };
 
                             var url = "' . route('users.export.excel') . '?" + $.param(filters);

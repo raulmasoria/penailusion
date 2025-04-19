@@ -40,7 +40,7 @@
                                                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-300 p-2">
                                         </div>
                                     </div>
-                            
+
                                     <!-- Segunda fila: Email y Teléfono -->
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div class="flex flex-col w-full">
@@ -54,8 +54,20 @@
                                                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-300 p-2">
                                         </div>
                                     </div>
-                            
-                                    <!-- Tercera fila: Selects en dos columnas -->
+
+                                    <!-- tercera fila: RGPD -->
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div class="flex flex-col w-full">
+                                            <label class="text-orange-600 font-semibold">RGPD</label>
+                                            <select name="filter_rgpd" class="w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-300 p-2">
+                                                <option value="" {{ request('filter_rgpd') == '' ? 'selected' : '' }}>Selecciona una opción</option>
+                                                <option value="1" {{ request('filter_rgpd') == '1' ? 'selected' : '' }}>Sí</option>
+                                                <option value="0" {{ request('filter_rgpd') == '0' ? 'selected' : '' }}>No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cuarta fila: Selects en dos columnas -->
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <div class="flex flex-col w-full">
                                             <div class="flex items-center">
@@ -83,7 +95,7 @@
                                             <span class="absolute top-0 right-0 p-2 text-gray-500 cursor-pointer" title="Selecciona los años de cuota completa para los socios.">
                                                 <i class="fas fa-info-circle"></i>
                                             </span>
-                                        </div>                            
+                                        </div>
                                         <div class="flex flex-col w-full">
                                             <div class="flex items-center">
                                                 <label class="text-orange-600 font-semibold mr-2">Años de permanencia</label>
@@ -100,9 +112,9 @@
                                                     <option value="{{ $year }}" {{ in_array($year, $selectedPermanence) ? 'selected' : '' }}>{{ $year }}</option>
                                                 @endforeach
                                             </select>
-                                        </div>                                        
+                                        </div>
                                     </div>
-                            
+
                                     <!-- Botones -->
                                     <div class="flex justify-end space-x-4">
                                         <a href="{{ route('users.filter') }}" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md shadow hover:bg-gray-400">
@@ -113,8 +125,8 @@
                                         </button>
                                     </div>
                                 </div>
-                            </form>                                                    
-                                                     
+                            </form>
+
                             <div class="m-5">
                                 {!! $dataTable->table() !!}
                             </div>

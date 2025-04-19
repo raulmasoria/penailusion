@@ -44,6 +44,10 @@ class UsersExport implements FromQuery, WithMapping, WithHeadings
             $query->where('users.phone', 'like', '%' . $this->filters['filter_phone'] . '%');
         }
 
+        if (!empty($this->filters['filter_rgpd'])) {
+            $query->where('users.RGPD', $this->filters['filter_rgpd'] == '1' ? 1 : 0);
+        }
+
         if (!empty($this->filters['filter_antiquity']) && is_array($this->filters['filter_antiquity'])) {
             $years = $this->filters['filter_antiquity'];
             \Log::info('filter_antiquity:', $years);
