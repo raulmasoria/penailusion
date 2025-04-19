@@ -44,6 +44,8 @@
             <x-input-error class="mt-2" :messages="$errors->get('responsiblePhone')" />
         </div>
 
+        <hr class="my-4">
+
         <div>
             <x-input-label for="changeeResponsible" :value="__('Asignar otro responsable')" />
             <select id="changeeResponsible" name="changeeResponsible" class="select2 w-full border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm">
