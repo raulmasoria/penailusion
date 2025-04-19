@@ -8,6 +8,8 @@ use App\Models\Adress;
 use App\Models\Antiquity;
 use App\Models\Childrens_antiquities_old;
 use App\Models\Godfather;
+use App\Models\Childrens_godfathers;
+use App\Models\Childrens;
 use App\Models\Permanence;
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
@@ -33,6 +35,7 @@ class UserController extends Controller
         $godfather1 = '';
         $godfather2 = '';
         $all_godfather = array();
+        $all_childrens_godfather = array();
 
         $adress = Adress::where('user_id', $user->id)->firstOrFail();
         $antiquity = Antiquity::where('user_id', $user->id)->get();
@@ -66,6 +69,13 @@ class UserController extends Controller
             }
         }
 
+        if (Childrens_godfathers::where('user_godfather_1', $user->id)->orWhere('user_godfather_2', $user->id)->exists()) {
+            $the_childrens_godfathers = Childrens_godfathers::where('user_godfather_1', $user->id)->orWhere('user_godfather_2', $user->id)->get();
+            foreach($the_childrens_godfathers as $the_godfather){
+                $all_childrens_godfather[$the_godfather->year_godfather] = Childrens::where('id',$the_godfather->children_new)->firstOrFail();
+            }
+        }
+
         //junto la antiguedad con la permanencia
         $anos = array();
         foreach ($antiquity as $anti){
@@ -87,6 +97,7 @@ class UserController extends Controller
             "godfather1" => $godfather1,
             "godfather2" => $godfather2,
             "all_godfather" => $all_godfather,
+            "all_childrens_godfather" => $all_childrens_godfather,
             "intolerances" => $allIntolerances
         ]);
     }
