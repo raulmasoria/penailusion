@@ -43,8 +43,7 @@ class ChildrenController extends Controller
             ->leftjoin('antiquities', 'users.id', '=', 'antiquities.user_id')
             ->leftjoin('permanences', 'users.id', '=', 'permanences.user_id')
             ->where(function ($query) {
-                $query->where('antiquities.year', YearHelperController::currentYear())
-                        ->orWhere('permanences.year_permanence', YearHelperController::currentYear());
+                $query->where('antiquities.year', YearHelperController::currentYear());
             })
             ->groupBy('users.id', 'users.name', 'users.lastname', 'users.email')
             ->get();
@@ -110,8 +109,7 @@ class ChildrenController extends Controller
             ->leftjoin('antiquities', 'users.id', '=', 'antiquities.user_id')
             ->leftjoin('permanences', 'users.id', '=', 'permanences.user_id')
             ->where(function ($query) {
-                $query->where('antiquities.year', YearHelperController::currentYear())
-                        ->orWhere('permanences.year_permanence', YearHelperController::currentYear());
+                $query->where('antiquities.year', YearHelperController::currentYear());
             })
             ->groupBy('users.id', 'users.name', 'users.lastname', 'users.email')
             ->get();
