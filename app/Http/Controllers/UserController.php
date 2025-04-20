@@ -9,6 +9,7 @@ use App\Models\Antiquity;
 use App\Models\Childrens_antiquities_old;
 use App\Models\Godfather;
 use App\Models\Childrens_godfathers;
+use App\Models\Childrens_responsible;
 use App\Models\Childrens;
 use App\Models\Permanence;
 use App\Exports\UsersExport;
@@ -76,6 +77,16 @@ class UserController extends Controller
             }
         }
 
+        //¿Es responsable de algún menor?
+        if( Childrens_responsible::where('user_id', $user->id)->exists()) {
+            $childrens_responsible = Childrens_responsible::where('user_id', $user->id)->get();
+            foreach($childrens_responsible as $childrens_responsible){
+                $childrens[$childrens_responsible->children_id] = Childrens::where('id', $childrens_responsible->children_id)->firstOrFail();
+            }
+        } else {
+            $childrens = array();
+        }
+
         //junto la antiguedad con la permanencia
         $anos = array();
         foreach ($antiquity as $anti){
@@ -98,7 +109,8 @@ class UserController extends Controller
             "godfather2" => $godfather2,
             "all_godfather" => $all_godfather,
             "all_childrens_godfather" => $all_childrens_godfather,
-            "intolerances" => $allIntolerances
+            "intolerances" => $allIntolerances,
+            "childrens_responsible" => $childrens,
         ]);
     }
 
