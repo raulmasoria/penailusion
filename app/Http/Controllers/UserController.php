@@ -80,8 +80,11 @@ class UserController extends Controller
         //¿Es responsable de algún menor?
         if( Childrens_responsible::where('user_id', $user->id)->exists()) {
             $childrens_responsible = Childrens_responsible::where('user_id', $user->id)->get();
-            foreach($childrens_responsible as $childrens_responsible){
-                $childrens[$childrens_responsible->children_id] = Childrens::where('id', $childrens_responsible->children_id)->firstOrFail();
+
+            foreach ($childrens_responsible as $cr) {
+                $children = Childrens::where('id', $cr->children_id)->firstOrFail();
+                $children->years = YearHelperController::obtener_edad_segun_fecha($children->birthdate);
+                $childrens[$children->id] = $children;
             }
         } else {
             $childrens = array();

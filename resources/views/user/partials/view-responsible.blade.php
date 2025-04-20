@@ -15,6 +15,7 @@
             <thead class="bg-orange-500">
                 <tr>
                     <th scope="col" class="px-6 py-4 font-medium text-gray-900">Datos del menor</th>
+                    <th scope="col" class="px-6 py-4 font-medium text-gray-900">Fecha de nacimiento</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 border-t border-gray-100">
@@ -23,6 +24,9 @@
                         <th class="flex gap-3 px-6 py-4 font-normal text-gray-900 text-center">
                             <a class="underline" href="/niños/{{ $child->id }}">{{ $child->name . ' ' . $child->lastname}}</a>
                         </th>
+                        <td class="px-6 py-4 font-normal text-gray-900 text-center">
+                            {{ $child->birthdate->format('d/m/Y') .' (' . $child->years  . ' años)' }}
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

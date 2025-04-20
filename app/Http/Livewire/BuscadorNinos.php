@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use DateTime;
+use App\Http\Controllers\YearHelperController;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Childrens;
@@ -36,7 +36,7 @@ class BuscadorNinos extends Component
         {
             if(!empty($nino->birthdate)){
                 $nino->birthdate = $nino->birthdate ? \Carbon\Carbon::parse($nino->birthdate) : null;
-                $nino['anios'] = $this->obtener_edad_segun_fecha($nino->birthdate);
+                $nino['anios'] = YearHelperController::obtener_edad_segun_fecha($nino->birthdate);
             }
 
             //Asocio el niño con su responsable
@@ -69,11 +69,4 @@ class BuscadorNinos extends Component
         ]);
     }
 
-    function obtener_edad_segun_fecha($fecha_nacimiento)
-    {
-        $nacimiento = Carbon::parse($fecha_nacimiento)->format('d-m-Y');
-        $ahora = Carbon::now()->format('Y-m-d');
-        $diferencia = Carbon::now()->diffInYears($nacimiento);
-        return $diferencia;
-    }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+
 class YearHelperController extends Controller
 {
     public static function currentYear()
@@ -29,6 +31,13 @@ class YearHelperController extends Controller
         return '2019';
         //pongo esto fijo porque ni el 2020 ni el 2021 tuvimos fiestas y estos años no cuentan para antiguedad
         //return now()->subYear(4)->year;
+    }
+
+    public static function obtener_edad_segun_fecha($fecha_nacimiento)
+    {
+        $nacimiento = Carbon::parse($fecha_nacimiento)->format('d-m-Y');
+        $diferencia = Carbon::now()->diffInYears($nacimiento);
+        return $diferencia;
     }
 
 
