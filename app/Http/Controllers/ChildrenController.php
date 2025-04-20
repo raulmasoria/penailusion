@@ -38,7 +38,16 @@ class ChildrenController extends Controller
         $antiquity = Childrens_antiquities::where('children_id', $nino->id)->get();
         $responsible_id = Childrens_responsible::where('children_id', $nino->id)->get();
         $user_responsible = User::where('id', $responsible_id[0]->user_id)->get();
-        $users = User::get();
+        //Usuarios que pueden ser responsables por haber pagado la cuota o permanencia en el año actual
+        $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
+            ->leftjoin('antiquities', 'users.id', '=', 'antiquities.user_id')
+            ->leftjoin('permanences', 'users.id', '=', 'permanences.user_id')
+            ->where(function ($query) {
+                $query->where('antiquities.year', YearHelperController::currentYear())
+                        ->orWhere('permanences.year_permanence', YearHelperController::currentYear());
+            })
+            ->groupBy('users.id', 'users.name', 'users.lastname', 'users.email')
+            ->get();
 
         //¿Quien le ha apadrinado?
         if (Childrens_godfathers::where('children_new', $nino->id)->exists()) {
@@ -96,7 +105,17 @@ class ChildrenController extends Controller
     //página de crear un niño siendo junta directiva
     public function create()
     {
-        $users = User::get();
+        //Usuarios que pueden ser responsables por haber pagado la cuota o permanencia en el año actual
+        $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
+            ->leftjoin('antiquities', 'users.id', '=', 'antiquities.user_id')
+            ->leftjoin('permanences', 'users.id', '=', 'permanences.user_id')
+            ->where(function ($query) {
+                $query->where('antiquities.year', YearHelperController::currentYear())
+                        ->orWhere('permanences.year_permanence', YearHelperController::currentYear());
+            })
+            ->groupBy('users.id', 'users.name', 'users.lastname', 'users.email')
+            ->get();
+
         //Quien puede apadrinar
         $cumplenTodo = GodfatherController::getPueden();
 
