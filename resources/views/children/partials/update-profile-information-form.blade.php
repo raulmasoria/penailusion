@@ -33,14 +33,27 @@
         </div>
 
         <div>
+            <x-input-label for="edad" :value="__('Edad')" />
+            <x-text-input id="edad" name="edad" type="text" class="mt-1 block w-full" :value="old('edad', $nino->years)" required autofocus autocomplete="edad" disabled/>
+        </div>
+
+        <div>
             <x-input-label for="responsible" :value="__('Responsable')" />
-            <x-text-input id="responsible" name="responsible" type="text" class="mt-1 block w-full" :value="old('responsible', $responsible[0]->name . ' ' . $responsible[0]->lastname)" required autofocus autocomplete="responsible" disabled/>
+            @if ($responsible)
+                <x-text-input id="responsible" name="responsible" type="text" class="mt-1 block w-full" :value="old('responsible', $responsible->name . ' ' . $responsible->lastname)" required autofocus autocomplete="responsible" disabled/>
+            @else
+                <x-text-input id="responsible" name="responsible" type="text" class="mt-1 block w-full" required autofocus autocomplete="responsible" disabled/>
+            @endif
             <x-input-error class="mt-2" :messages="$errors->get('responsible')" />
         </div>
 
         <div>
             <x-input-label for="responsiblePhone" :value="__('Telefono del responsable')" />
-            <x-text-input id="responsiblePhone" name="phone_responsible" type="text" class="mt-1 block w-full" :value="old('responsiblePhone', $responsible[0]->phone)" required autofocus autocomplete="responsiblePhone" disabled/>
+            @if ($responsible)
+                <x-text-input id="responsiblePhone" name="phone_responsible" type="text" class="mt-1 block w-full" :value="old('responsiblePhone', $responsible->phone)" required autofocus autocomplete="responsiblePhone" disabled/>
+            @else
+                <x-text-input id="responsiblePhone" name="phone_responsible" type="text" class="mt-1 block w-full" required autofocus autocomplete="responsiblePhone" disabled/>
+            @endif
             <x-input-error class="mt-2" :messages="$errors->get('responsiblePhone')" />
         </div>
 

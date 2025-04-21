@@ -43,6 +43,9 @@ class ChildrenController extends Controller
             $user_responsible = array();
         }
 
+        //Edad del niño
+        $nino->years = YearHelperController::obtener_edad_segun_fecha($nino->birthdate);
+
         //Usuarios que pueden ser responsables por haber pagado la cuota o permanencia en el año actual
         $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
             ->leftjoin('antiquities', 'users.id', '=', 'antiquities.user_id')
@@ -86,20 +89,22 @@ class ChildrenController extends Controller
         $nino->save();
 
         //guardo responsable y borro el anterior si tuviera.
-        $responsible_id = $request->changeeResponsible;
-        $responsible = Childrens_responsible::where('children_id', $nino->id)->first();
-        if ($responsible != null) {
-            $responsible->delete();
+        if($request->changeeResponsible != null){
+            $responsible_id = $request->changeeResponsible;
+            $responsible = Childrens_responsible::where('children_id', $nino->id)->first();
+            if ($responsible != null) {
+                $responsible->delete();
 
-            $responsible = new Childrens_responsible;
-            $responsible->children_id = $nino->id;
-            $responsible->user_id = $responsible_id;
-            $responsible->save();
-        } else {
-            $responsible = new Childrens_responsible;
-            $responsible->children_id = $nino->id;
-            $responsible->user_id = $responsible_id;
-            $responsible->save();
+                $responsible = new Childrens_responsible;
+                $responsible->children_id = $nino->id;
+                $responsible->user_id = $responsible_id;
+                $responsible->save();
+            } else {
+                $responsible = new Childrens_responsible;
+                $responsible->children_id = $nino->id;
+                $responsible->user_id = $responsible_id;
+                $responsible->save();
+            }
         }
 
         return Redirect::route('niños.edit',$nino)->with('status', 'nino-updated');
