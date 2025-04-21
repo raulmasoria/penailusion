@@ -37,7 +37,12 @@ class ChildrenController extends Controller
 
         $antiquity = Childrens_antiquities::where('children_id', $nino->id)->get();
         $responsible_id = Childrens_responsible::where('children_id', $nino->id)->get();
-        $user_responsible = User::where('id', $responsible_id[0]->user_id)->get();
+        if($responsible_id->isNotEmpty()) {
+            $user_responsible = User::where('id', $responsible_id[0]->user_id)->firstOrFail();
+        } else {
+            $user_responsible = array();
+        }
+
         //Usuarios que pueden ser responsables por haber pagado la cuota o permanencia en el año actual
         $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
             ->leftjoin('antiquities', 'users.id', '=', 'antiquities.user_id')
