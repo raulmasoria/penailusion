@@ -5,8 +5,10 @@ use App\Models\Childrens;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class ChildrensExport implements FromQuery
+
+class ChildrensExport implements FromQuery, WithMapping
 {
     use Exportable;
 
@@ -20,10 +22,10 @@ class ChildrensExport implements FromQuery
     public function query()
     {
         $query = Childrens::query()
-            ->select('childrens.id', DB::raw('UPPER(childrens.name) as name'), DB::raw('UPPER(childrens.lastname) as lastname'),DB::raw('UPPER(CONCAT(users.name, " ", users.lastname)) as responsible_fullname'), 'users.phone as responsiblephone')
+            ->select('childrens.id', DB::raw('UPPER(childrens.name) as name'), DB::raw('UPPER(childrens.lastname) as lastname'),DB::raw('UPPER(CONCAT(users.name, " ", users.lastname)) as responsible_fullname'), 'users.phone as responsiblephone', 'childrens.birthdate', DB::raw("TIMESTAMPDIFF(YEAR, childrens.birthdate, CURDATE()) as edad"))
             ->leftJoin('childrens_responsible', 'childrens.id', '=', 'childrens_responsible.children_id')
             ->leftJoin('users', 'childrens_responsible.user_id', '=', 'users.id')
-            ->groupBy('childrens.id', 'childrens.name', 'childrens.lastname', 'users.name', 'users.lastname', 'users.phone');
+            ->groupBy('childrens.id', 'childrens.name', 'childrens.lastname', 'users.name', 'users.lastname', 'users.phone', 'childrens.birthdate');
 
         if (!empty($this->filters['filter_name'])) {
             $query->where('childrens.name', 'like', '%' . $this->filters['filter_name'] . '%');
@@ -53,6 +55,18 @@ class ChildrensExport implements FromQuery
         \Log::info('Consulta SQL EXPORT:', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
 
         return $query;
+    }
+
+    public function map($row): array
+    {
+        return [
+            $row->name,
+            $row->lastname,
+            $row->responsible_fullname,
+            $row->responsiblephone,
+            optional($row->birthdate)->format('d/m/Y'),
+            $row->edad,
+        ];
     }
 
 }

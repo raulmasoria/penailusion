@@ -14,13 +14,19 @@ class ChildrensDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->addColumn('birthdate', function ($row) {
+                return optional($row->birthdate)->format('d/m/Y');
+            })
+            ->addColumn('edad', function ($row) {
+                return $row->birthdate ? $row->birthdate->diffInYears(now()) : null;
+            })
             ->addColumn('action', 'childrens.action');
     }
 
     public function query()
     {
         $query = Childrens::query()
-            ->select('childrens.id', DB::raw('UPPER(childrens.name) as name'), DB::raw('UPPER(childrens.lastname) as lastname'),DB::raw('UPPER(CONCAT(users.name, " ", users.lastname)) as responsible_fullname'), 'users.phone as responsiblephone')
+            ->select('childrens.id', DB::raw('UPPER(childrens.name) as name'), DB::raw('UPPER(childrens.lastname) as lastname'),DB::raw('UPPER(CONCAT(users.name, " ", users.lastname)) as responsible_fullname'), 'users.phone as responsiblephone', 'childrens.birthdate')
             ->leftJoin('childrens_responsible', 'childrens.id', '=', 'childrens_responsible.children_id')
             ->leftJoin('users', 'childrens_responsible.user_id', '=', 'users.id')
             ->groupBy('childrens.id', 'childrens.name', 'childrens.lastname', 'users.name', 'users.lastname', 'users.phone');
@@ -128,6 +134,14 @@ class ChildrensDataTable extends DataTable
             [
                 'data' => 'responsiblephone',
                 'title' => 'Teléfono Responsable',
+            ],
+            [
+                'data' => 'birthdate',
+                'title' => 'Fecha de Nacimiento',
+            ],
+            [
+                'data' => 'edad',
+                'title' => 'Edad',
             ],
         ];
     }
