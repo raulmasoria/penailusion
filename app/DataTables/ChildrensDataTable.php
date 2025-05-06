@@ -29,7 +29,7 @@ class ChildrensDataTable extends DataTable
             ->select('childrens.id', DB::raw('UPPER(childrens.name) as name'), DB::raw('UPPER(childrens.lastname) as lastname'),DB::raw('UPPER(CONCAT(users.name, " ", users.lastname)) as responsible_fullname'), 'users.phone as responsiblephone', 'childrens.birthdate')
             ->leftJoin('childrens_responsible', 'childrens.id', '=', 'childrens_responsible.children_id')
             ->leftJoin('users', 'childrens_responsible.user_id', '=', 'users.id')
-            ->groupBy('childrens.id', 'childrens.name', 'childrens.lastname', 'users.name', 'users.lastname', 'users.phone');
+            ->groupBy('childrens.id', 'childrens.name', 'childrens.lastname', 'users.name', 'users.lastname', 'users.phone', 'childrens.birthdate');
 
         if (!empty(request('filter_name'))) {
             $query->where('childrens.name', 'like', '%' . request('filter_name') . '%');
