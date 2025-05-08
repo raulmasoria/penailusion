@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\Query\Builder;
+use App\Mail\PlantillaEmailLibreElecion;
 use Illuminate\Support\Facades\Redirect;
 
 
@@ -43,6 +44,35 @@ class EmailController extends Controller
         $log->asunto = $subject;
         $log->estado = 'ok';
         $log->save();
+
+    } else if($request->emails == 'libre'){
+
+       $libreEmails = $request->libreEmails;
+       $emails = explode(',', $libreEmails);
+
+        foreach($emails as $email){
+            $email = trim($email);
+            $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $log = new Email;
+                $log->user_id = 583;
+                $log->email = $email;
+                $log->asunto = $subject;
+                $log->estado = 'ko';
+                $log->save();
+                continue;
+            }
+            if(!empty($email)){
+                Mail::mailer('mailrelay')->to($email)->send(new PlantillaEmailLibreElecion($subject,$body));
+
+                $log = new Email;
+                $log->user_id = 583;
+                $log->email = $email;
+                $log->asunto = $subject;
+                $log->estado = 'ok';
+                $log->save();
+            }
+        }
 
     } else if($request->emails == 'socios'){
 

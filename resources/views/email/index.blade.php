@@ -25,7 +25,8 @@
                         <x-input-label for="emails" :value="__('Listado de emails')" />
                         <select id="emails" name="emails" class="border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
                             <option value="" >-- ¿A quién quieres enviar el email? --</option>
-                            <option value="prueba">Prueba</option>
+                            <option value="prueba">Prueba a soriailusion@gmail.com</option>
+                            <option value="libre">Libre elección</option>
                             <option value="socios">Socios del último año</option>
                             <option value="socios_ano_actual">Socios de este año</option>
                         </select>
@@ -36,6 +37,12 @@
                             {{ __('Se debe de utilizar "Socios de este año" cuando queremos enviar un email de abril a diciembre.') }}
                         </p>
                         <x-input-error class="mt-2" :messages="$errors->get('emails')" />
+                    </div>
+
+                    <div style="display:none" id="libre">
+                        <x-input-label for="libre" :value="__('Introduce correos separados por comas')" />
+                        <x-text-input id="libreEmails" name="libreEmails" type="text" class="mt-1 block w-full" required autofocus autocomplete="libre"/>
+                        <x-input-error class="mt-2" :messages="$errors->get('libre')" />
                     </div>
 
                     <div>
@@ -73,3 +80,16 @@
   </div>
 
 @endsection
+
+@push('scripts')
+    <script>
+        $("#emails").on( "change", function() {
+            var estado = $("#emails option:selected" ).val();
+            if(estado == 'libre') {
+                $("#libre").css("display", "block");
+            } else {
+                $("#libre").css("display", "none");
+            }
+        } );
+    </script>
+@endpush
