@@ -74,7 +74,7 @@ class EmailController extends Controller
             }
         }
 
-    } else if($request->emails == 'socios'){
+    } else if($request->emails == 'socios_permanencia_ultimo_ano'){
 
         $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
             ->leftJoin('antiquities', 'users.id', '=', 'antiquities.user_id')
@@ -102,7 +102,7 @@ class EmailController extends Controller
                 $log->save();
             }
         }
-    } else if($request->emails == 'socios_ano_actual'){
+    } else if($request->emails == 'socios_permanencia_ano_actual'){
 
         $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
                 ->leftjoin('antiquities', 'users.id', '=', 'antiquities.user_id')
@@ -110,6 +110,108 @@ class EmailController extends Controller
                 ->where(function ($query) {
                     $query->where('antiquities.year', YearHelperController::currentYear())
                             ->orWhere('permanences.year_permanence', YearHelperController::currentYear());
+                })
+                ->whereNotNull('users.email')
+                ->where('users.email', '<>', '')
+                ->groupBy('users.id', 'users.name', 'users.lastname', 'users.email')
+                ->get();
+        //dd($users);
+        foreach($users as $user){
+            $adress = Adress::where('user_id', $user->id)->firstOrFail();
+            if(!empty($user->email)){
+                Mail::mailer('mailrelay')->to($user->email)->send(new PlantillaEmail($user,$adress,$subject,$body));
+
+                $log = new Email;
+                $log->user_id = $user->id;
+                $log->email = $user->email;
+                $log->asunto = $subject;
+                $log->estado = 'ok';
+                $log->save();
+            }
+        }
+    } else if($request->emails == 'socios_ultimo_ano'){
+
+        $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
+            ->leftJoin('antiquities', 'users.id', '=', 'antiquities.user_id')
+            ->where(function ($query) {
+                $query->where('antiquities.year', YearHelperController::lastYear());
+            })
+            ->whereNotNull('users.email')
+            ->where('users.email', '<>', '')
+            ->groupBy('users.id', 'users.name', 'users.lastname', 'users.email')
+            ->get();
+
+        //dd($users);
+        foreach($users as $user){
+            $adress = Adress::where('user_id', $user->id)->firstOrFail();
+            if(!empty($user->email)){
+                Mail::mailer('mailrelay')->to($user->email)->send(new PlantillaEmail($user,$adress,$subject,$body));
+
+                $log = new Email;
+                $log->user_id = $user->id;
+                $log->email = $user->email;
+                $log->asunto = $subject;
+                $log->estado = 'ok';
+                $log->save();
+            }
+        }
+    } else if($request->emails == 'socios_ano_actual'){
+
+        $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
+                ->leftjoin('antiquities', 'users.id', '=', 'antiquities.user_id')
+                ->where(function ($query) {
+                    $query->where('antiquities.year', YearHelperController::currentYear());
+                })
+                ->whereNotNull('users.email')
+                ->where('users.email', '<>', '')
+                ->groupBy('users.id', 'users.name', 'users.lastname', 'users.email')
+                ->get();
+        //dd($users);
+        foreach($users as $user){
+            $adress = Adress::where('user_id', $user->id)->firstOrFail();
+            if(!empty($user->email)){
+                Mail::mailer('mailrelay')->to($user->email)->send(new PlantillaEmail($user,$adress,$subject,$body));
+
+                $log = new Email;
+                $log->user_id = $user->id;
+                $log->email = $user->email;
+                $log->asunto = $subject;
+                $log->estado = 'ok';
+                $log->save();
+            }
+        }
+    } else if($request->emails == 'permanencia_ultimo_ano'){
+
+        $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
+            ->leftJoin('permanences', 'users.id', '=', 'permanences.user_id')
+            ->where(function ($query) {
+                $query->where('permanences.year_permanence', YearHelperController::lastYear());
+            })
+            ->whereNotNull('users.email')
+            ->where('users.email', '<>', '')
+            ->groupBy('users.id', 'users.name', 'users.lastname', 'users.email')
+            ->get();
+
+        //dd($users);
+        foreach($users as $user){
+            $adress = Adress::where('user_id', $user->id)->firstOrFail();
+            if(!empty($user->email)){
+                Mail::mailer('mailrelay')->to($user->email)->send(new PlantillaEmail($user,$adress,$subject,$body));
+
+                $log = new Email;
+                $log->user_id = $user->id;
+                $log->email = $user->email;
+                $log->asunto = $subject;
+                $log->estado = 'ok';
+                $log->save();
+            }
+        }
+    } else if($request->emails == 'permanencia_ano_actual'){
+
+        $users = User::select('users.id', 'users.name', 'users.lastname', 'users.email')
+                ->leftjoin('permanences', 'users.id', '=', 'permanences.user_id')
+                ->where(function ($query) {
+                    $query->where('permanences.year_permanence', YearHelperController::currentYear());
                 })
                 ->whereNotNull('users.email')
                 ->where('users.email', '<>', '')

@@ -27,14 +27,18 @@
                             <option value="" >-- ¿A quién quieres enviar el email? --</option>
                             <option value="prueba">Prueba a soriailusion@gmail.com</option>
                             <option value="libre">Libre elección</option>
-                            <option value="socios">Socios del último año</option>
+                            <option value="socios_permanencia_ultimo_ano">Socios y permanencia del último año</option>
+                            <option value="socios_permanencia_ano_actual">Socios y permanencia de este año</option>
+                            <option value="socios_ultimo_ano">Socios del último año</option>
                             <option value="socios_ano_actual">Socios de este año</option>
+                            <option value="permanencia_ultimo_ano">Permanencia del último año</option>
+                            <option value="permanencia_ano_actual">Permanencia de este año</option>
                         </select>
                         <p class="mt-1 text-sm text-gray-600">
-                            {{ __('Se debe de utilizar "Socios del último año" cuando queremos enviar un email de enero a marzo.') }}
+                            {{ __('Se debe de utilizar "**** del último año" cuando queremos enviar un email de enero a marzo.') }}
                         </p>
                         <p class="mt-1 text-sm text-gray-600">
-                            {{ __('Se debe de utilizar "Socios de este año" cuando queremos enviar un email de abril a diciembre.') }}
+                            {{ __('Se debe de utilizar "**** de este año" cuando queremos enviar un email de abril a diciembre.') }}
                         </p>
                         <x-input-error class="mt-2" :messages="$errors->get('emails')" />
                     </div>
