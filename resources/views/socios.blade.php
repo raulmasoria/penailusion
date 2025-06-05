@@ -1,7 +1,7 @@
 @extends('layouts.plantilla')
 
-@section('contenido');
+@section('contenido')
 
   <livewire:buscador />
-  
+
 @endsection

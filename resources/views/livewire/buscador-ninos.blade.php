@@ -133,7 +133,7 @@
                             cancelButtonText: 'Cancelar',
                             customClass: {
                                 confirmButton: 'bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded mr-5',
-                                cancelButton: 'bg-black hover:bg-gray-800 text-white font-semibold px-4 py-2 rounded'
+                                cancelButton: 'bg-gray-900 hover:bg-gray-800 text-white font-semibold px-4 py-2 rounded'
                             }
                         }).then((result) => {
                             if (result.isConfirmed) {
