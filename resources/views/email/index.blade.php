@@ -41,7 +41,7 @@
 
                     <div style="display:none" id="libre">
                         <x-input-label for="libre" :value="__('Introduce correos separados por comas')" />
-                        <x-text-input id="libreEmails" name="libreEmails" type="text" class="mt-1 block w-full" required autofocus autocomplete="libre"/>
+                        <x-text-input id="libreEmails" name="libreEmails" type="text" class="mt-1 block w-full" autofocus autocomplete="libre"/>
                         <x-input-error class="mt-2" :messages="$errors->get('libre')" />
                     </div>
 
