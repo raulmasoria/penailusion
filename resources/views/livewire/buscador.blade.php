@@ -158,56 +158,60 @@
                 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
                 <script>
-
-                    Livewire.on('pagarCuotaScript',function (usuario) {
+                    Livewire.on('pagarCuotaScript', function (usuario) {
                         let arr = usuario.split("-");
                         Swal.fire({
                             title: '¿Ha pagado ' + arr[1] + ' la cuota anual?',
-                            text: "¡Esta accion no se puede revetir!",
+                            text: "¡Esta acción no se puede revertir!",
                             icon: 'info',
                             showCancelButton: true,
-                            confirmButtonColor: '#F97316',
-                            cancelButtonColor: '#000',
-                            confirmButtonText: 'Si, cuota pagada',
-                            cancelButtonText: 'Cancelar'
+                            confirmButtonText: 'Sí, cuota pagada',
+                            cancelButtonText: 'Cancelar',
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded mr-5',
+                                cancelButton: 'bg-black hover:bg-gray-800 text-white font-semibold px-4 py-2 rounded'
+                            }
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                //llamar al metodo de livewire
                                 Livewire.emit('pagarCuota', arr[0]);
                                 Swal.fire(
-                                    'Pagado!',
+                                    '¡Pagado!',
                                     'Este socio ya puede pillar una birra.',
                                     'success'
-                                )
+                                );
                             }
-                        })
-                    })
+                        });
+                    });
 
-                    Livewire.on('pagarMantenimientoScript',function (usuario) {
+                    Livewire.on('pagarMantenimientoScript', function (usuario) {
                         let arr = usuario.split("-");
                         Swal.fire({
                             title: '¿Ha pagado ' + arr[1] + ' la cuota de mantenimiento?',
-                            text: "¡Esta accion no se puede revetir!",
+                            text: "¡Esta acción no se puede revertir!",
                             icon: 'info',
                             showCancelButton: true,
-                            confirmButtonColor: '#F97316',
-                            cancelButtonColor: '#000',
-                            confirmButtonText: 'Si, cuota pagada',
-                            cancelButtonText: 'Cancelar'
+                            confirmButtonText: 'Sí, cuota pagada',
+                            cancelButtonText: 'Cancelar',
+                            buttonsStyling: false,
+                            customClass: {
+                                confirmButton: 'bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded mr-5',
+                                cancelButton: 'bg-black hover:bg-gray-800 text-white font-semibold px-4 py-2 rounded'
+                            }
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                //llamar al metodo de livewire
                                 Livewire.emit('mantenimiento', arr[0]);
                                 Swal.fire(
-                                    'Pagado!',
+                                    '¡Pagado!',
                                     'Este socio ya puede pillar una birra.',
                                     'success'
-                                )
+                                );
                             }
-                        })
-                    })
+                        });
+                    });
                 </script>
             @endpush
+            <livewire:buscador-filtros />
         </div>
     </div>
 </div>
