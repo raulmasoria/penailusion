@@ -64,12 +64,7 @@
                                             @endforeach
 
                                             <td class="px-2 py-4">
-                                                @if ($noRenovar)
-                                                    <span class="inline-flex items-center gap-1 rounded-full bg-green-50 py-1 text-xs font-semibold text-gray-900">
-                                                        <span class="h-1.5 w-1.5 rounded-full bg-gray-900"></span>
-                                                        Ya no es socio
-                                                    </span>
-                                                @elseif($activo)
+                                                @if($activo)
                                                     <span class="inline-flex items-center gap-1 rounded-full bg-green-50 py-1 text-xs font-semibold text-green-600">
                                                         <span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>
                                                         Cuota pagada
@@ -78,6 +73,11 @@
                                                     <span class="inline-flex items-center gap-1 rounded-full bg-red-50 py-1 text-xs font-semibold text-blue-600">
                                                         <span class="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
                                                         Cuota de permanencia
+                                                    </span>
+                                                @elseif ($noRenovar)
+                                                    <span class="inline-flex items-center gap-1 rounded-full bg-green-50 py-1 text-xs font-semibold text-gray-900">
+                                                        <span class="h-1.5 w-1.5 rounded-full bg-gray-900"></span>
+                                                        Ya no es socio
                                                     </span>
                                                 @else
                                                     <span class="inline-flex items-center gap-1 rounded-full bg-red-50 py-1 text-xs font-semibold text-red-600">
@@ -211,7 +211,6 @@
                     });
                 </script>
             @endpush
-            <livewire:buscador-filtros />
         </div>
     </div>
 </div>
