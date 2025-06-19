@@ -282,12 +282,12 @@ class UserController extends Controller
             'phone' => ['Numeric'],
             'nif' => ['string', 'max:10'],
             'email' => ['email', 'max:255', 'unique:users'],
-            'via' => ['string', 'max:255'],
+            /*'via' => ['string', 'max:255'],
             'direccion' => ['string', 'max:255'],
             'piso' => ['string', 'max:255'],
             'cp' => ['Numeric'],
             'ciudad' => ['string', 'max:255'],
-            'provincia' => ['string', 'max:255'],
+            'provincia' => ['string', 'max:255'],*/
             'padrino1' => ['Numeric'],
             'padrino2' => ['Numeric'],
         ]);
@@ -386,92 +386,89 @@ class UserController extends Controller
      //crear un nuevo usuario siendo junta directiva
      public function store_admin(Request $request)
      {
-         $request->validate([
-             'name' => ['string', 'max:255'],
-             'lastname' => ['string', 'max:255'],
-             'phone' => ['Numeric'],
-             'nif' => ['string', 'max:10'],
-             'email' => ['email', 'max:255', 'unique:users'],
-             'via' => ['string', 'max:255'],
-             'direccion' => ['string', 'max:255'],
-             'piso' => ['string', 'max:255'],
-             'cp' => ['Numeric'],
-             'ciudad' => ['string', 'max:255'],
-             'provincia' => ['string', 'max:255'],
-         ]);
+        $request->validate([
+            'name' => ['string', 'max:255'],
+            'lastname' => ['string', 'max:255'],
+            'phone' => ['Numeric'],
+            'nif' => ['string', 'max:10'],
+            'email' => ['email', 'max:255', 'unique:users'],
+            /*'via' => ['string', 'max:255'],
+            'direccion' => ['string', 'max:255'],
+            'piso' => ['string', 'max:255'],
+            'cp' => ['Numeric'],
+            'ciudad' => ['string', 'max:255'],
+            'provincia' => ['string', 'max:255'],*/
+        ]);
 
-         //guardo usuario
-         $user = new User;
+        //guardo usuario
+        $user = new User;
 
-         $user->name = $request->name;
-         $user->lastname = $request->lastname;
-         $user->phone = $request->phone;
-         $user->nif = $request->nif;
-         $user->email = $request->email;
+        $user->name = $request->name;
+        $user->lastname = $request->lastname;
+        $user->phone = $request->phone;
+        $user->nif = $request->nif;
+        $user->email = $request->email;
 
-         $user->save();
+        $user->save();
 
-         //guardo dirección
-         $adress = new Adress;
+        //guardo dirección
+        $adress = new Adress;
 
-         $adress->user_id = $user->id;
-         $adress->via = $request->via;
-         $adress->direccion = $request->direccion;
-         $adress->piso = $request->piso;
-         $adress->cp = $request->cp;
-         $adress->ciudad = $request->ciudad;
-         $adress->provincia = $request->provincia;
+        $adress->user_id = $user->id;
+        $adress->via = $request->via;
+        $adress->direccion = $request->direccion;
+        $adress->piso = $request->piso;
+        $adress->cp = $request->cp;
+        $adress->ciudad = $request->ciudad;
+        $adress->provincia = $request->provincia;
 
-         $adress->save();
+        $adress->save();
 
-         //guardo antiguedad
-         foreach ($request->antiguedad as $año) {
-            $antiquity = new Antiquity;
+        //guardo antiguedad
+        $antiquity = new Antiquity;
 
-            $antiquity->user_id = $user->id;
-            $antiquity->year = $año;
+        $antiquity->user_id = $user->id;
+        $antiquity->year = YearHelperController::currentYear();
 
-            $antiquity->save();
-         }
+        $antiquity->save();
 
+        //guardo intolerancias
+        if($request->lactosa == 'lactosa') {
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 1;
+            $intolerances->save();
+        }
 
-         //guardo intolerancias
-         if($request->lactosa == 'lactosa') {
-             $intolerances = new IntolerancesUser();
-             $intolerances->id_user = $user->id;
-             $intolerances->id_intolerance = 1;
-             $intolerances->save();
-         }
+        if($request->gluten == 'gluten') {
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 2;
+            $intolerances->save();
+        }
 
-         if($request->gluten == 'gluten') {
-             $intolerances = new IntolerancesUser();
-             $intolerances->id_user = $user->id;
-             $intolerances->id_intolerance = 2;
-             $intolerances->save();
-         }
+        if($request->celiaco == 'celiaco') {
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 3;
+            $intolerances->save();
+        }
 
-         if($request->celiaco == 'celiaco') {
-             $intolerances = new IntolerancesUser();
-             $intolerances->id_user = $user->id;
-             $intolerances->id_intolerance = 3;
-             $intolerances->save();
-         }
+        if($request->fructosa == 'fructosa') {
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 4;
+            $intolerances->save();
+        }
 
-         if($request->fructosa == 'fructosa') {
-             $intolerances = new IntolerancesUser();
-             $intolerances->id_user = $user->id;
-             $intolerances->id_intolerance = 4;
-             $intolerances->save();
-         }
+        if($request->huevo == 'huevo') {
+            $intolerances = new IntolerancesUser();
+            $intolerances->id_user = $user->id;
+            $intolerances->id_intolerance = 5;
+            $intolerances->save();
+        }
 
-         if($request->huevo == 'huevo') {
-             $intolerances = new IntolerancesUser();
-             $intolerances->id_user = $user->id;
-             $intolerances->id_intolerance = 5;
-             $intolerances->save();
-         }
-
-         return Redirect::route('user.edit',$user)->with('status', 'user-create');
+        return Redirect::route('user.edit',$user)->with('status', 'user-create');
      }
 
     /*public function updatePass(){

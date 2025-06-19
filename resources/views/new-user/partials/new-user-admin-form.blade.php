@@ -5,9 +5,9 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Aquí puedes añadir los datos del nuevo peñista. No se le enviará ningún correo de notificación.") }}
+            {{ __("Aquí puedes añadir los datos del nuevo peñista.") }}
         </p>
-        
+
     </header>
 
     <form method="post" action="{{ route('socios.store.admin') }}" class="mt-6 space-y-6">
@@ -15,31 +15,31 @@
         @method('patch')
 
         <div>
-            <x-input-label for="name" :value="__('Nombre')" />
+            <x-input-label for="name" :value="__('Nombre *')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name')" required autofocus autocomplete="name"/>
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div>
-            <x-input-label for="lastname" :value="__('Apellidos')" />
+            <x-input-label for="lastname" :value="__('Apellidos *')" />
             <x-text-input id="lastname" name="lastname" type="text" class="mt-1 block w-full" :value="old('lastname')" required autofocus autocomplete="lastname" />
             <x-input-error class="mt-2" :messages="$errors->get('lastname')" />
         </div>
 
         <div>
-            <x-input-label for="phone" :value="__('Telefono')" />
+            <x-input-label for="phone" :value="__('Telefono *')" />
             <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone')" required autofocus autocomplete="phone"/>
             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
         </div>
 
         <div>
-            <x-input-label for="nif" :value="__('DNI')" />
+            <x-input-label for="nif" :value="__('DNI *')" />
             <x-text-input id="nif" name="nif" type="text" class="mt-1 block w-full" :value="old('nif')" required autofocus autocomplete="nif"/>
             <x-input-error class="mt-2" :messages="$errors->get('nif')" />
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('Email *')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email')" required autocomplete="email" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
         </div>
@@ -93,7 +93,7 @@
         </p>
         <div class="inline-flex">
             <div class="mr-5">
-                <x-input-label for="lactosa" :value="__('Lactosa')" />             
+                <x-input-label for="lactosa" :value="__('Lactosa')" />
                 <x-text-input id="lactosa" name="lactosa" type="checkbox" class="mt-1 block" value="lactosa" autofocus autocomplete="lactosa" />
                 <x-input-error class="mt-2" :messages="$errors->get('lactosa')" />
             </div>
@@ -123,24 +123,10 @@
             </div>
         </div>
 
-        <hr class="mt-6 mb-6">
-
-        <p class="mt-1 text-xl text-gray-600">
-            {{ __("Datos de antigüedad") }}
-        </p>
-
-        <div>
-            <x-input-label for="antiguedad" :value="__('Antigüedad')" />
-            <x-text-input id="2018" name="antiguedad[]" type="checkbox" class="mt-1" value="2018" autofocus autocomplete="2018" /><span class="mt-1">2018</span>
-            <x-text-input id="2019" name="antiguedad[]" type="checkbox" class="mt-1 ml-5" value="2019" autofocus autocomplete="2019" /><span class="mt-1">2019</span>
-            <x-text-input id="2022" name="antiguedad[]" type="checkbox" class="mt-1 ml-5" value="2022" autofocus autocomplete="2023" /><span class="mt-1">2022</span>
-            <x-text-input id="2023" name="antiguedad[]" type="checkbox" class="mt-1 ml-5" value="2023" autofocus autocomplete="2023" /><span class="mt-1">2023</span>
-            <x-text-input id="2024" name="antiguedad[]" type="checkbox" class="mt-1 ml-5" value="2024" autofocus autocomplete="2024" /><span class="mt-1">2024</span>
-            <x-input-error :messages="$errors->get('antiguedad')" class="mt-2" />
-        </div>
+        <hr>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Guardar') }}</x-primary-button>           
+            <x-primary-button>{{ __('Guardar') }}</x-primary-button>
         </div>
     </form>
 </section>

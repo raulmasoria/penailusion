@@ -15,31 +15,31 @@
         @method('patch')
 
         <div>
-            <x-input-label for="name" :value="__('Nombre')" />
+            <x-input-label for="name" :value="__('Nombre *')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name')" required autofocus autocomplete="name"/>
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div>
-            <x-input-label for="lastname" :value="__('Apellidos')" />
+            <x-input-label for="lastname" :value="__('Apellidos *')" />
             <x-text-input id="lastname" name="lastname" type="text" class="mt-1 block w-full" :value="old('lastname')" required autofocus autocomplete="lastname" />
             <x-input-error class="mt-2" :messages="$errors->get('lastname')" />
         </div>
 
         <div>
-            <x-input-label for="phone" :value="__('Telefono')" />
+            <x-input-label for="phone" :value="__('Telefono *')" />
             <x-text-input id="phone" name="phone" type="text" class="mt-1 block w-full" :value="old('phone')" required autofocus autocomplete="phone"/>
             <x-input-error class="mt-2" :messages="$errors->get('phone')" />
         </div>
 
         <div>
-            <x-input-label for="nif" :value="__('DNI')" />
+            <x-input-label for="nif" :value="__('DNI *')" />
             <x-text-input id="nif" name="nif" type="text" class="mt-1 block w-full" :value="old('nif')" required autofocus autocomplete="nif"/>
             <x-input-error class="mt-2" :messages="$errors->get('nif')" />
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('Email *')" />
             <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email')" required autocomplete="email" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
         </div>
@@ -129,7 +129,7 @@
         </p>
 
         <div>
-            <x-input-label for="padrino1" :value="__('Primer padrino')" />
+            <x-input-label for="padrino1" :value="__('Primer padrino *')" />
                 <select id="padrino1" name="padrino1" required class="select2 border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
                     <option value="" >-- Elige un socio --</option>
                     @foreach ($godfathers as $godfather_id => $godfather)
@@ -140,7 +140,7 @@
         </div>
 
         <div>
-            <x-input-label for="padrino2" :value="__('Segundo padrino')" />
+            <x-input-label for="padrino2" :value="__('Segundo padrino *')" />
                 <select id="padrino2" name="padrino2" required class="select2 border-orange-500 focus:border-orange-600 focus:ring-orange-400 rounded-md shadow-sm w-full">
                     <option value="" >-- Elige un socio --</option>
                     @foreach ($godfathers as $godfather_id => $godfather)
