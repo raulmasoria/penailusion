@@ -468,6 +468,16 @@ class UserController extends Controller
             $intolerances->save();
         }
 
+        //guardo los padrinos que es el usuario de directiva
+        $godfather = new Godfather;
+
+        $godfather->user_new = $user->id;
+        $godfather->user_godfather_1 = 583; //ID del usuario de directiva
+        $godfather->user_godfather_2 = 583; //ID del usuario de directiva
+        $godfather->year_godfather = Carbon::now()->format('Y');
+
+        $godfather->save();
+
         return Redirect::route('user.edit',$user)->with('status', 'user-create');
      }
 
