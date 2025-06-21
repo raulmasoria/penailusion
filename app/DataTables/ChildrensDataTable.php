@@ -56,7 +56,7 @@ class ChildrensDataTable extends DataTable
                 ->join('childrens_antiquities', 'childrens.id', '=', 'childrens_antiquities.children_id');
         }
 
-        \Log::info('Consulta SQL:', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
+        //\Log::info('Consulta SQL:', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
 
         return $query;
     }

@@ -47,7 +47,7 @@ class UsersDataTable extends DataTable
 
         if (!empty(request('filter_antiquity')) && is_array(request('filter_antiquity'))) {
             $years = request('filter_antiquity');
-            \Log::info('filter_antiquity:', $years);
+            //\Log::info('filter_antiquity:', $years);
 
             // Filtrar por los años seleccionados
             $query->whereIn('antiquities.year', $years)
@@ -57,7 +57,7 @@ class UsersDataTable extends DataTable
 
         if (!empty(request('filter_permanence')) && is_array(request('filter_permanence'))) {
             $years = request('filter_permanence');
-            \Log::info('filter_permanence:', $years);
+            //\Log::info('filter_permanence:', $years);
 
             // Filtrar por los años seleccionados
             $query->whereIn('permanences.year_permanence', $years)
@@ -65,7 +65,7 @@ class UsersDataTable extends DataTable
                 ->join('permanences', 'users.id', '=', 'permanences.user_id');
         }
 
-        \Log::info('Consulta SQL:', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
+        //\Log::info('Consulta SQL:', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
 
         return $query;
     }

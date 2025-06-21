@@ -65,7 +65,7 @@ class GodfatherDataTable extends DataTable
             });
 
         // Log de la consulta generada
-        \Log::info('Consulta SQL tabla de padrinos:', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
+        //\Log::info('Consulta SQL tabla de padrinos:', ['sql' => $query->toSql(), 'bindings' => $query->getBindings()]);
 
         return $query;
     }
