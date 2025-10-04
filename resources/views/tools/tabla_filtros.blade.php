@@ -62,7 +62,7 @@
                                             <select name="filter_rgpd" class="w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-300 p-2">
                                                 <option value="" {{ request('filter_rgpd') == '' ? 'selected' : '' }}>Selecciona una opción</option>
                                                 <option value="1" {{ request('filter_rgpd') == '1' ? 'selected' : '' }}>Sí</option>
-                                                <option value="0" {{ request('filter_rgpd') == '0' ? 'selected' : '' }}>No</option>
+                                                <option value="no" {{ request('filter_rgpd') == 'no' ? 'selected' : '' }}>No</option>
                                             </select>
                                         </div>
                                     </div>
