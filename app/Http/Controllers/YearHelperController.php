@@ -28,9 +28,7 @@ class YearHelperController extends Controller
 
     public static function lastLastLastLastYear()
     {
-        return '2019';
-        //pongo esto fijo porque ni el 2020 ni el 2021 tuvimos fiestas y estos años no cuentan para antiguedad
-        //return now()->subYear(4)->year;
+        return now()->subYear(4)->year;
     }
 
     public static function obtener_edad_segun_fecha($fecha_nacimiento)
