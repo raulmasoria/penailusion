@@ -39,6 +39,8 @@ class GodfatherDataTable extends DataTable
             ->leftJoin('permanences', 'users.id', '=', 'permanences.user_id')
             ->leftJoin('godfathers as g1', 'users.id', '=', 'g1.user_godfather_1')
             ->leftJoin('godfathers as g2', 'users.id', '=', 'g2.user_godfather_2')
+            ->leftJoin('childrens_godfathers as cg1', 'users.id', '=', 'cg1.user_godfather_1')
+            ->leftJoin('childrens_godfathers as cg2', 'users.id', '=', 'cg2.user_godfather_2')
             // Asegurar que tiene antigüedad en los años especificados
             ->whereIn('antiquities.year', $yearsAntiquity)
             ->groupBy('users.id', 'users.name', 'users.lastname')
@@ -62,6 +64,19 @@ class GodfatherDataTable extends DataTable
                     ->from('godfathers')
                     ->whereRaw('godfathers.user_godfather_2 = users.id')
                     ->whereIn('godfathers.year_godfather', $yearsGodfather);
+            })
+            // Excluir si ha sido padrino de niños en los años especificados
+            ->whereNotExists(function($query) use ($yearsGodfather) {
+                $query->select(DB::raw(1))
+                    ->from('childrens_godfathers')
+                    ->whereRaw('childrens_godfathers.user_godfather_1 = users.id')
+                    ->whereIn('childrens_godfathers.year_godfather', $yearsGodfather);
+            })
+            ->whereNotExists(function($query) use ($yearsGodfather) {
+                $query->select(DB::raw(1))
+                    ->from('childrens_godfathers')
+                    ->whereRaw('childrens_godfathers.user_godfather_2 = users.id')
+                    ->whereIn('childrens_godfathers.year_godfather', $yearsGodfather);
             });
 
         // Log de la consulta generada
