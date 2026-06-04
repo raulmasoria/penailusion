@@ -59,7 +59,7 @@
 
         <div>
             <x-input-label for="num_pulsera" :value="__('Número de pulsera')" />
-            <x-text-input id="num_pulsera" name="num_pulsera" type="text" class="mt-1 block w-full" :value="old('num_pulsera', $nino->num_pulsera)" required autofocus autocomplete="num_pulsera"/>
+            <x-text-input id="num_pulsera" name="num_pulsera" type="text" class="mt-1 block w-full" :value="old('num_pulsera', $nino->num_pulsera)" autofocus autocomplete="num_pulsera"/>
             <x-input-error class="mt-2" :messages="$errors->get('num_pulsera')" />
         </div>
 
