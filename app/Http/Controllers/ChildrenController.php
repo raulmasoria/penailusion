@@ -89,7 +89,7 @@ class ChildrenController extends Controller
             'name' => ['string', 'max:255'],
             'lastname' => ['string', 'max:255'],
             'fecha' => ['date'],
-            'num_pulsera' => ['int', 'min:0', 'max:9999'],
+            'num_pulsera' => ['nullable', 'integer', 'min:0', 'max:9999'],
         ]);
 
         $nino->name = $request->name;
@@ -117,21 +117,17 @@ class ChildrenController extends Controller
         }
 
         //actualizo número de pulsera y borro el anterior si tuviera.
-        if($request->num_pulsera != null){
-            $bracelet = Childrens_bracelet::where('id_children', $nino->id)->first();
-            if ($bracelet != null) {
-                $bracelet->delete();
+        $bracelet = Childrens_bracelet::where('id_children', $nino->id)->first();
 
-                $bracelet = new Childrens_bracelet;
-                $bracelet->id_children = $nino->id;
-                $bracelet->bracelet_number = $request->num_pulsera;
-                $bracelet->save();
-            } else {
-                $bracelet = new Childrens_bracelet;
-                $bracelet->id_children = $nino->id;
-                $bracelet->bracelet_number = $request->num_pulsera;
-                $bracelet->save();
-            }
+        if ($bracelet != null) {
+            $bracelet->delete();
+        }
+
+        if ($request->num_pulsera !== null) {
+            $bracelet = new Childrens_bracelet;
+            $bracelet->id_children = $nino->id;
+            $bracelet->bracelet_number = $request->num_pulsera;
+            $bracelet->save();
         }
 
         return Redirect::route('niños.edit',$nino)->with('status', 'nino-updated');
