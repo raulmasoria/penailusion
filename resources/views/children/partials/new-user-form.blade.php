@@ -33,6 +33,12 @@
         </div>
 
         <div>
+            <x-input-label for="num_pulsera" :value="__('Número de pulsera')" />
+            <x-text-input id="num_pulsera" name="num_pulsera" type="text" class="mt-1 block w-full" :value="old('num_pulsera')" autofocus autocomplete="num_pulsera"/>
+            <x-input-error class="mt-2" :messages="$errors->get('num_pulsera')" />
+        </div>
+
+        <div>
             <div class="flex items-center gap-2">
                 <x-input-label for="responsible" :value="__('Asignar responsable *')" />
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20px" height="20px" viewBox="0 0 12 12" enable-background="new 0 0 12 12" version="1.1" xml:space="preserve" class="cursor-pointer mb-2">

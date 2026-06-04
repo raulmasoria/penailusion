@@ -12,6 +12,7 @@ use App\Models\Childrens_antiquities_old;
 use App\Models\Childrens_antiquities;
 use App\Models\Childrens_responsible;
 use App\Models\Childrens_godfathers;
+use App\Models\Childrens_bracelet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
@@ -63,6 +64,13 @@ class ChildrenController extends Controller
             $godfather2 = User::where('id',$godfathers->user_godfather_2)->firstOrFail();
         }
 
+        //Número de pulsera
+        if(Childrens_bracelet::where('id_children', $nino->id)->exists()){
+            $nino->num_pulsera = Childrens_bracelet::where('id_children', $nino->id)->first()->bracelet_number;
+        } else {
+            $nino->num_pulsera = null;
+        }
+
         return view('children.edit',[
             "nino" => $nino,
             "antiquitys" => $antiquity,
@@ -81,6 +89,7 @@ class ChildrenController extends Controller
             'name' => ['string', 'max:255'],
             'lastname' => ['string', 'max:255'],
             'fecha' => ['date'],
+            'num_pulsera' => ['int', 'min:0', 'max:9999'],
         ]);
 
         $nino->name = $request->name;
@@ -104,6 +113,24 @@ class ChildrenController extends Controller
                 $responsible->children_id = $nino->id;
                 $responsible->user_id = $responsible_id;
                 $responsible->save();
+            }
+        }
+
+        //actualizo número de pulsera y borro el anterior si tuviera.
+        if($request->num_pulsera != null){
+            $bracelet = Childrens_bracelet::where('id_children', $nino->id)->first();
+            if ($bracelet != null) {
+                $bracelet->delete();
+
+                $bracelet = new Childrens_bracelet;
+                $bracelet->id_children = $nino->id;
+                $bracelet->bracelet_number = $request->num_pulsera;
+                $bracelet->save();
+            } else {
+                $bracelet = new Childrens_bracelet;
+                $bracelet->id_children = $nino->id;
+                $bracelet->bracelet_number = $request->num_pulsera;
+                $bracelet->save();
             }
         }
 
@@ -139,7 +166,8 @@ class ChildrenController extends Controller
         $request->validate([
             'name' => ['string', 'max:255'],
             'lastname' => ['string', 'max:255'],
-            'fecha' => ['date']
+            'fecha' => ['date'],
+            'num_pulsera' => ['int', 'min:0', 'max:9999'],
         ]);
 
         //guardo niño
@@ -172,6 +200,12 @@ class ChildrenController extends Controller
 
             $godfather->save();
         }
+
+        //Número de pulsera
+        $bracelet = new Childrens_bracelet;
+        $bracelet->id_children = $nino->id;
+        $bracelet->bracelet_number = $request->num_pulsera;
+        $bracelet->save();
 
         return Redirect::route('niños.edit',$nino)->with('status', 'user-create');
     }

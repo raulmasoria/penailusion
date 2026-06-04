@@ -6,6 +6,7 @@ use App\Http\Controllers\YearHelperController;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Childrens;
+use App\Models\Childrens_bracelet;
 use Illuminate\Support\Facades\DB;
 use App\Models\Childrens_antiquities;
 
@@ -22,13 +23,17 @@ class BuscadorNinos extends Component
 
     public function render()
     {
-        $ninos = Childrens::when($this->termino, function($query){
-            $query->where('name','LIKE', '%'.$this->termino.'%');
-        })->when($this->termino, function($query){
-            $query->orWhere('lastname','LIKE', '%'.$this->termino.'%');
-        })->when($this->termino, function($query){
-            $query->orWhere('birthdate','LIKE', '%'.$this->termino.'%');
-        })->orderBy('name', 'asc')
+        $ninos = Childrens::when($this->termino, function ($query) {
+            $query->where(function ($q) {
+                $q->where('name', 'LIKE', '%' . $this->termino . '%')
+                ->orWhere('lastname', 'LIKE', '%' . $this->termino . '%')
+                ->orWhere('birthdate', 'LIKE', '%' . $this->termino . '%')
+                ->orWhereHas('bracelets', function ($bracelet) {
+                    $bracelet->where('bracelet_number', 'LIKE', '%' . $this->termino . '%');
+                });
+            });
+        })
+        ->orderBy('name', 'asc')
         ->orderBy('lastname', 'asc')
         ->paginate(50);
 
@@ -46,6 +51,13 @@ class BuscadorNinos extends Component
                 $nino['responsable'] = $contentResponsible->name . ' ' . $contentResponsible->lastname;
                 $nino['phone_responsable'] = $contentResponsible->phone;
                 $nino['responsable_id'] = $responsible->user_id;
+            }
+
+            //Número de pulsera
+            if(Childrens_bracelet::where('id_children', $nino->id)->exists()){
+                $nino->num_pulsera = Childrens_bracelet::where('id_children', $nino->id)->first()->bracelet_number;
+            } else {
+                $nino->num_pulsera = null;
             }
         }
 
