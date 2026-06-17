@@ -25,7 +25,7 @@
                                 {{ $penalty_row->name }}
                             </th>
                             <td class="px-6 py-4 font-normal text-gray-900 text-center">
-                                {{ \Carbon\Carbon::parse($penalty_row->date_penality)->format('d/m/Y H:m') }}
+                                {{ \Carbon\Carbon::parse($penalty_row->date_penality)->format('d/m/Y H:i') }}
                             </td>
                         </tr>
                     @endforeach
