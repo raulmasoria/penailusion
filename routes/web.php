@@ -88,6 +88,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/quien_apadrinar', [GodfatherController::class, 'rendertable'])->name('godfather.show');
     Route::get('/quien_apadrinar/export-excel', [GodfatherController::class, 'exportExcel'])->name('godfather.export.excel');
 
+    //Tabla de penalizaciones de niños
+    Route::get('/penalizaciones', [ChildrenController::class, 'penalities'])->name('niños.penalities');
+    Route::get('/penalizaciones/export-excel', [ChildrenController::class, 'exportPenalitiesExcel'])->name('niños.penalities.export.excel');
+
 });
 
     Route::apiResource('getCompanies', CompanieController::class)->only(['index']);

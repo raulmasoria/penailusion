@@ -46,6 +46,9 @@
                                     <x-dropdown-link :href="route('niños.create')" :active="request()->routeIs('niños.create')">
                                         {{ __('Nuevo niño') }}
                                     </x-dropdown-link>
+                                    <x-dropdown-link :href="route('niños.penalities')" :active="request()->routeIs('niños.penalities')">
+                                        {{ __('Penalizaciones') }}
+                                    </x-dropdown-link>
                                 </x-slot>
                             </x-dropdown>
                             <x-dropdown>
@@ -155,6 +158,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('niños.create')" :active="request()->routeIs('niños.create')">
                         {{ __('Nuevo niño') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('niños.penalities')" :active="request()->routeIs('niños.penalities')">
+                        {{ __('Penalizaciones niños') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('email')" :active="request()->routeIs('email')">
                         {{ __('Envio de emails') }}

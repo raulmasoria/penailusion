@@ -2,28 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\User;
+use App\DataTables\ChildrensDataTable;
+use App\DataTables\ChildrensPenaltyDataTable;
+use App\Exports\ChildrensExport;
+use App\Exports\ChildrensPenaltyExport;
+use App\Imports\AntiquitiesChildrensImport;
+use App\Imports\ChildrensImport;
 use App\Models\Adress;
 use App\Models\Antiquity;
-use App\Models\Childrens;
-use App\Models\Godfather;
 use App\Models\Childrens_antiquities_old;
 use App\Models\Childrens_antiquities;
-use App\Models\Childrens_responsible;
-use App\Models\Childrens_godfathers;
 use App\Models\Childrens_bracelet;
+use App\Models\Childrens_godfathers;
 use App\Models\Childrens_penalty;
+use App\Models\Childrens_responsible;
+use App\Models\Childrens;
+use App\Models\Godfather;
 use App\Models\Penalty;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
-use App\DataTables\ChildrensDataTable;
-use App\Imports\ChildrensImport;
-use App\Imports\AntiquitiesChildrensImport;
-use App\Exports\ChildrensExport;
 
 class ChildrenController extends Controller
 {
@@ -403,6 +405,18 @@ class ChildrenController extends Controller
         }
 
         return Redirect::route('niños.edit',$nino)->with('status', 'penality-added');
+    }
+
+    //Tablas de niños con penalizaciones con filtros (Exportar penalizaciones niños)
+    public function penalities(ChildrensPenaltyDataTable $dataTable){
+        return $dataTable->render('tools.tabla_penalities_children');
+    }
+
+    //Exportar penalizaciones de niños a excel
+    public function exportPenalitiesExcel(Request $request)
+    {
+        $filters = $request->all();
+        return Excel::download(new ChildrensPenaltyExport($filters), 'penalizaciones_menores_filtradas.xlsx');
     }
 
 }
