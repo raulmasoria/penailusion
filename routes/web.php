@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/nuevo_niño', [ChildrenController::class, 'create'])->name('niños.create');
     Route::patch('/nuevo_niño/guardar', [ChildrenController::class, 'store'])->name('niños.store');
     Route::patch('/niños/{nino}/adult', [ChildrenController::class, 'pasarAdulto'])->name('niños.adult');
+    Route::patch('/niños/{nino}/penality', [ChildrenController::class, 'addPenality'])->name('niños.add_penality');
 
     //Enviar emails
     Route::get('/email', [EmailController::class, 'edit'])->name('email');

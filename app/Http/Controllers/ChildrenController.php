@@ -13,6 +13,8 @@ use App\Models\Childrens_antiquities;
 use App\Models\Childrens_responsible;
 use App\Models\Childrens_godfathers;
 use App\Models\Childrens_bracelet;
+use App\Models\Childrens_penalty;
+use App\Models\Penalty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
@@ -71,6 +73,22 @@ class ChildrenController extends Controller
             $nino->num_pulsera = null;
         }
 
+        //Obtener penalizaciones del niño
+        $penalty_info = [];
+        if (Childrens_penalty::where('id_user', $nino->id)->exists()) {
+            $nino->penalties = Childrens_penalty::where('id_user', $nino->id)->get();
+            foreach ($nino->penalties as $penalty) {
+                $penalty_info[$penalty->id] = Penalty::where('id', $penalty->id_penalty)->first();
+                $penalty_info[$penalty->id]->name = $penalty_info[$penalty->id]->name;
+                $penalty_info[$penalty->id]->date_penality = $penalty->date_penality;
+            }
+        } else {
+            $nino->penalties = null;
+        }
+
+        //Obtener todas las penalizaciones para mostrarlas en el select de añadir penalización
+         $penaltiesAll = Penalty::all();
+
         return view('children.edit',[
             "nino" => $nino,
             "antiquitys" => $antiquity,
@@ -79,6 +97,8 @@ class ChildrenController extends Controller
             "godfathers" => $godfathers,
             "godfather1" => $godfather1,
             "godfather2" => $godfather2,
+            "penality" => $penalty_info,
+            "penaltiesAll" => $penaltiesAll
         ]);
     }
 
@@ -355,6 +375,34 @@ class ChildrenController extends Controller
     {
         $filters = $request->all();
         return Excel::download(new ChildrensExport($filters), 'menores_filtrados.xlsx');
+    }
+
+    //Añadir penalización a un niño
+    public function addPenality(Request $request, Childrens $nino){
+        $request->validate([
+            'penality' => ['required', 'integer', 'exists:penalties,id'],
+        ]);
+
+        $penality = new Childrens_penalty;
+        $penality->id_user = $nino->id;
+        $penality->id_penalty = $request->penality;
+        $penality->date_penality = Carbon::now()->addHours(2);
+        $penality->save();
+
+        //sacar el nombre de la penalización para mostrarlo en el email
+        $penality_name = Penalty::where('id', $request->penality)->first()->name;
+
+        //enviar correo al responsable del niño notificando la penalización añadida (si el niño tiene responsable)
+        $responsible = Childrens_responsible::where('children_id', $nino->id)->first();
+        if ($responsible) {
+            $user_responsible = User::where('id', $responsible->user_id)->first();
+            if ($user_responsible) {
+                //Enviar correo al responsable
+                EmailController::sendPenalityAddedNotification($user_responsible, $nino, $penality,$penality_name);
+            }
+        }
+
+        return Redirect::route('niños.edit',$nino)->with('status', 'penality-added');
     }
 
 }
