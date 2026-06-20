@@ -18,6 +18,7 @@ use App\Models\Childrens_penalty;
 use App\Models\Childrens_responsible;
 use App\Models\Childrens;
 use App\Models\Godfather;
+use App\Models\IntolerancesChildrens;
 use App\Models\Penalty;
 use App\Models\User;
 use Carbon\Carbon;
@@ -91,6 +92,19 @@ class ChildrenController extends Controller
         //Obtener todas las penalizaciones para mostrarlas en el select de añadir penalización
          $penaltiesAll = Penalty::all();
 
+        //Obtener intolerancias del niño
+         $intolerances = DB::table('intolerances')
+        ->join('intolerances_childrens', 'intolerances.id', '=', 'intolerances_childrens.id_intolerance')
+        ->join('childrens', 'childrens.id', '=', 'intolerances_childrens.id_children')
+        ->select('intolerances.id','intolerances.name')
+        ->where('intolerances_childrens.id_children', $nino->id)
+        ->get();
+
+        $allIntolerances = array();
+        foreach($intolerances as $intolerancesrow){
+            $allIntolerances[$intolerancesrow->name] = $intolerancesrow->name;
+        }
+
         return view('children.edit',[
             "nino" => $nino,
             "antiquitys" => $antiquity,
@@ -100,7 +114,8 @@ class ChildrenController extends Controller
             "godfather1" => $godfather1,
             "godfather2" => $godfather2,
             "penality" => $penalty_info,
-            "penaltiesAll" => $penaltiesAll
+            "penaltiesAll" => $penaltiesAll,
+            "intolerances" => $allIntolerances
         ]);
     }
 
@@ -153,6 +168,100 @@ class ChildrenController extends Controller
         }
 
         return Redirect::route('niños.edit',$nino)->with('status', 'nino-updated');
+
+    }
+
+    //editar intolerancias de un usuario siendo junta directiva
+    public function intolerances(Request $request, Childrens $nino)
+    {
+
+        if($request->lactosa == 'lactosa') {
+            $intolerances = new IntolerancesChildrens();
+            $intolerances->id_children = $nino->id;
+            $intolerances->id_intolerance = 1;
+            $intolerances->save();
+        } else {
+            $tengoLactosa = DB::table('intolerances_childrens')
+            ->select('id')
+            ->where('id_children', '=', $nino->id)
+            ->where('id_intolerance', '=', 1)
+            ->get();
+
+            if(count($tengoLactosa) >= 1){
+                DB::table('intolerances_childrens')->where('id_children', '=', $nino->id)->where('id_intolerance', '=', 1)->delete();
+            }
+        }
+
+        if($request->gluten == 'gluten') {
+            $intolerances = new IntolerancesChildrens();
+            $intolerances->id_children = $nino->id;
+            $intolerances->id_intolerance = 2;
+            $intolerances->save();
+        } else {
+            $tengoGluten = DB::table('intolerances_childrens')
+            ->select('id')
+            ->where('id_children', '=', $nino->id)
+            ->where('id_intolerance', '=', 2)
+            ->get();
+
+            if(count($tengoGluten) >= 1){
+                DB::table('intolerances_childrens')->where('id_children', '=', $nino->id)->where('id_intolerance', '=', 2)->delete();
+            }
+        }
+
+        if($request->celiaco == 'celiaco') {
+            $intolerances = new IntolerancesChildrens();
+            $intolerances->id_children = $nino->id;
+            $intolerances->id_intolerance = 3;
+            $intolerances->save();
+        } else {
+            $tengoCeliaco = DB::table('intolerances_childrens')
+            ->select('id')
+            ->where('id_children', '=', $nino->id)
+            ->where('id_intolerance', '=', 3)
+            ->get();
+
+            if(count($tengoCeliaco) >= 1){
+                DB::table('intolerances_childrens')->where('id_children', '=', $nino->id)->where('id_intolerance', '=', 3)->delete();
+            }
+        }
+
+        if($request->fructosa == 'fructosa') {
+            $intolerances = new IntolerancesChildrens();
+            $intolerances->id_children = $nino->id;
+            $intolerances->id_intolerance = 4;
+            $intolerances->save();
+        } else {
+            $tengoFructosa = DB::table('intolerances_childrens')
+            ->select('id')
+            ->where('id_children', '=', $nino->id)
+            ->where('id_intolerance', '=', 4)
+            ->get();
+
+            if(count($tengoFructosa) >= 1){
+                DB::table('intolerances_childrens')->where('id_children', '=', $nino->id)->where('id_intolerance', '=', 4)->delete();
+            }
+        }
+
+        if($request->huevo == 'huevo') {
+            $intolerances = new IntolerancesChildrens();
+            $intolerances->id_children = $nino->id;
+            $intolerances->id_intolerance = 5;
+            $intolerances->save();
+        } else {
+            $tengoHuevo = DB::table('intolerances_childrens')
+            ->select('id')
+            ->where('id_children', '=', $nino->id)
+            ->where('id_intolerance', '=', 5)
+            ->get();
+
+            if(count($tengoHuevo) >= 1){
+                DB::table('intolerances_childrens')->where('id_children', '=', $nino->id)->where('id_intolerance', '=', 5)->delete();
+            }
+        }
+
+
+        return Redirect::route('niños.edit',$nino)->with('status', 'intolerances-updated');
 
     }
 
@@ -225,6 +334,42 @@ class ChildrenController extends Controller
         $bracelet->bracelet_number = $request->num_pulsera;
         $bracelet->save();
 
+        //guardo intolerancias
+        if($request->lactosa == 'lactosa') {
+            $intolerances = new IntolerancesChildrens();
+            $intolerances->id_children = $nino->id;
+            $intolerances->id_intolerance = 1;
+            $intolerances->save();
+        }
+
+        if($request->gluten == 'gluten') {
+            $intolerances = new IntolerancesChildrens();
+            $intolerances->id_children = $nino->id;
+            $intolerances->id_intolerance = 2;
+            $intolerances->save();
+        }
+
+        if($request->celiaco == 'celiaco') {
+            $intolerances = new IntolerancesChildrens();
+            $intolerances->id_children = $nino->id;
+            $intolerances->id_intolerance = 3;
+            $intolerances->save();
+        }
+
+        if($request->fructosa == 'fructosa') {
+            $intolerances = new IntolerancesChildrens();
+            $intolerances->id_children = $nino->id;
+            $intolerances->id_intolerance = 4;
+            $intolerances->save();
+        }
+
+        if($request->huevo == 'huevo') {
+            $intolerances = new IntolerancesChildrens();
+            $intolerances->id_children = $nino->id;
+            $intolerances->id_intolerance = 5;
+            $intolerances->save();
+        }
+
         return Redirect::route('niños.edit',$nino)->with('status', 'user-create');
     }
 
@@ -296,10 +441,21 @@ class ChildrenController extends Controller
             DB::table('childrens_godfathers')->where('children_new', '=', $nino->id)->delete();
         }
 
-        //Borro de children, childrenAnqtiquity y childrens_responsible
+        //Si tiene intolerancias las muevo de tabla y borro las intolerancias de la tabla de intolerances_childrens
+        $intolerances = IntolerancesChildrens::where('id_children', $nino->id)->get();
+        foreach ($intolerances as $intolerance) {
+            DB::table('intolerances_users')->insert([
+                'id_user' => $user->id,
+                'id_intolerance' => $intolerance->id_intolerance,
+            ]);
+        }
+
+        //Borro de children, childrenAnqtiquity, childrens_responsible, intolerances_childrens y penalities_childrens
         DB::table('childrens_responsible')->where('children_id', '=', $nino->id)->delete();
         DB::table('childrens_antiquities')->where('children_id', '=', $nino->id)->delete();
         DB::table('childrens')->where('id', '=', $nino->id)->delete();
+        DB::table('intolerances_childrens')->where('id_children', '=', $nino->id)->delete();
+        DB::table('childrens_penalties')->where('id_user', '=', $nino->id)->delete();
 
         return Redirect::route('user.edit',$user)->with('status', 'nino-adult');
 

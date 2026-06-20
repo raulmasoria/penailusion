@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/niños', [ChildrenController::class, 'index'])->name('niños');
     Route::get('/niños/{nino}', [ChildrenController::class, 'edit'])->name('niños.edit');
     Route::patch('/niños/{nino}/edit', [ChildrenController::class, 'update'])->name('niños.update');
+    Route::patch('/niños/{nino}/intolerances', [ChildrenController::class, 'intolerances'])->name('niños.intolerances');
     Route::get('/nuevo_niño', [ChildrenController::class, 'create'])->name('niños.create');
     Route::patch('/nuevo_niño/guardar', [ChildrenController::class, 'store'])->name('niños.store');
     Route::patch('/niños/{nino}/adult', [ChildrenController::class, 'pasarAdulto'])->name('niños.adult');

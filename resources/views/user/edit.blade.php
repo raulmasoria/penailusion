@@ -22,6 +22,15 @@
                     class="text-sm text-gray-600"
                 >{{ __('Nuevo socio importado de niño a adulto.') }}</p>
             @endif
+            @if (session('status') === 'intolerances-updated')
+                <p
+                    x-data="{ show: true }"
+                    x-show="show"
+                    x-transition
+                    x-init="setTimeout(() => show = false, 10000)"
+                    class="text-xl text-green-600"
+                >{{ __('Intolerancias actualizadas.') }}</p>
+            @endif
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 @include('user.partials.update-profile-information-form')
             </div>

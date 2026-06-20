@@ -55,6 +55,42 @@
             <x-input-error class="mt-2" :messages="$errors->get('responsible')" />
         </div>
         <hr class="my-4">
+
+        <p class="mt-1 text-xl text-gray-600">
+            {{ __("Datos de intolerancias") }}
+        </p>
+
+        <div>
+            <x-input-label for="lactosa" :value="__('Lactosa')" />
+            <x-text-input id="lactosa" name="lactosa" type="checkbox" class="mt-1 block" value="lactosa" autofocus autocomplete="lactosa" />
+            <x-input-error class="mt-2" :messages="$errors->get('lactosa')" />
+        </div>
+
+        <div>
+            <x-input-label for="gluten" :value="__('Gluten')" />
+            <x-text-input id="gluten" name="gluten" type="checkbox" class="mt-1 block" value="gluten" autofocus autocomplete="gluten" />
+            <x-input-error class="mt-2" :messages="$errors->get('gluten')" />
+        </div>
+
+        <div>
+            <x-input-label for="celiaco" :value="__('Celiaco')" />
+            <x-text-input id="celiaco" name="celiaco" type="checkbox" class="mt-1 block" value="celiaco" autofocus autocomplete="celiaco" />
+            <x-input-error class="mt-2" :messages="$errors->get('celiaco')" />
+        </div>
+
+        <div>
+            <x-input-label for="fructosa" :value="__('Fructosa')" />
+            <x-text-input id="fructosa" name="fructosa" type="checkbox" class="mt-1 block" value="fructosa" autofocus autocomplete="fructosa" />
+            <x-input-error class="mt-2" :messages="$errors->get('fructosa')" />
+        </div>
+
+        <div>
+            <x-input-label for="huevo" :value="__('Alergico al huevo')" />
+            <x-text-input id="huevo" name="huevo" type="checkbox" class="mt-1 block" value="huevo" autofocus autocomplete="huevo" />
+            <x-input-error class="mt-2" :messages="$errors->get('huevo')" />
+        </div>
+
+        <hr class="my-4">
         <div>
             <div class="flex items-center gap-2">
                 <x-input-label :value="__('¿Necesita padrinos?')" />

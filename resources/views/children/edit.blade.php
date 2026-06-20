@@ -22,6 +22,15 @@
                     class="text-xl text-green-600"
                 >{{ __('Penalización añadida.') }}</p>
             @endif
+            @if (session('status') === 'intolerances-updated')
+                <p
+                    x-data="{ show: true }"
+                    x-show="show"
+                    x-transition
+                    x-init="setTimeout(() => show = false, 10000)"
+                    class="text-xl text-green-600"
+                >{{ __('Intolerancias actualizadas.') }}</p>
+            @endif
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 @include('children.partials.update-profile-information-form')
             </div>
@@ -32,6 +41,10 @@
 
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 @include('children.partials.view-godfathers')
+            </div>
+
+            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                @include('children.partials.update-intolerances-form')
             </div>
 
              <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
